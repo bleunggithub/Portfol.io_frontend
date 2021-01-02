@@ -1,0 +1,31 @@
+/* .discover-subMenu {
+	width: 100vw;
+	margin-top: 11vh;
+	font-size: 0.8em;
+	text-align: center;
+	color: #535353;
+	position: sticky;
+}
+
+.discover-link {
+	cursor: pointer;
+	letter-spacing: 0.5em;
+	font-family: "Roboto";
+	font-weight: 600;
+	margin: 0 1em;
+}
+
+.discover-link:hover {
+	background: linear-gradient(to top, #546e7a85 25%, transparent 25%);
+}
+
+@media (max-width: 1024px) {
+	.discover-subMenu {
+		margin-top: 8vh;
+	}
+}
+@media (max-width: 600px) {
+	.discover-subMenu {
+		margin-top: 9vh;
+	}
+} */

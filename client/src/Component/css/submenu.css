@@ -1,0 +1,31 @@
+.submenu-div {
+	width: 100vw;
+	margin-top: 11vh;
+	font-size: 0.8em;
+	text-align: center;
+	color: #535353;
+	position: sticky;
+}
+
+.submenu-link {
+	cursor: pointer;
+	letter-spacing: 0.5em;
+	font-family: "Roboto";
+	font-weight: 600;
+	margin: 0 1em;
+}
+
+.submenu-link:hover {
+	background: linear-gradient(to top, #546e7a85 25%, transparent 25%);
+}
+
+@media (max-width: 1024px) {
+	.submenu-div {
+		margin-top: 8vh;
+	}
+}
+@media (max-width: 600px) {
+	.submenu-div {
+		margin-top: 9vh;
+	}
+}

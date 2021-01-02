@@ -1,0 +1,154 @@
+.landing-heroImg {
+	margin-top: 15vh;
+	height: 80vh;
+	width: 100%;
+	background-image: linear-gradient(#f5f5f59d, #f5f5f59d),
+		url(../../img/urban-line-grey.png);
+	background-position: bottom;
+	background-size: contain;
+	background-repeat: no-repeat;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.landing-headerText {
+	/* margin: 0 0 0.5em 3em; */
+	font-size: 1em;
+	color: #29434e;
+	font-family: "Montserrat";
+}
+
+.landing-highlight {
+	background: linear-gradient(to top, #546e7a85 40%, transparent 40%);
+}
+
+@-webkit-keyframes showTopText {
+	0% {
+		-webkit-transform: translate3d(0, 100%, 0);
+		transform: translate3d(0, 100%, 0);
+	}
+	100% {
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+	}
+}
+@keyframes showTopText {
+	0% {
+		-webkit-transform: translate3d(0, 100%, 0);
+		transform: translate3d(0, 100%, 0);
+	}
+	100% {
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@-webkit-keyframes showBottomText {
+	0% {
+		-webkit-transform: translate3d(0, -100%, 0);
+		transform: translate3d(0, -100%, 0);
+	}
+	100% {
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@keyframes showBottomText {
+	0% {
+		-webkit-transform: translate3d(0, -100%, 0);
+		transform: translate3d(0, -100%, 0);
+	}
+	100% {
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+.landing-animated-title {
+	height: 90vmin;
+	left: 50%;
+	position: absolute;
+	top: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	width: 56vw;
+	color: #29434e;
+	font-family: "Montserrat";
+}
+
+.landing-animated-title > div {
+	height: 50%;
+	overflow: hidden;
+	position: absolute;
+	width: 100%;
+}
+
+.landing-animated-title > div div {
+	font-size: 3.5em;
+	padding: 0;
+	position: absolute;
+	width: 100%;
+}
+
+.landing-animated-title > div div p {
+	margin: 4vh 0;
+	padding: 0 5vw;
+}
+
+.landing-animated-title > div.text-top {
+	border-bottom: 1px solid #546e7a;
+	top: 0;
+}
+
+.landing-animated-title > div.text-top div {
+	-webkit-animation: showTopText 1s;
+	animation: showTopText 1s;
+	-webkit-animation-delay: 0.2s;
+	animation-delay: 0.2s;
+	-webkit-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+	bottom: 0;
+	-webkit-transform: translate(0, 120%);
+	transform: translate(0, 120%);
+}
+
+.landing-animated-title > div.text-bottom {
+	bottom: 0;
+	text-align: right;
+}
+
+.landing-animated-title > div.text-bottom div {
+	-webkit-animation: showBottomText 1s;
+	animation: showBottomText 1s;
+	-webkit-animation-delay: 0.8s;
+	animation-delay: 0.8s;
+	-webkit-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+	top: 0;
+	-webkit-transform: translate(0, -100%);
+	transform: translate(0, -100%);
+}
+
+@media (max-width: 800px) {
+	.landing-heroImg {
+		width: 100vw;
+		height: 30vh;
+		margin-top: 25vh;
+	}
+
+	.landing-animated-title {
+		height: 55vh;
+		top: 40%;
+		width: 80vw;
+	}
+
+	.landing-animated-title > div {
+		height: 50%;
+	}
+
+	.landing-animated-title > div div {
+		font-size: 2.5em;
+	}
+}
