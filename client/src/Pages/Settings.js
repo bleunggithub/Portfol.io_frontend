@@ -32,7 +32,7 @@ class Settings extends Component {
             <Grid container>
                 <TopBar value={location} />
                 <Submenu item1="YOUR PROFILE" item2="LOGOUT" handleItem1={ this.toSettings } handleItem2={this.logout} />
-                <Profile location={ this.props.location.pathname } />
+                <Profile location={ this.props.location.pathname } params={ this.props.match.params }/>
             </Grid>
         )
     }

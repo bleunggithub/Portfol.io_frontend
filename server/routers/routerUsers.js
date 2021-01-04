@@ -31,6 +31,7 @@ router.post('/getOwnProfile', async (req, res) => {
             // console.trace(DataFromUsersTable[0])
         
         let facebookUser, googleUser = false;
+        
         if (DataFromUsersTable[0].facebook_id != null) {
             facebookUser = true
         } else if (DataFromUsersTable[0].google_id != null) {
@@ -80,14 +81,15 @@ router.post('/getProfile/:id', async (req, res) => {
         let requester = jwt.verify(accessToken, config.jwtSecret);
         console.trace(requester, requester.id)
 
-        let profileUser = await knex.from('users').where('id','=',userId);
-            
+        let profileUser = await knex.from('users').where('id', userId);
+        console.trace(profileUser)
+
         if (profileUser[0]) {
             let profileUserData = await knex('users').where('id', userId);
             let projects = await knex('users_projects').where('users_id', userId)
             let following = await knex('users_follows').where('users_id', userId).andWhere('followers_id', requester.id)
 
-            let { full_name, user_img_url, company, job_title, location, skills, github_url, facebook_url, twitter_url,linkedin_url, website_url, summary} = profileUserData[0];
+            let { full_name, user_img_url, company, job_title, location, github_url, facebook_url, twitter_url,linkedin_url, website_url, summary} = profileUserData[0];
 
             let sameUser, isFollowing;
 
@@ -103,13 +105,18 @@ router.post('/getProfile/:id', async (req, res) => {
                 isFollowing = false
             }
 
+            let skillsArray;
+            if (profileUserData[0].skills != null) {
+                skillsArray = profileUserData[0].skills.split(",")
+            }
+
             res.json({
                 full_name,
                 user_img_url,
                 company,
                 job_title,
                 location,
-                skills,
+                skillsArray,
                 github_url,
                 facebook_url,
                 twitter_url,
@@ -334,7 +341,9 @@ router.post('/getOwnProjects', async (req, res) => {
                     let changeSkills = await knex.update('skills', stringSkills)
                     .from('users').where('id', '=', userId).returning('skills')
                     
-                    userData.skills = changeSkills[0]
+                    let skillsArray = changeSkills[0].split(",")
+                    
+                    userData.skillsArray = skillsArray
 
                     console.trace(changeSkills) 
                 } 
@@ -351,7 +360,7 @@ router.post('/getOwnProjects', async (req, res) => {
     
     //follow/unfollow
 router.post('/follow/:id', async (req, res) => {
-    // console.trace(req.params, req.body)
+    console.trace(req.params, req.body)
     let userId = parseInt(req.params.id); //the id of the profile
     let accessToken = req.body.accessToken; // access token of requester
     console.trace(userId)
@@ -360,55 +369,29 @@ router.post('/follow/:id', async (req, res) => {
         let requester = jwt.verify(accessToken, config.jwtSecret);
         console.trace(requester, requester.id)
 
-        let checkFollowing = await knex.from('users_follows').where('users_id','userId').andWhere('followers_id',requester.id)
+        let checkFollowing = await knex.from('users_follows').where('users_id',userId).andWhere('followers_id',requester.id)
         
-        //!
-        let profileUser = await knex.from('users').where('id', '=', userId);
-            
-        if (profileUser[0]) {
-            let profileUserData = await knex('users').where('id', userId);
-            let projects = await knex('users_projects').where('users_id', userId)
-            let following = await knex('users_follows').where('users_id', userId).andWhere('followers_id', requester.id)
+        let isFollowing;
 
-            let { full_name, user_img_url, company, job_title, location, skills, github_url, facebook_url, twitter_url,linkedin_url, website_url, summary} = profileUserData[0];
+        if (checkFollowing.length > 0) {
+            //unfollow
+            await knex('users_follows').where('users_id', userId).andWhere('followers_id', requester.id).del()
 
-            let sameUser, isFollowing;
-
-            if (userId === requester.id) {
-                sameUser = true
-            } else {
-                sameUser = false
-            }
-
-            if (following.length > 0) {
-                isFollowing = true
-            } else {
-                isFollowing = false
-            }
-
-            res.json({
-                full_name,
-                user_img_url,
-                company,
-                job_title,
-                location,
-                skills,
-                github_url,
-                facebook_url,
-                twitter_url,
-                linkedin_url,
-                website_url,
-                summary,
-                projects,
-                sameUser,
-                isFollowing
-            })
-
+            isFollowing = false;
         } else {
-            res.json({
-                message: "The user you have requested is not found. "
+            //follow
+            await knex('users_follows').insert({
+                users_id: userId,
+                followers_id: requester.id,
             })
+
+            isFollowing = true;
         }
+
+        console.trace(isFollowing)
+
+        res.json({isFollowing})
+
         
 
         } catch (err) {

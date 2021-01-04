@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+//redux
+import { connect } from 'react-redux';
+import { followProfileThunk } from '../actions/profileActions'
+
+
 //UI, CSS
 import Grid from '@material-ui/core/grid';
 import Chip from '@material-ui/core/Chip';
@@ -9,6 +14,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Avatar from '@material-ui/core/Avatar';
 import Hidden from '@material-ui/core/Hidden';
 import CheckIcon from '@material-ui/icons/Check';
+import SendIcon from '@material-ui/icons/Send';
+import TextField from '@material-ui/core/TextField';
+
 
 import './css/profile.css';
 
@@ -22,40 +30,47 @@ import ProjectGrid from './ProjectGrid';
 import RoomIcon from '@material-ui/icons/Room';
 
 
-export default class ProfileView extends Component {
+class ProfileView extends Component {
     constructor(props) {
         super(props);
         this.state = {
             modalOpen: false,
             followSuccess: false,
-            following: this.props.userData.isFollowing,
+            isFollowing: this.props.userData.isFollowing,
+            email_subject: "",
+            email_message: "",
         }
         
     }
+
+    handleChange = (e) => {
+        this.setState({[e.target.name]: e.target.value})
+    }
     
     handleFollow = () => {
-        let accessToken = localStorage.getItem('token');
-        let id = this.props.params;
+        const accessToken = localStorage.getItem('token');
+        const id = this.props.params;
 
-        axios.post(`${process.env.REACT_APP_API_SERVER}/users/follow/${id}`, { //!handle backend
-            accessToken
-        }).then(res => {
-            // console.log(res.data)
-            this.props.getProfile(id, accessToken)
-            this.setState({
+        this.props.followProfile(id, accessToken);
+
+        this.setState({
                 followSuccess: true,
-            })
-        }).then(() => {
-            setTimeout(() => {
-                this.setState({followSuccess: false})
-            }, 5000)
         })
+        
+        setTimeout(() => {
+                this.setState({followSuccess: false})
+            }, 3000)
         
     }
 
     handleContact = () => {
+        this.setState({
+            modalOpen: true
+        })
         
     }
+
+
 
     
     render() {
@@ -98,7 +113,7 @@ export default class ProfileView extends Component {
 
                                 {this.props.userData.location ? 
                                     (<React.Fragment>
-                                       <p className="profile-view-current" style={{marginBottom: "0"}}><RoomIcon fontSize="small" style={{verticalAlign: "sub"}} />Hong Kong</p> 
+                                        <p className="profile-view-current" style={{ marginBottom: "0" }}><RoomIcon fontSize="small" style={{ verticalAlign: "sub" }} />{this.props.userData.location}</p> 
                                     </React.Fragment>):""}
                                 <br />
                                 {this.props.userData.sameUser || this.props.userData.facebookUser || this.props.userData.googleUser ? (
@@ -116,9 +131,39 @@ export default class ProfileView extends Component {
                                             }
                                             
                                         <Button variant="outlined" size="small" onClick={this.handleContact}>Contact</Button>
-                                            {this.state.followSuccess ? <CheckIcon fontSize="small" color="primary" />:""}
+                                            {this.state.followSuccess ? <CheckIcon fontSize="small" color="primary" style={{margin: '0 0.5em', verticalAlign: 'sub'}} />:""}
                                     </React.Fragment>
-                                )}
+                                    )}
+                                {/* {this.state.modalOpen ? ( */}
+                                    
+                                <div className="profile-view-contact-pop-up">
+                                    <form onSubmit={this.submitContact}>
+                                    <TextField label="Subject" name="email_subject" value={this.state.email_subject} onChange={this.handleChange} className="profile-view-textField" style={{ margin: "10px 0" }}/>
+                                    <TextField
+                                        label="Your Message"
+                                        multiline
+                                        rows={10}
+                                        name="email_message"
+                                        onChange={this.handleChange}
+                                        value={this.state.email_message}
+                                        variant="outlined"
+                                        className="profile-view-textField"
+                                        // inputProps={{ maxLength: 500 }}
+                                        style={{margin: '1em 0'}}
+                                        />
+                                        <p style={{ fontFamily: 'Montserrat', fontSize: '0.8em', color: '#535353', textAlign: 'justify', textJustify: 'inter-word', margin: '0 2em' }}>
+                                            Please note that your name and email address will be sent to the recipient together with your message.
+                                            </p>
+                                        <div style={{ display:'flex', flexDirection: 'row',justifyContent:'center' }}>
+                                            <Button variant="outlined" color="primary" size="small" style={{ margin: "1em 2em" }}>cancel</Button>
+                                            <Button variant="contained" disableElevation color="primary" size="small" type="submit" startIcon={ <SendIcon />} style={{ margin: "1em 2em", padding:"0 1em" }}>send</Button>
+                                            <Button variant="contained" disableElevation disabled color="primary" size="small" startIcon={<CheckIcon/>} style={{ margin: "1em 2em", padding:"0 1em" }} >Sent</Button>
+
+                                    </div>
+                                        
+                                    </form>
+                                </div>
+                                 {/* ): ""} */}
                             </Grid>
                         </Grid>
 
@@ -128,7 +173,7 @@ export default class ProfileView extends Component {
 
                     <Grid container justify="center" alignContent="center" className="profile-view-summary-container">
                         <Grid container justify="center" className="profile-view-about-me-section">
-                            {this.props.userData.summary ? (
+                            {this.props.userData.summary && this.props.userData.summary !== " " ? (
                                 <React.Fragment>
                                 <Grid item xs={1} sm={1} md={1} className="profile-view-vertical-text-container" >
                                     <p className="profile-view-title-text">About Me </p>
@@ -150,7 +195,7 @@ export default class ProfileView extends Component {
                                 <Grid item xs={10}>
                                     <p className="profile-view-light-text">Main Skills</p>
                                     {this.props.userData.skillsArray.map((skill, i) => (
-                                        <Chip key={i} color="primary" size="small" variant="outlined" label={skill} style={{ marginRight: "0.5em" }} />
+                                        <Chip key={i} color="primary" size="small" variant="outlined" label={skill} style={{ margin: "0.25em" }} />
                                     ))}
                                 </Grid>) :""}
 
@@ -162,3 +207,16 @@ export default class ProfileView extends Component {
     }
 }
 
+const mapStateToProps = state => ({
+    userData: state.profile.userData,
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        followProfile: (id, accessToken) => {
+            dispatch(followProfileThunk(id, accessToken))
+        }
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(ProfileView)

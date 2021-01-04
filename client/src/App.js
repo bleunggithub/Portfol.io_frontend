@@ -43,7 +43,8 @@ function App() {
     <Router>
       <Switch>
         <PrivateRoute path="/project/:id" exact component={Discover} /> 
-        <PrivateRoute path="/profile/:id" exact component={ProfilePages} />
+        <PrivateRoute path="/profile/:id" component={ProfilePages} />
+        <PrivateRoute path="/profile" component={ProfilePages} />
         <PrivateRoute path="/settings" exact component={Settings} /> 
         <PrivateRoute path="/discover" exact component={Discover} />
         <PrivateRoute path="/dashboard" exact component={Dashboard} />

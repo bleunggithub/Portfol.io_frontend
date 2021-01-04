@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+//redux
+import { connect } from 'react-redux';
+import { updateProfileThunk } from '../actions/profileActions'
+
+
 //UI, CSS
 import Grid from '@material-ui/core/grid';
 import Button from '@material-ui/core/Button';
@@ -12,6 +17,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import CheckIcon from '@material-ui/icons/Check';
 
 
 import './css/profile.css';
@@ -43,9 +49,11 @@ class ProfileEdit extends Component {
             twitter_url: "",
             facebook_url: "",
             skills: "",
-            summary:"",
+            summary: this.props.userData.summary,
             isLoading: false,
-            errorMessage:"",
+            updateSuccessPic: false,
+            updateSuccessDetails: false,
+            updateSuccessSummary: false,
         }
         this.getCountries();
     }
@@ -110,7 +118,15 @@ class ProfileEdit extends Component {
             user_img_url: this.state.user_img_url,
         }
 
-        this.updateProfile(userData);
+        this.props.updateProfile(userData);
+        this.setState({
+                user_img_url: "",
+                profilePicFileName: "",
+                updateSuccessPic:true
+        })
+        setTimeout(() => {
+                this.setState({updateSuccessPic: false})
+            }, 3000)
     }
 
     
@@ -134,7 +150,26 @@ class ProfileEdit extends Component {
             skills: this.state.skills,
         }
         
-        this.updateProfile(userData);
+        this.props.updateProfile(userData);
+        this.setState({
+            email: "",
+            password: "",
+            full_name: "",
+            job_title: "",
+            company: "",
+            location:"",
+            countriesList: [],
+            website_url: "",
+            github_url: "",
+            linkedin_url: "",
+            twitter_url: "",
+            facebook_url: "",
+            skills: "",
+            updateSuccessDetails:true
+        })
+        setTimeout(() => {
+            this.setState({updateSuccessDetails: false})
+        }, 3000)
     }
     
 
@@ -147,45 +182,17 @@ class ProfileEdit extends Component {
             summary: this.state.summary,
         }
         
-        this.updateProfile(userData);
+        this.props.updateProfile(userData);
+        this.setState({
+            summary: "",
+            updateSuccessSummary:true
+        })
+        setTimeout(() => {
+            this.setState({updateSuccessSummary: false})
+        }, 3000)
     }
     
 
-
-    updateProfile = (userData) => {
-        axios.post(`${process.env.REACT_APP_API_SERVER}/users/updateProfile/`, {
-        userData
-    }).then(res => {
-        // console.log(res)
-        const accessToken = localStorage.getItem('token');
-
-        if (res.data == null) {
-            this.setState({ errorMessage: "Unknown Error, no response."});
-        } else if (res.status !== 200) {
-            this.setState({ errorMessage: "An Error has occurred while updating profile."});
-        } else {
-            this.props.getProfile(accessToken);
-            this.setState({
-                user_img_url: "",
-                summary: "",
-                profilePicFileName: "",
-                email: "",
-                password: "",
-                full_name: "",
-                job_title: "",
-                company: "",
-                location:"",
-                countriesList: [],
-                website_url: "",
-                github_url: "",
-                linkedin_url: "",
-                twitter_url: "",
-                facebook_url: "",
-                skills: "",
-            })
-        }
-    }).catch(err => console.trace(err))
-    }
 
 
     render() {
@@ -229,7 +236,8 @@ class ProfileEdit extends Component {
                                             </Grid>
                                             <Grid className="profile-edit-profile-pic-buttons-container">
                                                 <p className="profile-edit-profile-pic-upload-filename">{this.state.profilePicFileName} </p>
-                                                {this.state.isLoading ? (<CircularProgress color="primary" size="1em" />) : ""}
+                                            {this.state.isLoading ? (<CircularProgress color="primary" size="1em" />) : ""}
+                                            {this.state.updateSuccessPic ? (<CheckIcon color="primary" size="1em" />) : ""}
                                             </Grid>
                                         </form>
                                     </Grid>
@@ -305,7 +313,9 @@ class ProfileEdit extends Component {
                                     )}
                                 />
                                     
-                                    <Button variant="contained" color="primary" size="small" type="submit" style={{ margin: "1.5em 1em"}}>save</Button>
+                                    <Button variant="contained" color="primary" size="small" type="submit" style={{ margin: "1.5em 1em" }}>save</Button>
+                                            {this.state.updateSuccessDetails ? (<CheckIcon color="primary" size="1em"  style={{margin: '0 0.5em', verticalAlign: 'sub'}} />) : ""}
+                                    
                                 </form>
                             </Grid>
                             
@@ -318,7 +328,7 @@ class ProfileEdit extends Component {
                         <Grid item xs={12} sm={12} md={12}  >
                             <p className="profile-edit-light-text">About Me </p>
                         </Grid>
-                            <Grid item xs={10} sm={12} md={12}>
+                            <Grid item xs={10} sm={12} md={12} style={{marginBottom: '10vh'}}>
                                 <form onSubmit={this.changeSummary}>
                                     <TextField
                                         label="Update Summary (500 characters)"
@@ -329,11 +339,12 @@ class ProfileEdit extends Component {
                                         value={this.state.summary}
                                         placeholder={this.props.userData.summary}
                                         variant="outlined"
-                                        className="textFieldStyle"
                                         inputProps={{ maxLength: 500 }}
                                         style={{width:"95%"}}
                                     />
-                                    <Button variant="contained" color="primary" size="small" type="submit" style={{ margin: "1em" }}>save</Button>
+                                <Button variant="contained" color="primary" size="small" type="submit" style={{ margin: "1em" }}>save</Button>
+                                            {this.state.updateSuccessSummary ? (<CheckIcon color="primary" size="1em"  style={{margin: '0 0.5em', verticalAlign: 'sub'}} />) : ""}
+                                
                                 </form>
                             </Grid>
 
@@ -348,7 +359,19 @@ class ProfileEdit extends Component {
     }
 }
 
-export default ProfileEdit;
+const mapStateToProps = state => ({
+    userData: state.profile.userData,
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        updateProfile: (userData) => {
+            dispatch(updateProfileThunk(userData))
+        }
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(ProfileEdit);
 
 
 

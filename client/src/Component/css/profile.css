@@ -92,6 +92,29 @@
 	justify-content: center;
 }
 
+/* contact pop up div */
+.profile-view-contact-pop-up {
+	height: 60vh;
+	width: 30vw;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	background: rgba(255, 255, 255, 0.5);
+	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border-radius: 10px;
+	z-index: 2;
+
+	text-align: center;
+}
+
+.profile-view-textField {
+	width: 90%;
+}
+
 @media (max-width: 1024px) {
 	.profile-view-personal-details-container {
 		margin-top: 8vh;
