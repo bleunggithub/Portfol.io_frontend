@@ -4,7 +4,7 @@
 	font-size: 0.8em;
 	text-align: center;
 	color: #535353;
-	position: sticky;
+	/* position: fixed; */
 }
 
 .submenu-link {

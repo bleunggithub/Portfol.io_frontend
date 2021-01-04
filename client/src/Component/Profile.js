@@ -21,10 +21,12 @@ export default class Profile extends Component {
         }
 
       let accessToken = localStorage.getItem('token');
-      (this.props.match === undefined) ? this.getOwnProfile(accessToken) : this.getProfile(this.props.match.params.userId, accessToken)
-      //   (this.props.location == "/settings") ? this.getOwnProfile(accessToken) : ""
+      (this.props.location !== "/settings") ? this.getProfile(this.props.params.id, accessToken):this.getOwnProfile(accessToken)
+
     }
     
+
+
     getOwnProfile = (accessToken) => {
         axios.post(`${process.env.REACT_APP_API_SERVER}/users/getOwnProfile/`, {
             accessToken
@@ -34,8 +36,13 @@ export default class Profile extends Component {
         })
     }
 
-    getProfile = () => {
-
+    getProfile = (id,accessToken) => {
+        axios.post(`${process.env.REACT_APP_API_SERVER}/users/getProfile/${id}`, {
+            accessToken
+        }).then(res => {
+            // console.log(res.data)
+            this.setState({userProfile: res.data})
+        })
     }
     
     handleToggleChange = (e) => {
@@ -45,7 +52,8 @@ export default class Profile extends Component {
     render() {
         return (
             <Grid container>
-                {this.props.match === undefined ? (
+                {this.props.location === "/settings" ? (
+                    <React.Fragment>
                     <Grid component="label" container alignItems="center" justify="center"  style={{ margin: '1em 0' }}>
                         <Grid item className="profile-switch-label">View</Grid>
                         <Grid item>
@@ -53,9 +61,13 @@ export default class Profile extends Component {
                         </Grid>
                         <Grid item className="profile-switch-label">Edit</Grid>
                     </Grid>
-                ) : ""}
+                    {this.state.edit ? (<ProfileEdit userData={this.state.userProfile} getProfile={this.getOwnProfile} />
+                    ) : (
+                    <ProfileView userData={this.state.userProfile}  />)}
+                    </React.Fragment>
+                ) : (
+                        <ProfileView userData={this.state.userProfile} notOwnProfile={true} params={this.props.params.id} getProfile={ this.getProfile} />)}
                 
-                {this.state.edit ? <ProfileEdit userData={ this.state.userProfile }/> : <ProfileView userData={ this.state.userProfile }/>}
 
             </Grid>
         )

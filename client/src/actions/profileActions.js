@@ -19,11 +19,11 @@ const profileFailureActionCreator = (message) => {
 
 //actions
 //fetch candidate profile
-export const profileFetchThunk = (userId, accessToken) => dispatch => {
-    console.log(userId, accessToken)
+export const profileFetchThunk = (id, accessToken) => dispatch => {
+    console.log(id, accessToken)
     // localStorage.removeItem('token')
-    axios.post(`${process.env.REACT_APP_API_SERVER}/getProfile/${userId}`, {
-        userId, accessToken
+    axios.post(`${process.env.REACT_APP_API_SERVER}/getProfile/${id}`, {
+        accessToken
     })
         .then((res) =>
             // console.log(res.data)

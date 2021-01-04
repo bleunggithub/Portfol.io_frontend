@@ -4,6 +4,8 @@ import axios from 'axios'
 
 //UI/CSS
 import Grid from '@material-ui/core/grid';
+import Button from '@material-ui/core/Button';
+
 import './css/projectGrid.css';
 
 
@@ -31,15 +33,17 @@ export default class ProjectGrid extends Component {
         return (
             <Grid container justify="center" alignItems="flex-start" className="project-grid-outer-container">
                 {this.state.projectDetails.map((project, i) => 
-                        (<Grid item key={i} xs={11} sm={4} className="project-grid-project-container">
+                        (<Grid item key={i} xs={11} sm={11} className="project-grid-project-container">
                             <Grid item xs={12} className="project-grid-img-container">
                         <Link to={`/project/${project.project_id}`}><img src={project.project_img_url} alt={project.project_title} className="project-grid-project-img" /></Link>
                             </Grid>
                             <Grid item xs={12} className="project-grid-description-container">
+                                <p className="project-grid-description project-grid-title"><b>{ project.project_title }</b></p>
                                 <p className="project-grid-description">{ project.project_summary }</p>
+                            {this.props.edit ? <Link to={`/project/${project.project_id}`} style={{textDecoration:'none'}}><Button variant="outlined" color="primary" size="small" style={{ margin: "0 0.5em" }}> Edit Project </Button></Link>:""}
                             </Grid>
-                            <Grid item xs={12} className="project-grid-project-number">
-                                <p className="project-grid-description">{ i +1}</p>
+                            <Grid item xs={12} className="project-grid-project-number-container">
+                                <p className="project-grid-project-number">{ i +1 }</p>
                             </Grid>
                         </Grid>)
                     )}
