@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom'
 
 //Redux
 import { logoutNowThunk } from '../actions/loginActions';
@@ -17,6 +18,11 @@ const location = "settings"
 
 class Settings extends Component {
 
+
+    toSettings = () => {
+        this.props.history.push("/settings")
+    }
+
     logout = () => {
         this.props.logoutNowThunk()
     }
@@ -25,11 +31,11 @@ class Settings extends Component {
         return (
             <Grid container>
                 <TopBar value={location} />
-                <Submenu item1="YOUR PROFILE" item2="LOGOUT" handleItem2={this.logout} />
-                <Profile location={ this.props.location.pathname } />
+                <Submenu item1="YOUR PROFILE" item2="LOGOUT" handleItem1={ this.toSettings } handleItem2={this.logout} />
+                <Profile location={ this.props.location.pathname } params={ this.props.match.params }/>
             </Grid>
         )
     }
 }
 
-export default connect(null, { logoutNowThunk })(Settings);
+export default withRouter(connect(null, { logoutNowThunk })(Settings));

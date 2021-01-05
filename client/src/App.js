@@ -10,8 +10,8 @@ import SignUp from './Pages/SignUp'
 import Dashboard from './Pages/Dashboard'
 import Discover from './Pages/Discover'
 import Settings from './Pages/Settings'
-import Profile from './Component/Profile'
-import Project from './Component/Project'
+import ProfilePages from './Pages/ProfilePages'
+// import Project from './Component/Project'
 
 //CSS
 import './App.css';
@@ -43,8 +43,8 @@ function App() {
     <Router>
       <Switch>
         <PrivateRoute path="/project/:id" exact component={Discover} /> 
-        <PrivateRoute path="/profile/:id" exact component={Discover} />
-        <PrivateRoute path="/profile/" exact component={Settings} />
+        <PrivateRoute path="/profile/:id" component={ProfilePages} />
+        <PrivateRoute path="/profile" component={ProfilePages} />
         <PrivateRoute path="/settings" exact component={Settings} /> 
         <PrivateRoute path="/discover" exact component={Discover} />
         <PrivateRoute path="/dashboard" exact component={Dashboard} />

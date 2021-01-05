@@ -11,8 +11,9 @@ exports.up = function (knex, Promise) {
       table.string('google_access_token');
       table.string('full_name');
       table.string('user_img_url');
-      table.string('current_company');
-      table.string('current_job_title');
+      table.string('company');
+      table.string('job_title');
+      table.string('location');
       table.string('skills');
       table.string('github_url');
       table.string('facebook_url');
