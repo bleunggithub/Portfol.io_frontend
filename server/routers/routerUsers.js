@@ -401,5 +401,19 @@ router.post('/follow/:id', async (req, res) => {
     })
 
 
+//send email
+router.post('/sendEmail', async (req, res) => {
+    try {
+        await sendAWSEmail.emailViaAWS_SES(req, res);
+        res.json({message:"Request is sent successfully."})
+
+    } catch (err) {
+        console.trace(err)
+        res.json({message:"An error has occurred. Please try again later."})
+    }
+})
+    
+    
+
     return router; 
 }

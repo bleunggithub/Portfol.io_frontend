@@ -39,6 +39,8 @@ class ProfileView extends Component {
             isFollowing: this.props.userData.isFollowing,
             email_subject: "",
             email_message: "",
+            emailSuccess: false,
+
         }
         
     }
@@ -63,13 +65,52 @@ class ProfileView extends Component {
         
     }
 
-    handleContact = () => {
+    handleOpenContact = () => {
         this.setState({
             modalOpen: true
         })
-        
     }
 
+    handleCloseContact = () => {
+        this.setState({
+            modalOpen: false,
+            email_subject: "",
+            email_message: ""
+        })
+    }
+
+    submitContact = (e) => {
+        e.preventDefault();
+        const accessToken = localStorage.getItem('token')
+        const profileId = this.props.params;
+        
+        const messageBody = {
+            subject: this.state.email_subject,
+            message: this.state.email_message
+        }
+
+        axios.post(`${process.env.REACT_APP_API_SERVER}/users/sendEmail/`, {
+            messageBody, accessToken, profileId
+        }).then(res => {
+            // console.log(res.data.message)
+
+            if (res.status !== 200) {
+                console.log(res)
+            } else {
+            this.setState({
+                emailSuccess: true,
+                email_subject: "",
+                email_message:""
+            })                
+            }
+
+        }).then(setTimeout(() => {
+            this.setState({
+                emailSuccess: false,
+                modalOpen:false
+            })
+            }, 2000))
+    }
 
 
     
@@ -130,40 +171,41 @@ class ProfileView extends Component {
                                             )
                                             }
                                             
-                                        <Button variant="outlined" size="small" onClick={this.handleContact}>Contact</Button>
+                                        <Button variant="outlined" size="small" onClick={this.handleOpenContact}>Contact</Button>
                                             {this.state.followSuccess ? <CheckIcon fontSize="small" color="primary" style={{margin: '0 0.5em', verticalAlign: 'sub'}} />:""}
                                     </React.Fragment>
                                     )}
-                                {/* {this.state.modalOpen ? ( */}
-                                    
-                                <div className="profile-view-contact-pop-up">
-                                    <form onSubmit={this.submitContact}>
-                                    <TextField label="Subject" name="email_subject" value={this.state.email_subject} onChange={this.handleChange} className="profile-view-textField" style={{ margin: "10px 0" }}/>
-                                    <TextField
-                                        label="Your Message"
-                                        multiline
-                                        rows={10}
-                                        name="email_message"
-                                        onChange={this.handleChange}
-                                        value={this.state.email_message}
-                                        variant="outlined"
-                                        className="profile-view-textField"
-                                        // inputProps={{ maxLength: 500 }}
-                                        style={{margin: '1em 0'}}
-                                        />
-                                        <p style={{ fontFamily: 'Montserrat', fontSize: '0.8em', color: '#535353', textAlign: 'justify', textJustify: 'inter-word', margin: '0 2em' }}>
-                                            Please note that your name and email address will be sent to the recipient together with your message.
-                                            </p>
-                                        <div style={{ display:'flex', flexDirection: 'row',justifyContent:'center' }}>
-                                            <Button variant="outlined" color="primary" size="small" style={{ margin: "1em 2em" }}>cancel</Button>
-                                            <Button variant="contained" disableElevation color="primary" size="small" type="submit" startIcon={ <SendIcon />} style={{ margin: "1em 2em", padding:"0 1em" }}>send</Button>
-                                            <Button variant="contained" disableElevation disabled color="primary" size="small" startIcon={<CheckIcon/>} style={{ margin: "1em 2em", padding:"0 1em" }} >Sent</Button>
-
+                                {this.state.modalOpen ? (
+                                    <div className="profile-view-contact-pop-up">
+                                        <form onSubmit={this.submitContact}>
+                                        <TextField label="Subject" name="email_subject" value={this.state.email_subject} onChange={this.handleChange} className="profile-view-textField" style={{ margin: "10px 0" }} required/>
+                                        <TextField
+                                            label="Your Message"
+                                            multiline
+                                            rows={10}
+                                            name="email_message"
+                                            onChange={this.handleChange}
+                                            value={this.state.email_message}
+                                            variant="outlined"
+                                            className="profile-view-textField"
+                                            style={{margin: '1em 0'}}
+                                            required
+                                            />
+                                            <p style={{ fontFamily: 'Montserrat', fontSize: '0.8em', color: '#535353', textAlign: 'justify', textJustify: 'inter-word', margin: '0 2em' }}>
+                                                Please note that your <u>name</u> and <u>email address</u> will be sent to the recipient together with your message.
+                                                </p>
+                                            <div style={{ display:'flex', flexDirection: 'row',justifyContent:'center', marginBottom:'1em',width:'100%' }}>
+                                                <Button variant="outlined" onClick={ this.handleCloseContact } color="primary" size="small" style={{ margin: "1em 2em" }}>cancel</Button>
+                                                {this.state.emailSuccess ? (
+                                                    <Button variant="contained" disableElevation disabled color="primary" size="small" startIcon={<CheckIcon />} style={{ margin: "1em 2em", padding: "0 1em" }} >Sent</Button>
+                                                ) : (
+                                                    <Button variant="contained" disableElevation color="primary" size="small" type="submit" startIcon={<SendIcon />} style={{ margin: "1em 2em", padding: "0 1em" }}>send</Button>
+                                                )}
+                                                
+                                            </div>
+                                        </form>
                                     </div>
-                                        
-                                    </form>
-                                </div>
-                                 {/* ): ""} */}
+                                 ): ""}
                             </Grid>
                         </Grid>
 

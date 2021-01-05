@@ -10,23 +10,23 @@ const knex = require("knex")(development);
 
 
 exports.emailViaAWS_SES = async(req, res, next) => {
-    console.trace(req.body);
-    //candidate id
-    console.trace(req.body.candidateId)
+    console.trace(req.body); //req.body.messageBody (.subject, .message)
+    console.trace(req.body.profileId) //!parseInt?
 
     try {
     
-    //decode employer id
-    let employer = jwt.verify(req.body.accessToken, config.jwtSecret)
-    console.trace(employer.id);
+    //decode requester id
+    let requester = jwt.verify(req.body.accessToken, config.jwtSecret)
+    console.trace(requester.id);
     
-        let employerData = await knex('employers').select('companyName').where('users_id', employer.id);
-        let candidateData = await knex('users').select('email').where('id', req.body.candidateId);
-        let candidateDataName = await knex('candidates').select('fullName').where('users_id', req.body.candidateId);
+        let requesterData = await knex('users').select('full_name','email').where('id', requester.id);
+        let profileUserData = await knex('users').select('full_name','email').where('id', parseInt(req.body.profileId));
         
-        let employerCompanyName = employerData[0].companyName;
-        let candidateEmail = candidateData[0].email;
-        let candidateName = candidateDataName[0].fullName;
+        let requesterName = requesterData[0].full_name;
+        let requesterEmail = requesterData[0].email;
+        let profileUserName = profileUserData[0].full_name;
+        let profileUserEmail = profileUserData[0].email;
+        let portfolioDomain = process.env.FRONTEND_DOMAIN;
 
     AWS.config.update({
         accessKeyId: process.env.AWS_accessKeyId,
@@ -37,7 +37,7 @@ exports.emailViaAWS_SES = async(req, res, next) => {
     const ses = new AWS.SES({ apiVersion: "2010-12-01" });
     const params = {
       Destination: {
-        ToAddresses: [candidateEmail] // Email address/addresses that you want to send your email
+        ToAddresses: [profileUserEmail] // Email address/addresses that you want to send your email
       },
       Message: {
         Body: {
@@ -47,56 +47,62 @@ exports.emailViaAWS_SES = async(req, res, next) => {
             Data:
                 `<html>
                     <body>
-                    <p>Dear ${candidateName},</p>
-                    <p><strong>${employerCompanyName}</strong> came across your profile on Higher.io and is interested in knowing more about you! </p>
-                    <p>Would you like to <strong>upload your CV/ Resume</strong> for them?</p>
-                    <p>Click <a href="https://localhost:3000/" target="_blank" style="color:#000">here</a> to log into your Higher.io account. </p>
-                    <p>Thank you for using our services.<br />
-                    Your Higher.io Team</p>
-                    <img src="https://i.imgur.com/sgmfYQU.png">
+                    <p>Dear ${profileUserName},</p>
+                    <p>Portfol.io User <a href="${portfolioDomain}/profile/${requester.id}" target="_blank" style="color:#000"><strong>${requesterName}</strong></a> 
+                    came across your profile on Portfol.io and has sent you the following message: </p>
+                    <div style="margin: 2em; padding: 2em; background-color: #f5f5f5; width: 60%; border-radius: 20px">
+                    <h3><b>${req.body.messageBody.subject}</b></h3>
+                    <p>${req.body.messageBody.message}<br/></p>
+                    </div>
+                    <p>Please click <a href="mailto:${requesterEmail}" style="color:#000">here</a> to reply to ${requesterName}, or click <a href="${portfolioDomain}/logIn" target="_blank" style="color:#000">here</a> to log into your Portfol.io account. </p></br></br>
+                <p>Thank you for using our services.<br />
+                Your Portfol.io Team <br/>
+                <img src="https://i.imgur.com/TXykstZ.png" style="margin: 1em; width: 80px; height: 80px"></p>
                     </body>
                 </html>`
           },
           Text: {
             Charset: "UTF-8",
-            Data: "An Employer is interested in your profile..."
+            Data: "Someone Sent You a Message on Portfol.io!"
           }
         },
         Subject: {
           Charset: "UTF-8",
-          Data: "An Employer is interested in your profile..."
+          Data: "Someone Sent You a Message on Portfol.io!"
         }
       },
-      Source: "Higher.io" + process.env.AWS_SenderEmailId
+      Source: "Portfol.io" + process.env.AWS_SenderEmailId
     };
 
     //For Sender
     const params1 = {
       Destination: {
-         ToAddresses: [process.env.AWS_SenderEmailId] // Email address/addresses that you want to send your email
+         ToAddresses: [requesterEmail] // Email address/addresses that you want to send your email
       },
       Message: {
         Body: {
           Html: {
             Charset: "UTF-8",
-            Data: `<html>
-                <h2> Report from Higher.io - AWS SES Services</h2><br />
-                <h3> To Name: ${candidateName} </h3><br />
-                <h3> To Email: ${candidateEmail} </h3><br />
-                <h3> Message: ${params.Message.Body.Html.Data}</h3>
-                </html>`
+            Data: `<html><body>
+                <h3> The following message was sent on your behalf by Portfol.io </h3><br />
+                <p style="color:#535353"><b>Message sent to: </b><a href="${portfolioDomain}/profile/${req.body.profileId}" target="_blank" style="color:#000">${profileUserName} </a><br /></p>
+                <p style="color:#535353"><b>Message sent: </b> <div style="margin: 0 2em">${params.Message.Body.Html.Data}</div></p>
+                <p>Thank you for using our services.<br /><br/>
+                Your Portfol.io Team <br/>
+
+                </body></html>`
           }, 
           Text: {
            Charset: "UTF-8",
-           Data: "This is the feedback message from user"
+           Data: "Feedback Message from Portfol.io"
           }
         },
         Subject: {
          Charset: "UTF-8",
-         Data: `Feedback from ${employerCompanyName}`
+         Data: "Feedback Message from Portfol.io"
         }
      },
-     Source: "Feedback from Higher.io" + process.env.AWS_SenderEmailId
+     Source: "Portfol.io" + process.env.AWS_SenderEmailId
    };
 
     const sendEmailReceiver = ses.sendEmail(params).promise();
@@ -104,21 +110,21 @@ exports.emailViaAWS_SES = async(req, res, next) => {
     
     sendEmailReceiver
       .then(data => {
-        console.log("email submitted to SES", data);
+        console.trace("email submitted to SES", data);
         sendEmailSender.then(data => {
-            console.log("email submitted to SES", data);
+            console.trace("email submitted to SES", data);
             res.status(200).send({
                 message:'Message send successfully !'
             })
         }).catch(error => {
-            console.log(error);
+            console.trace(error);
             res.status(404).send({
                 message:'Failed to send !'
             })
         });
       })
       .catch(error => {
-        console.log(error);
+        console.trace(error);
         res.status(404).send({
             message:'Failed to send !'
         })
