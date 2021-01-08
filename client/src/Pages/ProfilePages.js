@@ -6,7 +6,6 @@ import Profile from '../Component/Profile'
 
 //UI, CSS
 import Grid from '@material-ui/core/grid';
-import './css/profilePages.css';
 
 
 const location = "discover"

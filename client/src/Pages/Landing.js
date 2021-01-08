@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 
 //redux
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-
+import { Redirect, Link } from 'react-router-dom';
 
 //Components, pages
 import TopBar from '../Component/TopBar'
@@ -24,19 +23,12 @@ export class Landing extends Component {
                 <Grid container>
                     <TopBar value={location} />
                     <Grid className="landing-heroImg">
-                        <div className="landing-animated-title">
-                            <div className="text-top">
-                                <div>
-                                    <p>Showcase <br /> Your Developer <br /> <span className="landing-highlight">Portfolio</span></p>
-                                </div>
-                            </div>
-                            <div className="text-bottom">
-                                <div>
-                                    <p>Discover<br /> The World's  <br /> Top Developers</p></div>
-                            </div>
-                        </div>
                     </Grid>
+                    <Grid className="landing-bottom-link">
+                        <Link to="/about" className="landing-link" style={{ textDecoration: "none" }}>About this Project</Link> &nbsp;
+                        <span className="landing-light-text">&#169; 2020 Betty Leung</span>
 
+                    </Grid>
                 </Grid>
             )
         }
