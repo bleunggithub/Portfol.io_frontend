@@ -1,0 +1,11 @@
+.about-content-grid {
+	font-family: "Montserrat";
+}
+
+.about-title {
+	font-size: 3.5em;
+}
+
+.about-subtitle-highlight {
+	background: linear-gradient(to top, #546e7a45 40%, transparent 40%);
+}

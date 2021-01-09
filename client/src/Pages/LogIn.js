@@ -25,11 +25,7 @@ const textFieldStyle = {
 	margin: "0.6em 0"
 }
 
-
-//TopBar props
-const location = "logIn";
-
-export class Login extends Component {
+class LogIn extends Component {
         constructor(props) {
         super(props);
         this.state = {
@@ -77,7 +73,6 @@ export class Login extends Component {
         } else {
         return (
         <React.Fragment>
-            <TopBar value={ location } />
             
             <Grid container justify="center" className="logIn-grid-container">
             <form onSubmit={this.handleSubmit} className="logIn-form">
@@ -144,4 +139,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(LogIn);

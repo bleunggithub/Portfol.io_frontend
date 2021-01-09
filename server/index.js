@@ -10,6 +10,7 @@ const bodyParser = require('body-parser');
 //routers
 const routerLogin = require('./routers/routerLogin')(express);
 const routerUsers = require('./routers/routerUsers')(express);
+const routerProjects = require('./routers/routerProjects')(express);
 
 //JWT
 const jwt = require('jsonwebtoken');
@@ -34,6 +35,7 @@ app.use(cors());
 //routers
 app.use('/api', routerLogin);
 app.use('/users', routerUsers);
+app.use('/projects', routerProjects);
 
 //service worker
 app.get('/service-worker.js', (req, res) => {

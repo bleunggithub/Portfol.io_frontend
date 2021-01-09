@@ -21,7 +21,7 @@ export default class ProjectGrid extends Component {
     
 
     fetchProjects = (accessToken) => {
-        axios.post(`${process.env.REACT_APP_API_SERVER}/users/getOwnProjects/`, {
+        axios.post(`${process.env.REACT_APP_API_SERVER}/projects/getOwnProjects/`, {
             accessToken
         }).then(res => {
             // console.log(res.data)
@@ -35,7 +35,7 @@ export default class ProjectGrid extends Component {
                 {this.state.projectDetails.map((project, i) => 
                         (<Grid item key={i} xs={11} sm={11} className="project-grid-project-container">
                             <Grid item xs={12} className="project-grid-img-container">
-                        <Link to={`/project/${project.project_id}`}><img src={project.project_img_url} alt={project.project_title} className="project-grid-project-img" /></Link>
+                        <Link to={`/project/${project.project_id}`}><img src={project.project_img_url1} alt={project.project_title} className="project-grid-project-img" /></Link>
                             </Grid>
                             <Grid item xs={12} className="project-grid-description-container">
                                 <p className="project-grid-description project-grid-title"><b>{ project.project_title }</b></p>
@@ -55,3 +55,9 @@ export default class ProjectGrid extends Component {
     }
     
 }
+
+
+//project img 1 - https://i.imgur.com/GoRbmAF.jpg
+//project img 2 - https://i.imgur.com/3zltedL.jpg
+//project img 3 - https://i.imgur.com/tGm6VNp.jpg
+//project img 4 - https://i.imgur.com/5ZuBMmC.jpg

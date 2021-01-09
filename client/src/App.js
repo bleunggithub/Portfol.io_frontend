@@ -1,22 +1,24 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 
 //Components, pages
+import TopBar from './Component/TopBar'
 import Landing from './Pages/Landing'
 import LogIn from './Pages/LogIn'
 import SignUp from './Pages/SignUp'
 import Dashboard from './Pages/Dashboard'
 import Discover from './Pages/Discover'
-import Settings from './Pages/Settings'
 import ProfilePages from './Pages/ProfilePages'
-// import Project from './Component/Project'
+import ProjectPages from './Pages/ProjectPages'
+import AboutProject from './Pages/AboutProject'
 
 //CSS
 import './App.css';
 import "@fontsource/roboto"
 import "@fontsource/montserrat/400.css"
+import { AnimatedSwitch } from 'react-router-transition';
 
 function App() {
   //define logged in only route
@@ -39,13 +41,47 @@ function App() {
     }))(PurePrivateRoute); 
   
   
+  function mapStyles(styles) {
+    return {
+      transform: `translateY(${styles.offset}%)`,
+    };
+  }
+
+  const riseTransition = {
+    atEnter: {
+      opacity: 0,
+      offset: 100,
+    },
+    atLeave: {
+      opacity: 0,
+      offset:100,
+    },
+    atActive: {
+      opacity: 1,
+      offset:0,
+    },
+  };
+  
+ const isAuthenticated = useSelector(state => state.login.isAuthenticated)
+
   return (
     <Router>
+      <AnimatedSwitch
+          atEnter={riseTransition.atEnter}
+          atLeave={riseTransition.atLeave}
+          atActive={riseTransition.atActive}
+          mapStyles={mapStyles}
+        >
+        <Route path="/about" exact component={AboutProject} />
+      </AnimatedSwitch>
+
       <Switch>
-        <PrivateRoute path="/project/:id" exact component={Discover} /> 
+        {isAuthenticated ? "": <TopBar />}
+      
+        <PrivateRoute path="/project/:id" component={ProjectPages} /> 
         <PrivateRoute path="/profile/:id" component={ProfilePages} />
         <PrivateRoute path="/profile" component={ProfilePages} />
-        <PrivateRoute path="/settings" exact component={Settings} /> 
+        <PrivateRoute path="/settings" exact component={ProfilePages} /> 
         <PrivateRoute path="/discover" exact component={Discover} />
         <PrivateRoute path="/dashboard" exact component={Dashboard} />
         <Route path="/signUp" exact component={SignUp} />
