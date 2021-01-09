@@ -1,3 +1,52 @@
+.project-view-grid-with-top-margin {
+	margin-top: 11vh;
+	width: 90%;
+	height: 0vh;
+}
+
+.project-view-description-container {
+	padding: 1em;
+	margin-bottom: 2em;
+}
+
+.project-view-social-share-icons {
+	width: 2em;
+	margin: 0.5em;
+}
+
+.project-view-light-text {
+	font-family: "Montserrat";
+	color: #535353;
+	font-size: 0.8em;
+	letter-spacing: 0.2em;
+}
+
+.project-view-project-title {
+	font-family: "montserrat";
+	text-transform: uppercase;
+}
+
+.project-view-project-summary {
+	text-align: justify;
+	text-justify: inter-word;
+	padding: 0 1em 0 0;
+}
+@media (max-width: 1025px) {
+	.project-view-grid-with-top-margin {
+		margin-top: 7vh;
+	}
+	.project-view-description-container {
+		padding: 2em;
+	}
+}
+@media (max-width: 600px) {
+	.project-view-grid-with-top-margin {
+		margin-top: 8vh;
+	}
+}
+
+/* auto play images */
+
 .project-auto-play-project-img {
 	width: 100%;
 	height: 80vh;

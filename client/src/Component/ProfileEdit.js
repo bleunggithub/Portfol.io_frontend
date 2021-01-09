@@ -114,7 +114,6 @@ class ProfileEdit extends Component {
         e.preventDefault();
 
         const userData = {
-            id: this.props.userData.projects[0].users_id,
             user_img_url: this.state.user_img_url,
         }
 
@@ -135,7 +134,6 @@ class ProfileEdit extends Component {
         e.preventDefault();
         
         const userData = {
-            id: this.props.userData.projects[0].users_id,
             email: this.state.email,
             password: this.state.password,
             full_name: this.state.full_name,
@@ -178,7 +176,6 @@ class ProfileEdit extends Component {
         e.preventDefault();
         
         const userData = {
-            id: this.props.userData.projects[0].users_id,
             summary: this.state.summary,
         }
         

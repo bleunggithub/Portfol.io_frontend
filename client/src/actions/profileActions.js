@@ -61,8 +61,10 @@ export const ownProfileFetchThunk = (accessToken) => dispatch => {
 //update profile fields
 
 export const updateProfileThunk = (userData) => dispatch => {
+    let accessToken = localStorage.getItem('token')
+
     axios.post(`${process.env.REACT_APP_API_SERVER}/users/updateProfile/`, {
-        userData
+        userData, accessToken
     }).then(res => {
         // console.log(res)
 

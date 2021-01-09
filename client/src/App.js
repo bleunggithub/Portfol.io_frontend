@@ -10,7 +10,6 @@ import LogIn from './Pages/LogIn'
 import SignUp from './Pages/SignUp'
 import Dashboard from './Pages/Dashboard'
 import Discover from './Pages/Discover'
-import Settings from './Pages/Settings'
 import ProfilePages from './Pages/ProfilePages'
 import ProjectPages from './Pages/ProjectPages'
 import AboutProject from './Pages/AboutProject'
@@ -82,7 +81,7 @@ function App() {
         <PrivateRoute path="/project/:id" component={ProjectPages} /> 
         <PrivateRoute path="/profile/:id" component={ProfilePages} />
         <PrivateRoute path="/profile" component={ProfilePages} />
-        <PrivateRoute path="/settings" exact component={Settings} /> 
+        <PrivateRoute path="/settings" exact component={ProfilePages} /> 
         <PrivateRoute path="/discover" exact component={Discover} />
         <PrivateRoute path="/dashboard" exact component={Dashboard} />
         <Route path="/signUp" exact component={SignUp} />

@@ -58,7 +58,7 @@ router.post('/getOwnProfile', async (req, res) => {
             linkedin_url,
             website_url,
             summary,
-            projects
+            sameUser:true
         })
 
             
@@ -91,6 +91,13 @@ router.post('/getProfile/:id', async (req, res) => {
 
             let { full_name, user_img_url, company, job_title, location, github_url, facebook_url, twitter_url,linkedin_url, website_url, summary} = profileUserData[0];
 
+            let facebookUser, googleUser = false;
+            
+            if (profileUserData[0].facebook_id != null) {
+                facebookUser = true
+            } else if (profileUserData[0].google_id != null) {
+                googleUser = true
+            }
             let sameUser, isFollowing;
 
             if (userId === requester.id) {
@@ -112,6 +119,8 @@ router.post('/getProfile/:id', async (req, res) => {
 
             res.json({
                 full_name,
+                facebookUser,
+                googleUser,
                 user_img_url,
                 company,
                 job_title,
@@ -123,7 +132,6 @@ router.post('/getProfile/:id', async (req, res) => {
                 linkedin_url,
                 website_url,
                 summary,
-                projects,
                 sameUser,
                 isFollowing
             })
@@ -145,10 +153,13 @@ router.post('/getProfile/:id', async (req, res) => {
 
 //update profile
     router.post('/updateProfile', async (req, res) => {
-        console.log(req.body.userData)
-        let userId = req.body.userData.id
-
+        console.trace(req.body.userData)
+        
         try {
+            let user = jwt.verify(req.body.accessToken, config.jwtSecret);
+            let userId = user.id
+
+            console.trace(userId)
 
             let userData = {};
             
