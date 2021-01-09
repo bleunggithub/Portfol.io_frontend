@@ -13,6 +13,7 @@ exports.up = function(knex, Promise) {
       table.string('project_img_url6');
       table.string('project_summary');
       table.string('project_url');
+      table.string('project_code_url');
       table.string('project_tags');
     });    
 };

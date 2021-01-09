@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { registerThunk } from '../actions/registerActions';
 
 //Components, pages
-import TopBar from '../Component/TopBar'
 import fbIcon from '../img/icons/facebook.png'
 import googleIcon from '../img/icons/google.png'
 import { loginFacebookThunk, loginGoogleThunk } from '../actions/loginActions';
@@ -33,9 +32,6 @@ const checkboxStyle = {
 	margin: "2em 0",
 
 }
-
-//TopBar props
-const location = "signUp";
 
 export class SignUp extends Component {
         constructor(props) {
@@ -86,9 +82,7 @@ export class SignUp extends Component {
             return (<Redirect to="/dashboard" />)
         } else {
         return (
-        <React.Fragment>
-            <TopBar value={ location } />
-            
+          
             <Grid container justify="center" className="signUp-grid-container">
             <form onSubmit={this.handleSubmit} className="signUp-form">
                 <Grid item xs={12} sm={6} md={3} className="signUp-grid-item">
@@ -127,21 +121,9 @@ export class SignUp extends Component {
                     </Grid>
                 </Grid>
             </form>
-                <Grid item xs={12} sm={4} style={{margin: '0'}}>
 
-
-
-                        
-                </Grid>
             </Grid>
 
-
-
-
-                
-
-
-        </React.Fragment>
         )
         }
         

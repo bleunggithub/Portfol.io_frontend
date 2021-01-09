@@ -12,9 +12,10 @@ const styles = {
     border: 0,
     background: 'none',
     padding: 0,
+    marginBottom: 10,
   },
   dot: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#819ca9',
     height: 12,
     width: 12,
     borderRadius: 6,

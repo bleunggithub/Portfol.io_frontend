@@ -154,7 +154,7 @@ router.post('/login/facebook', (req, res) => {
                         const newUserProject = {
                             users_id: newFBUser[0],
                             project_title: "No project yet.",
-                            project_img_url: "https://images.unsplash.com/photo-1572177812156-58036aae439c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80",
+                            project_img_url1: "https://images.unsplash.com/photo-1572177812156-58036aae439c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80",
                             project_summary: "",
                             project_url: "#"
                         }
@@ -241,7 +241,7 @@ router.post('/login/google', (req, res) => {
                         const newUserProject = {
                             users_id: newGoogleUser[0],
                             project_title: "No project yet.",
-                            project_img_url: "https://images.unsplash.com/photo-1572177812156-58036aae439c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80",
+                            project_img_url1: "https://images.unsplash.com/photo-1572177812156-58036aae439c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80",
                             project_summary: "",
                             project_url: "#"
                         }
@@ -328,7 +328,7 @@ router.post('/register', async (req, res) => {
                 const newUserProject = {
                     users_id: userId[0],
                     project_title: "No project yet.",
-                    project_img_url: "https://images.unsplash.com/photo-1572177812156-58036aae439c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80",
+                    project_img_url1: "https://images.unsplash.com/photo-1572177812156-58036aae439c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80",
                     project_summary: "",
                     project_url: "#"
                 }

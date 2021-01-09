@@ -142,34 +142,6 @@ router.post('/getProfile/:id', async (req, res) => {
 
 })
     
-//get own projects
-router.post('/getOwnProjects', async (req, res) => {
-
-    // console.trace(req.body)
-
-    let accessToken = req.body.accessToken;
-
-    try {
-        let user = jwt.verify(accessToken, config.jwtSecret);
-        // console.trace(user)
-
-        let projects = await knex('users').where('id', user.id)
-            .join('users_projects', 'users_projects.users_id', '=', 'users.id')
-            .select('users_projects.project_id', 'users_projects.project_img_url', 'users_projects.project_title', 'users_projects.project_summary', 'users_projects.project_url')
-            .orderBy('project_id','from', 'users_projects')
-
-        // console.trace(projects)
-
-        res.json({
-            projects
-        })
-
-            
-        } catch (err) {
-        console.trace(err)
-        res.sendStatus(400)
-}   
-})
 
 //update profile
     router.post('/updateProfile', async (req, res) => {

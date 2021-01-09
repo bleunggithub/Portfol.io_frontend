@@ -1,9 +1,10 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 
 //Components, pages
+import TopBar from './Component/TopBar'
 import Landing from './Pages/Landing'
 import LogIn from './Pages/LogIn'
 import SignUp from './Pages/SignUp'
@@ -62,6 +63,8 @@ function App() {
     },
   };
   
+ const isAuthenticated = useSelector(state => state.login.isAuthenticated)
+
   return (
     <Router>
       <AnimatedSwitch
@@ -74,7 +77,9 @@ function App() {
       </AnimatedSwitch>
 
       <Switch>
-        <PrivateRoute path="/project/:id" exact component={ProjectPages} /> 
+        {isAuthenticated ? "": <TopBar />}
+      
+        <PrivateRoute path="/project/:id" component={ProjectPages} /> 
         <PrivateRoute path="/profile/:id" component={ProfilePages} />
         <PrivateRoute path="/profile" component={ProfilePages} />
         <PrivateRoute path="/settings" exact component={Settings} /> 

@@ -4,8 +4,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 
-//Components, pages
-import TopBar from '../Component/TopBar'
 
 //UI, CSS
 import Grid from '@material-ui/core/grid';
@@ -21,13 +19,11 @@ export class Landing extends Component {
         } else {
             return (
                 <Grid container>
-                    <TopBar value={location} />
                     <Grid className="landing-heroImg">
                     </Grid>
                     <Grid className="landing-bottom-link">
                         <Link to="/about" className="landing-link" style={{ textDecoration: "none" }}>About this Project</Link> &nbsp;
                         <span className="landing-light-text">&#169; 2020 Betty Leung</span>
-
                     </Grid>
                 </Grid>
             )

@@ -375,7 +375,4 @@ export default connect(mapStateToProps,mapDispatchToProps)(ProfileEdit);
 
 
 
-//project img 1 - https://i.imgur.com/GoRbmAF.jpg
-//project img 2 - https://i.imgur.com/3zltedL.jpg
-//project img 3 - https://i.imgur.com/tGm6VNp.jpg
-//project img 4 - https://i.imgur.com/5ZuBMmC.jpg
+
