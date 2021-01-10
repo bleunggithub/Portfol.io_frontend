@@ -40,7 +40,7 @@ class ProjectAutoPlay extends React.Component {
       axios.post(`${process.env.REACT_APP_API_SERVER}/projects/getProjectData/${projectId}`, {
           accessToken
       }).then(res => {
-        console.log(res.data.project_imgs)
+        // console.log(res.data.project_imgs)
         let projectsArray = [];
 
         for (let i = 0; i < res.data.project_imgs.length; i++){

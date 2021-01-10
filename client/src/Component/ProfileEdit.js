@@ -82,14 +82,18 @@ class ProfileEdit extends Component {
 
     //upload profile picture
     uploadProfilePic = (e) => {
-        this.setState({ profilePicFileName: e.target.files[0].name })
-        this.uploadProfilePicImgur(e);
+        if (e.target.files.length > 0) {
+            this.setState({ profilePicFileName: e.target.files[0].name })
+            this.uploadProfilePicImgur(e);
+        }
     }
 
     //imgur api call
     uploadProfilePicImgur = (e) => {
         const formdata = new FormData()
         formdata.append("image", e.target.files[0])
+        // console.log(e.target.files[0])
+        // console.log(formdata)
         this.setState({ isLoading: true })
         
         fetch("https://cors-anywhere.herokuapp.com/https://api.imgur.com/3/image/", {
@@ -99,7 +103,7 @@ class ProfileEdit extends Component {
             },
             body: formdata
         }).then(data => data.json()).then(data => { 
-            console.log(data.data.link)
+            // console.log(data.data.link)
             this.setState({
                 profilePicFileName: "Click upload to save changes.",
                 user_img_url: data.data.link
