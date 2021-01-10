@@ -14,6 +14,12 @@
 	margin: 0.5em;
 }
 
+.project-view-profile-link {
+	font-family: "Montserrat";
+	color: #535353;
+	letter-spacing: 0.2em;
+}
+
 .project-view-light-text {
 	font-family: "Montserrat";
 	color: #535353;
@@ -24,6 +30,7 @@
 .project-view-project-title {
 	font-family: "montserrat";
 	text-transform: uppercase;
+	margin-bottom: 0.5em;
 }
 
 .project-view-project-summary {
@@ -41,11 +48,14 @@
 }
 @media (max-width: 600px) {
 	.project-view-grid-with-top-margin {
-		margin-top: 8vh;
+		margin-top: 10vh;
 	}
 }
 
 /* auto play images */
+.project-view-photo-container {
+	min-height: 15vh;
+}
 
 .project-auto-play-project-img {
 	width: 100%;
@@ -67,5 +77,31 @@
 		width: 100%;
 		height: 70vh;
 		object-fit: scale-down;
+	}
+}
+
+/* edit */
+/* dropzone */
+.dropzone {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 30vh;
+}
+
+@media (max-width: 500px) {
+	.dropzone {
+		padding: 5vw;
+		min-height: 20vh;
+	}
+}
+
+.project-edit-textField {
+	width: 95%;
+}
+
+@media (max-width: 500px) {
+	.project-edit-textField {
+		width: 100%;
 	}
 }

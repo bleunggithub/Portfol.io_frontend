@@ -9,15 +9,6 @@ import ProjectEdit from '../Component/ProjectEdit'
 
 //UI, CSS
 import Grid from '@material-ui/core/grid';
-import Tooltip from '@material-ui/core/Tooltip';
-import Chip from '@material-ui/core/Chip';
-import { FacebookShareButton, LinkedinShareButton, TwitterShareButton, EmailShareButton } from 'react-share';
-import facebookIcon from '../img/icons/facebook2.png'
-import linkedInIcon from '../img/icons/linkedin.png'
-import twitterIcon from '../img/icons/twitter.png'
-import emailIcon from '../img/icons/email.png'
-import websiteIcon from '../img/icons/website.png'
-import githubIcon from '../img/icons/github.png'
 import Switch from '@material-ui/core/Switch';
 
 const location = "discover"
@@ -38,7 +29,7 @@ export default class ProjectPages extends Component {
         axios.post(`${process.env.REACT_APP_API_SERVER}/projects/getProjectData/${projectId}`, {
             accessToken
         }).then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             this.setState({
                 projectDetails: res.data,
             })
@@ -57,7 +48,7 @@ export default class ProjectPages extends Component {
                 
                 <Grid className="project-view-grid-with-top-margin" />
                     {this.state.projectDetails.sameUser ? 
-                        (<Grid component="label" container alignItems="center" justify="center"  style={{ marginBottom: '0.8em' }}>
+                        (<Grid component="label" container alignItems="center" justify="center" style={{ marginBottom: '0.8em' }} >
                             <Grid item className="profile-switch-label">View</Grid>
                             <Grid item>
                                 <Switch size="small" color="primary" checked={this.state.edit} onChange={this.handleToggleChange} name="edit" />
@@ -66,7 +57,7 @@ export default class ProjectPages extends Component {
                         </Grid>):""
                     }
                     
-                {this.state.edit ? <ProjectEdit projectDetails={this.state.projectDetails} params={this.props.match.params.id} />:<ProjectView projectDetails={ this.state.projectDetails}  params={this.props.match.params.id} />}
+                {this.state.edit ? <ProjectEdit params={this.props.match.params.id} />:<ProjectView  params={this.props.match.params.id} />}
 
             </Grid>
         )

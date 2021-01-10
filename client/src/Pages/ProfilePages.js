@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 //redux
 import { connect } from 'react-redux';
 import {profileFetchThunk, ownProfileFetchThunk} from '../actions/profileActions'
+import {logoutNowThunk} from '../actions/loginActions'
 
 //Components, pages
 import TopBar from '../Component/TopBarLoggedIn'
@@ -42,7 +43,7 @@ class ProfilePages extends Component {
     }
 
     logout = () => {
-        this.props.logoutNowThunk()
+        this.props.logout()
     }
 
     render() {
@@ -90,6 +91,9 @@ const mapDispatchToProps = dispatch => {
         },
         ownProfileFetch: (accessToken) => {
             dispatch(ownProfileFetchThunk(accessToken))
+        },
+        logout: () => {
+            dispatch(logoutNowThunk())
         }
     }
 }
