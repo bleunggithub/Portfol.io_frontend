@@ -12,6 +12,7 @@ import Dashboard from './Pages/Dashboard'
 import Discover from './Pages/Discover'
 import ProfilePages from './Pages/ProfilePages'
 import ProjectPages from './Pages/ProjectPages'
+import NewProjectPage from './Pages/NewProjectPage'
 import AboutProject from './Pages/AboutProject'
 
 //CSS
@@ -78,6 +79,7 @@ function App() {
       <Switch>
         {isAuthenticated ? "": <TopBar />}
       
+        <PrivateRoute path="/project/addNewProject" exact component={NewProjectPage} /> 
         <PrivateRoute path="/project/:id" component={ProjectPages} /> 
         <PrivateRoute path="/profile/:id" component={ProfilePages} />
         <PrivateRoute path="/profile" component={ProfilePages} />

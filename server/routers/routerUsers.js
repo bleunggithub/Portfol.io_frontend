@@ -27,7 +27,7 @@ router.post('/getOwnProfile', async (req, res) => {
         let DataFromUsersTable = await knex('users').where('id', user.id).returning('*')
         let projects = await knex('users_projects').where('users_id', user.id).returning('*')
 
-        let { email, full_name, user_img_url, current_company, current_job_title, github_url, facebook_url, twitter_url, linkedin_url, website_url, summary} = DataFromUsersTable[0];
+        let { email, full_name, user_img_url, location, company, job_title, github_url, facebook_url, twitter_url, linkedin_url, website_url, summary} = DataFromUsersTable[0];
             // console.trace(DataFromUsersTable[0])
         
         let facebookUser, googleUser = false;
@@ -49,8 +49,9 @@ router.post('/getOwnProfile', async (req, res) => {
             googleUser,
             full_name,
             user_img_url,
-            current_company,
-            current_job_title,
+            location,
+            company,
+            job_title,
             skillsArray,
             github_url,
             facebook_url,

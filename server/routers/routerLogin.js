@@ -150,17 +150,6 @@ router.post('/login/facebook', (req, res) => {
                         
                         console.trace(newFBUser)
 
-                        //insert empty project in project table
-                        const newUserProject = {
-                            users_id: newFBUser[0],
-                            project_title: "No project yet.",
-                            project_img_url1: "https://images.unsplash.com/photo-1572177812156-58036aae439c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80",
-                            project_summary: "",
-                            project_url: "#"
-                        }
-
-                        let insertIntoProjectsTable = await knex('users_projects').insert(newUserProject);
-
                         //jwt
                         let payload = {
                             id: newFBUser[0],
@@ -237,17 +226,6 @@ router.post('/login/google', (req, res) => {
                         
                         console.trace(newGoogleUser)
 
-                        //insert empty project in projects table
-                        const newUserProject = {
-                            users_id: newGoogleUser[0],
-                            project_title: "No project yet.",
-                            project_img_url1: "https://images.unsplash.com/photo-1572177812156-58036aae439c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80",
-                            project_summary: "",
-                            project_url: "#"
-                        }
-
-                        let insertIntoProjectsTable = await knex('users_projects').insert(newUserProject);
-
                         //jwt
                         let payload = {
                             id: newGoogleUser[0],
@@ -323,17 +301,6 @@ router.post('/register', async (req, res) => {
                 }
 
                 let userId = await knex('users').insert(newUser).returning('id');
-                
-                //insert empty project in project table
-                const newUserProject = {
-                    users_id: userId[0],
-                    project_title: "No project yet.",
-                    project_img_url1: "https://images.unsplash.com/photo-1572177812156-58036aae439c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80",
-                    project_summary: "",
-                    project_url: "#"
-                }
-
-                let insertIntoProjectsTable = await knex('users_projects').insert(newUserProject);
 
                 //authenticate new user
                 let payload = {

@@ -46,6 +46,12 @@ class ProfilePages extends Component {
         this.props.logout()
     }
 
+    changeRedirect = (data) => {
+        this.setState({
+            edit: false
+        })
+    }
+
     render() {
         return (
                 <Grid container>
@@ -62,7 +68,7 @@ class ProfilePages extends Component {
                         </Grid>
                         <Grid item className="profile-switch-label">Edit</Grid>
                     </Grid>
-                    {this.state.edit ? (<ProfileEdit />
+                    {this.state.edit ? (<ProfileEdit parentCallback={this.changeRedirect}/>
                     ) : (
                     <ProfileView />)}
                     </React.Fragment>

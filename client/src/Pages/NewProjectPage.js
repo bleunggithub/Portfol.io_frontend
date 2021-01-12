@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
+import { Redirect } from "react-router-dom";
 import axios from 'axios';
 
 //Components, pages
-import Dropzone from './Dropzone'
+import Dropzone from '../Component/Dropzone'
 import ProjectEditDetails from '../Component/ProjectEditDetails'
+import TopBar from '../Component/TopBarLoggedIn'
 
 
 //UI, CSS
-import './css/project.css';
+import './css/newProject.css';
 import Grid from '@material-ui/core/grid';
 import Button from '@material-ui/core/Button';
-
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CheckIcon from '@material-ui/icons/Check';
 
@@ -18,33 +19,22 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
+//Topbar location
+const location = "settings"
 
-export default class ProjectEdit extends Component {
+
+export default class NewProjectPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            projectDetails: {},
+            redirect: null,
             isLoading: false,
-            updateSuccess: false,
+            createSuccess: false,
             errorOpen: false,
             errorMessage: null,
-            newProjectDetails:{},
+            newProjectDetails: {}
         }
-        this.fetchProjects(this.props.params, localStorage.getItem('token'))
     }
-
-    //fetch original data
-    fetchProjects = (projectId, accessToken) => {
-        axios.post(`${process.env.REACT_APP_API_SERVER}/projects/getProjectData/${projectId}`, {
-            accessToken
-        }).then(res => {
-            // console.log(res.data)
-            this.setState({
-                projectDetails: res.data,
-            })
-        })
-    } 
-
 
     //snackbar close
     handleClose = (event, reason) => {
@@ -52,57 +42,52 @@ export default class ProjectEdit extends Component {
             return;
         }
         this.setState({
-            errorOpen:false,
-            errorMessage:""
+            errorOpen: false,
+            errorMessage: null
         })
     };
 
     //send to backend
-    changeProjectDetails = (e) => {
+    createProjectDetails = (e) => {
         e.preventDefault();
 
         this.setState({
-            isLoading:true
+            isLoading: true
         })
 
-        const projectId = this.props.params;
+        const accessToken = localStorage.getItem('token')
         
-        axios.post(`${process.env.REACT_APP_API_SERVER}/projects/editProjectDetails/${projectId}`, { 
+        axios.post(`${process.env.REACT_APP_API_SERVER}/projects/addNewProject`, {
             projectDetails: this.state.newProjectDetails,
-            accessToken: localStorage.getItem('token')
+            accessToken
         }).then(res => {
             // console.log(res)
             if (res.status === 200) {
                 //clear input
                 this.setState({
                     isLoading: false,
-                    updateSuccess:true
+                    updateSuccess: true
                 })
                 setTimeout(() => {
-                    this.props.parentCallback(false)
-                    }, 1500)
-            } else if (res.status === 401) {
-                this.setState({
-                    errorMessage: "You are not authorised to edit this project.",
-                    errorOpen: true
-                })
-                setTimeout(() => {
-                    this.setState({errorMessage:""})
-                },6000)
+                    this.setState({
+                        redirect: "/settings"
+                    })
+                }, 1500)
             } else {
                 // console.log(res)
                 this.setState({
-                    errorMessage: "An Error has occurred while updating project details. Please try again.",
+                    errorMessage: "An Error has occurred while creating project. Please try again.",
                     errorOpen: true
                 })
                 setTimeout(() => {
-                    this.setState({errorMessage:""})
-                },6000)
+                    this.setState({ errorMessage: null })
+                }, 6000)
             }
         })
     }
 
-    changeStatesProjectDetails = (data,error) => {
+    //passing states from children
+    changeStatesProjectDetails = (data, error) => {
         this.setState({
             newProjectDetails: { ...this.state.newProjectDetails,...data }, 
             errorMessage: error,
@@ -114,28 +99,33 @@ export default class ProjectEdit extends Component {
         }
     }
     
-    render() {
+    //!new project : handle imgUrls at backend
+    //!edit project : combine frontend then send to backend 
 
+    render() {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+        }
         return (
             <Grid container justify="center" alignItems="flex-start">
-                <form onSubmit={this.changeProjectDetails}>
-                    <Grid container justify="center" alignItems="flex-start" className="project-edit-grid-top" >
+                <TopBar value={location} />
+                <form onSubmit={this.createProjectDetails} style={{width: '100%'}}>
+                    <Grid container justify="center" alignItems="flex-start" className="project-view-grid-with-top-margin" >
                         <Grid item xs={12} md={6} lg={6} className="project-edit-dropzone-container">
-                            <Dropzone location={this.props.params} edit={true} parentCallback={this.changeStatesProjectDetails}/>
+                            <Dropzone edit={false} parentCallback={this.changeStatesProjectDetails}/>
                         </Grid>
 
                         <Grid item xs={12} md={5} lg={4}>
-                            <ProjectEditDetails parentCallback={this.changeStatesProjectDetails} edit={true} projectDetails={this.state.projectDetails} />
+                            <ProjectEditDetails parentCallback={this.changeStatesProjectDetails} edit={false} />
                         </Grid>
 
                         <Grid item xs={12} md={5} lg={4} style={{textAlign:'center'}}>
                             <Button variant="contained" color="primary" size="small" type="submit" style={{ margin: "2em 1em" }}>save project</Button>
                             {this.state.isLoading ? (<CircularProgress color="primary" size="1em"  style={{margin: '0 0.5em', verticalAlign: 'sub'}}/>) : ""}
-                            {this.state.updateSuccess ? (<CheckIcon color="primary" size="1em"  style={{margin: '0 0.5em', verticalAlign: 'sub'}} />) : ""}
+                            {this.state.createSuccess ? (<CheckIcon color="primary" size="1em"  style={{margin: '0 0.5em', verticalAlign: 'sub'}} />) : ""}
                         </Grid>
                     </Grid>
                 </form>
-
                 <Snackbar
                     anchorOrigin={{
                         vertical: 'bottom',
@@ -153,7 +143,6 @@ export default class ProjectEdit extends Component {
                         </React.Fragment>
                     }
                 />
-
             </Grid>
         )
     }

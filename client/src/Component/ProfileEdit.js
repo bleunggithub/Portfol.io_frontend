@@ -127,9 +127,7 @@ class ProfileEdit extends Component {
                 profilePicFileName: "",
                 updateSuccessPic:true
         })
-        setTimeout(() => {
-                this.setState({updateSuccessPic: false})
-            }, 3000)
+
     }
 
     
@@ -170,8 +168,8 @@ class ProfileEdit extends Component {
             updateSuccessDetails:true
         })
         setTimeout(() => {
-            this.setState({updateSuccessDetails: false})
-        }, 3000)
+            this.props.parentCallback(false)
+        }, 1500)
     }
     
 
@@ -189,8 +187,8 @@ class ProfileEdit extends Component {
             updateSuccessSummary:true
         })
         setTimeout(() => {
-            this.setState({updateSuccessSummary: false})
-        }, 3000)
+            this.props.parentCallback(false)
+        }, 1500)
     }
     
 
@@ -210,7 +208,7 @@ class ProfileEdit extends Component {
                             </p>
                         </Grid>
                         <Grid item xs={12} sm={12} style={{minHeight:"20vh"}}>
-                            <ProjectGrid edit="true"/>
+                            <ProjectGrid edit={true} />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -230,7 +228,7 @@ class ProfileEdit extends Component {
                                                 <label htmlFor="contained-button-file">
                                                     <Button variant="outlined" color="primary" size="small" component="span" style={{ margin: "0 0.5em" }} > Select  </Button>
                                                 </label>
-                                                {this.state.isLoading ? 
+                                                {this.state.user_img_url === "" ||  this.state.isLoading ? 
                                                     <Button variant="contained" type="submit" color="primary" size="small" disabled> upload </Button> :
                                                     <Button variant="contained"  type="submit" color="primary" size="small"  > upload </Button>
                                                 }

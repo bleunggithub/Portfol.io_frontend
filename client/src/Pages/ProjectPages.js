@@ -40,6 +40,12 @@ export default class ProjectPages extends Component {
         this.setState({ edit: !this.state.edit })
     }
 
+    changeRedirect = (data) => {
+        this.setState({
+            edit: false
+        })
+    }
+
     render() {
 
         return (
@@ -57,7 +63,7 @@ export default class ProjectPages extends Component {
                         </Grid>):""
                     }
                     
-                {this.state.edit ? <ProjectEdit params={this.props.match.params.id} />:<ProjectView  params={this.props.match.params.id} />}
+                {this.state.edit ? <ProjectEdit params={this.props.match.params.id} parentCallback={ this.changeRedirect}/>:<ProjectView  params={this.props.match.params.id} />}
 
             </Grid>
         )
