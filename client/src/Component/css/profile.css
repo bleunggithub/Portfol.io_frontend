@@ -281,7 +281,11 @@
 	}
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
+	.profile-edit-personal-details-container {
+		margin-top: 3em;
+	}
+
 	.profile-edit-name-container {
 		justify-content: center;
 		padding: 0 1em;

@@ -147,10 +147,14 @@ class ProfileView extends Component {
                             <Grid item xs={12} sm={12} md={12} className="profile-view-grid-item profile-view-name-container">
                                 <p className="profile-view-full-name">{this.props.userData.full_name}</p>
                                 {this.props.userData.job_title && this.props.userData.company ? 
-                                    (<React.Fragment><p className="profile-view-light-text">Currently</p>
-                                    <span className="profile-view-current">{this.props.userData.job_title}</span>
-                                    <span className="profile-view-light-text-inline"> at </span>
-                                    <span className="profile-view-current">{this.props.userData.company}</span></React.Fragment>):""}
+                                    (<React.Fragment>
+                                        <p className="profile-view-light-text">Currently</p>
+                                        <p>
+                                            <span className="profile-view-current">{this.props.userData.job_title}</span>
+                                            <span className="profile-view-light-text-inline"> at </span>
+                                            <span className="profile-view-current">{this.props.userData.company}</span>
+                                        </p>
+                                    </React.Fragment>):""}
 
                                 {this.props.userData.location ? 
                                     (<React.Fragment>

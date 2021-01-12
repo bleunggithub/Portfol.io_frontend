@@ -96,8 +96,9 @@ router.post('/getProjectData/:projectId', async (req, res)=>{
         res.sendStatus(400)
     }
 
+})
 //update project images
-    router.post('/editProjectImgs/:projectId', async (req, res) => {
+router.post('/editProjectImgs/:projectId', async (req, res) => {
         let projectId = parseInt(req.params.projectId); 
         let updateImgs = req.body.updateImgs; //type == array
         
@@ -112,14 +113,12 @@ router.post('/getProjectData/:projectId', async (req, res)=>{
                     .where('project_id', projectId)
                 }
 
-                if (updateImgs.length < 6) {
-                    for (let i = 6; i > updateImgs.length; i--){
-                        await knex('users_projects').update(`project_img_url${i}`, null)
-                        .where('project_id', projectId)
-                    }
+            if (updateImgs.length < 6) {
+                for (let i = 6; i > updateImgs.length; i--){
+                    await knex('users_projects').update(`project_img_url${i}`, null)
+                    .where('project_id', projectId)
                 }
-
-            } else {
+            }} else {
                 res.sendStatus(400)
             }
             
@@ -130,84 +129,185 @@ router.post('/getProjectData/:projectId', async (req, res)=>{
             console.trace(err)
             res.sendStatus(400)
         }
-    })
 })
     
 //update project details
-    router.post('/editProjectDetails/:projectId', async (req, res) => {
-        let projectId = parseInt(req.params.projectId); 
-        let updateDetails = req.body.projectDetails; 
-        
-        console.trace(projectId)
-        console.trace(updateDetails)
+router.post('/editProjectDetails/:projectId', async (req, res) => {
+    let projectId = parseInt(req.params.projectId); 
+    let updateDetails = req.body.projectDetails; 
+    
+    console.trace(projectId)
+    console.trace(updateDetails)
 
-        try {
-            let projectData = {};
+    try {
+
+        let requester = jwt.verify(req.body.accessToken, config.jwtSecret);
+        let projectUserId = await knex('users_projects').where('project_id', projectId).returning('users_id')
+        
+        console.trace(requester)
+        console.trace(projectUserId)
+
+        if (projectUserId[0].users_id === requester.id) {
             
-            if (updateDetails.project_title != '') { 
-                let changeProjectTitle = await knex.update('project_title', updateDetails.project_title)
+            if (updateDetails.project_title && updateDetails.project_title !== '') { 
+                await knex.update('project_title', updateDetails.project_title)
                     .from('users_projects').where('project_id', projectId).returning('project_title')
                     
-                    projectData.project_title = changeProjectTitle[0]
-
-                    console.trace(changeProjectTitle) 
             }
 
-            if (updateDetails.project_summary != '') { 
-                let changeProjectSummary = await knex.update('project_summary', updateDetails.project_summary)
+            if (updateDetails.project_summary && updateDetails.project_summary !== '') { 
+                await knex.update('project_summary', updateDetails.project_summary)
                     .from('users_projects').where('project_id', projectId).returning('project_summary')
                     
-                    projectData.project_summmary = changeProjectSummary[0]
-
-                    console.trace(changeProjectSummary) 
             }
 
-            if (updateDetails.project_url != '') { 
-                let changeProjectUrl = await knex.update('project_url', updateDetails.project_url)
+            if (updateDetails.project_url && updateDetails.project_url !== '') {
+                let project_url;
+                let prefix = "http://";
+                updateDetails.project_url.toLowerCase().includes(prefix && "https://") ?
+                    (project_url = updateDetails.project_url):(project_url = prefix.concat(updateDetails.project_url))
+                
+                await knex.update('project_url', project_url)
                     .from('users_projects').where('project_id', projectId).returning('project_url')
                     
-                    projectData.project_url = changeProjectUrl[0]
-
-                    console.trace(changeProjectUrl) 
             }
 
-            if (updateDetails.project_code_url != '') { 
-                let changeProjectCodeUrl = await knex.update('project_code_url', updateDetails.project_code_url)
+            if (updateDetails.project_code_url && updateDetails.project_code_url !== '') { 
+                let project_code_url;
+                let prefix = "http://";
+                updateDetails.project_code_url.toLowerCase().includes(prefix && "https://") ?
+                    (project_code_url = updateDetails.project_code_url):(project_code_url = prefix.concat(updateDetails.project_code_url))
+                
+                await knex.update('project_code_url', project_code_url)
                     .from('users_projects').where('project_id', projectId).returning('project_code_url')
                     
-                    projectData.project_code_url = changeProjectCodeUrl[0]
-
-                    console.trace(changeProjectCodeUrl) 
             }
 
-            if (updateDetails.project_tags != '') {
+            if (updateDetails.project_tags && updateDetails.project_tags !== '') {
                 // console.trace(updateDetails.project_tags)
-                let mappedTags = updateDetails.project_tags.map(x => x.skill)
-                // console.trace(mappedTags)
-                let stringTags = mappedTags.toString()
+                let stringTags = updateDetails.project_tags.map(x => x.skill).toString()
+
                 // console.trace(stringTags)
                     
-                let changeTags = await knex.update('project_tags', stringTags)
+                await knex.update('project_tags', stringTags)
                 .from('users_projects').where('project_id', projectId).returning('project_tags')
                 
-                let tagsArray = changeTags[0].split(",")
-                
-                projectData.tagsArray = tagsArray
-
-                console.trace(changeTags) 
             } 
 
-            console.trace(projectData)
-            res.json(projectData)
+            if (updateDetails.imgUrls) {
 
+                for (let i = 0; i < updateDetails.imgUrls.length; i++){
+                    await knex('users_projects').update(`project_img_url${i + 1}`, updateDetails.imgUrls[i])
+                    .where('project_id', projectId)
+                }
 
-        } catch (err) {
-            console.trace(err)
-            res.sendStatus(400)
+                if (updateDetails.imgUrls.length < 6) {
+                    for (let i = 6; i > updateDetails.imgUrls.length; i--){
+                        await knex('users_projects').update(`project_img_url${i}`, null)
+                        .where('project_id', projectId)
+                    }
+                }
+            }
+
+            res.sendStatus(200)
+
+        } else {
+            res.sendStatus(401)
         }
-    })
 
 
+
+    } catch (err) {
+        console.trace(err)
+        res.sendStatus(400)
+    }
+})
+
+//create new project
+router.post('/addNewProject', async (req, res) => {
+    console.trace(req.body.projectDetails, req.body.accessToken)
+
+    try {
+        let user = jwt.verify(req.body.accessToken, config.jwtSecret);
+
+        let checkNumberOfProjects = await knex('users_projects').where('users_id', user.id)
+        
+        //map tags
+        let mappedTags = null;
+        if (req.body.projectDetails.project_tags !== "") {
+            mappedTags = req.body.projectDetails.project_tags.map(x => x.skill).toString()
+        }
+        console.trace(mappedTags)
+
+        //add prefix to urls
+        let project_url, project_code_url = null;
+        let prefix = "http://";
+        if (req.body.projectDetails.project_url !== "") {   
+            req.body.projectDetails.project_url.toLowerCase().includes(prefix && "https://") ?
+            (project_url = req.body.projectDetails.project_url):(project_url = prefix.concat(req.body.projectDetails.project_url))
+        }
+        
+        if (req.body.projectDetails.project_code_url !== "") {   
+            req.body.projectDetails.project_code_url.toLowerCase().includes(prefix && "https://") ?
+            (project_code_url = req.body.projectDetails.project_code_url):(project_code_url = prefix.concat(req.body.projectDetails.project_code_url))
+        }
+
+        
+        let newProjectDetails = {
+            users_id: user.id,
+            project_title: req.body.projectDetails.project_title,
+            project_summary: req.body.projectDetails.project_summary,
+            project_url: project_url,
+            project_code_url: project_code_url,
+            project_tags: mappedTags,
+        }
+        
+        //map imgs
+        if (req.body.projectDetails.imgUrls) {
+            for (let i = 0; i < req.body.projectDetails.imgUrls.length; i++) {
+                newProjectDetails["project_img_url" + `${i + 1}`] = req.body.projectDetails.imgUrls[i]
+            }
+        }
+        // console.trace(newProjectDetails)
+
+        if (checkNumberOfProjects.length >= 3) {
+            // update oldest project
+            let updateOldestProject = await knex.update(newProjectDetails)
+                .from('users_projects')
+                .where('project_id', checkNumberOfProjects[0].project_id)
+                .returning('project_id')
+
+            console.trace(updateOldestProject)
+
+        } else {
+            // add new project
+            let addNewProject = await knex('users_projects')
+                .insert(newProjectDetails).returning('project_id')
+
+            console.trace(addNewProject)
+        }
+        res.sendStatus(200)
+
+    } catch (err) {
+        console.trace(err)
+        res.sendStatus(400)
+    }
+})
+    
+//delete project
+router.delete('/deleteProject/:projectId', async (req, res) => {
+    let projectId = parseInt(req.params.projectId);
+
+    try {
+        let deleteProject = await knex('users_projects')
+            .where('project_id', projectId).del()
+            .then(res.sendStatus(200))
+        
+    } catch (err) {
+        console.trace(err)
+        res.sendStatus(400)
+    }
+})
 
     return router; 
 }
