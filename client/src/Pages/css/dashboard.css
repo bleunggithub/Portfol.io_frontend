@@ -1,31 +1,15 @@
-/* .dashboard-subMenu {
-	width: 100vw;
-	margin-top: 11vh;
-	font-size: 0.8em;
-	text-align: center;
-	color: #535353;
-	position: sticky;
-}
-
-.dashboard-link {
-	cursor: pointer;
-	letter-spacing: 0.5em;
-	font-family: "Roboto";
-	font-weight: 600;
-	margin: 0 1em;
-}
-
-.dashboard-link:hover {
-	background: linear-gradient(to top, #546e7a85 25%, transparent 25%);
+.dashboard-margin-top-container {
+	margin-top: 9vh;
+	width: 100%;
 }
 
 @media (max-width: 1024px) {
-	.dashboard-subMenu {
-		margin-top: 8vh;
+	.dashboard-margin-top-container {
+		margin-top: 6vh;
 	}
 }
 @media (max-width: 600px) {
-	.dashboard-subMenu {
-		margin-top: 9vh;
+	.dashboard-margin-top-container {
+		margin-top: 5vh;
 	}
-} */
+}

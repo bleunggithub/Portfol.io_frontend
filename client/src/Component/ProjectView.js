@@ -19,6 +19,9 @@ import emailIcon from '../img/icons/email.png'
 import websiteIcon from '../img/icons/website.png'
 import githubIcon from '../img/icons/github.png'
 
+import IconButton from '@material-ui/core/IconButton';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 export default class ProjectView extends Component {
     constructor(props) {
@@ -42,6 +45,17 @@ export default class ProjectView extends Component {
         })
     } 
 
+    handleLike = () => {
+        axios.post(`${process.env.REACT_APP_API_SERVER}/projects/likeProject/${this.props.params}}`, {
+            accessToken: localStorage.getItem('token')
+        }).then(res => {
+            // console.log(res.data)
+            this.setState({
+                projectDetails:{...this.state.projectDetails, ...res.data}
+            })
+        })
+    }
+
     render() {
             // const shareUrl = `${process.env.REACT_APP_DOMAIN}/project/${this.props.params}`; //! change
             const shareUrl = `https://www.bbc.co.uk/project/${this.props.params}`;
@@ -55,8 +69,21 @@ export default class ProjectView extends Component {
 
                 <Grid item xs={12} lg={3}>
                     <Grid container justify="center" className="project-view-description-container">
-                        <Grid item xs={12} md={10}>
-                            <h3 className="project-view-project-title">{this.state.projectDetails.project_title}</h3>
+                        <Grid item xs={12} sm={10}>
+                            <h3 className="project-view-project-title">{this.state.projectDetails.project_title}
+                                    {this.state.projectDetails.liked ? 
+                                    (<IconButton aria-label="like" component="span" size="small" style={{ marginLeft: '1em', marginBottom: '4px'}} onClick={this.handleLike}>
+                                        <Tooltip title="Like" placement="bottom-start">
+                                            <FavoriteIcon style={{ color: '#ff0000' }} />
+                                        </Tooltip>
+                                    </IconButton>):
+                                    (<IconButton aria-label="like" component="span" size="small" style={{ marginLeft: '1em', marginBottom: '4px'}} onClick={this.handleLike}>
+                                        <Tooltip title="Like" placement="bottom-start">
+                                            <FavoriteBorderIcon style={{ color: '#ff0000' }} />
+                                        </Tooltip>
+                                    </IconButton>)}
+                            </h3>
+
                             <p className="project-view-light-text" style={{marginTop:'0'}}>by <Link to={`/profile/${this.state.projectDetails.users_id}`} className="project-view-profile-link">{this.state.projectDetails.users_full_name}</Link></p>
                             <p className="project-view-project-summary">{this.state.projectDetails.project_summary}</p>
                             
@@ -73,12 +100,14 @@ export default class ProjectView extends Component {
                                 
                             </Grid>
                             <Grid item xs={12}>
+
                                 {this.state.projectDetails.project_url && this.state.projectDetails.project_url !== "#"? (<Tooltip title="Website" placement="bottom-end"><a href={this.state.projectDetails.project_url} rel="noreferrer" target="_blank"><img src={websiteIcon} alt="website" className="project-view-social-share-icons" /></a></Tooltip>): ""}
                                 {this.state.projectDetails.project_code_url ? (<Tooltip title="Repo" placement="bottom-end"><a href={this.state.projectDetails.project_code_url } rel="noreferrer" target="_blank"><img src={githubIcon} alt="github" className="project-view-social-share-icons" /></a></Tooltip>): ""}
                             </Grid>
                         </Grid>
 
-                        <Grid item xs={12} md={1}>
+                        <Grid item xs={12} sm={1}>
+
                             <FacebookShareButton url={shareUrl} quote={title} hashtag="#devPortfolio">
                                 <Tooltip title="Share on Facebook" placement="bottom-start"><img src={facebookIcon} alt="facebook share" className="project-view-social-share-icons" /></Tooltip>
                             </FacebookShareButton>

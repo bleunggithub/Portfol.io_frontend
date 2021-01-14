@@ -15,31 +15,32 @@ module.exports = (express) => {
 
 //login (local)
 router.post('/login', async (req, res) => {
-    console.trace(req)
-    let { email, password } = req.body;
-
-    let errors = [];
-
-    //form validation
-    if (!email || !password) {
-        errors.push({
-            message: "Please enter all fields."
-        })
-    }
-
-    if (errors.length > 0) {
-        res.json({
-            message: errors 
-        })
-    }
-
-    // console.trace(errors)
-
-    //check if user details are the same as data in db
     try {            
+        console.trace(req.body.userData)
+        let { email, password } = req.body.userData;
+    
+        let errors = [];
+    
+        //form validation
+        if (!email || !password) {
+            errors.push({
+                message: "Please enter all fields."
+            })
+        }
+    
+        if (errors.length > 0) {
+            res.json({
+                message: errors 
+            })
+
+        }
+    
+        // console.trace(errors)
+    
+        //check if user details are the same as data in db
         let checkUser = await knex('users').where('email', email) //.andWhere('password', password);
 
-        if (checkUser.length == 0) {
+        if (checkUser.length === 0) {
             errors.push({
                 message: "The email address you entered is not registered."
             })
@@ -301,11 +302,11 @@ router.post('/register', async (req, res) => {
                 }
 
                 let userId = await knex('users').insert(newUser).returning('id');
+                console.trace(userId)
 
                 //authenticate new user
                 let payload = {
-                    id: newUser.id,
-                    userType: 'user'
+                    id: userId[0]
                 }
 
                 let token = jwt.sign(payload, config.jwtSecret)

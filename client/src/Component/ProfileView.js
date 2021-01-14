@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom'
+
 
 //redux
 import { connect } from 'react-redux';
@@ -19,6 +21,8 @@ import TextField from '@material-ui/core/TextField';
 
 
 import './css/profile.css';
+import './css/projectGrid.css';
+
 
 //Components
 import websiteIcon from '../img/icons/website.png'
@@ -40,10 +44,34 @@ class ProfileView extends Component {
             email_subject: "",
             email_message: "",
             emailSuccess: false,
-
+            projectDetails: []
         }
-        
     }
+    
+    componentDidMount() {
+        this.fetchOthersProjects(this.props.params);
+    }
+
+    fetchOthersProjects = (params) => {
+        axios.get(`${process.env.REACT_APP_API_SERVER}/projects/getOthersProjects/${params}`)
+            .then(res => {
+            console.log(res.data)
+            if (res.status !== 200) {
+                
+                this.setState({
+                    errorOpen: true
+                })
+                
+            } else if (res.status === 200 && !res.data.projects) {
+                this.setState({
+                    noProject: true
+                })
+            } else {
+                this.setState({projectDetails: res.data.projects})
+            }
+        })
+    }
+    
 
     handleChange = (e) => {
         this.setState({[e.target.name]: e.target.value})
@@ -122,8 +150,39 @@ class ProfileView extends Component {
                         <Grid item xs={12} md={12}>
                             <p className="profile-view-title-text-projects"><Hidden smUp><Avatar alt={this.props.userData.full_name} src={this.props.userData.user_img_url} style={{display:"inline-block", marginRight:"1em"}} /></Hidden>Projects</p>
                         </Grid>
-                        <Grid item xs={12} sm={12} style={{minHeight:"20vh"}}>
-                            <ProjectGrid/>
+                        <Grid item xs={12} sm={12} style={{ minHeight: "20vh" }}>
+                            {this.props.params ? (
+                                <Grid container justify="center" alignItems="flex-start" className="project-grid-outer-container">
+                                {
+                                    this.state.projectDetails.map((project, i) =>
+                                    (<Grid item key={i} xs={11} sm={11} className="project-grid-project-container">
+                                        <Grid item xs={12} className="project-grid-img-container">
+                                            <Link to={`/project/${project.project_id}`}><img src={project.project_img_url1} alt={project.project_title} className="project-grid-project-img" /></Link>
+                                        </Grid>
+                                        <Grid item xs={12} className="project-grid-description-container">
+                                            <p className="project-grid-description project-grid-title"><b>{project.project_title}</b></p>
+                                            <p className="project-grid-description">{project.project_summary}</p>
+                                            {this.props.edit ?
+                                                (<React.Fragment>
+                                                    <Button variant="outlined" name={project.project_id} color="primary" size="small" style={{ margin: "0 0.5em" }} onClick={this.handleDeleteOpen}> Delete </Button>
+
+                                                    <Link to={`/project/${project.project_id}`} style={{ textDecoration: 'none' }}>
+                                                        <Button variant="contained" color="primary" size="small" disableElevation style={{ margin: "0 0.5em" }}> Edit Project </Button>
+                                                    </Link>
+                                                </React.Fragment>)
+                                                : ""}
+                                        </Grid>
+                                        <Grid item xs={12} className="project-grid-project-number-container">
+                                            <p className="project-grid-project-number">{i + 1}</p>
+                                        </Grid>
+                                    </Grid>))
+                                }
+                                </Grid>
+                            ): (
+                               <ProjectGrid />    
+                            )
+                        }
+                            
                         </Grid>
                     </Grid>
                 </Grid>
@@ -161,19 +220,19 @@ class ProfileView extends Component {
                                         <p className="profile-view-current" style={{ marginBottom: "0" }}><RoomIcon fontSize="small" style={{ verticalAlign: "sub" }} />{this.props.userData.location}</p> 
                                     </React.Fragment>):""}
                                 <br />
-                                {this.props.userData.sameUser || this.props.userData.facebookUser || this.props.userData.googleUser ? (
+                                {this.props.userData.sameUser ? (
                                     <React.Fragment>
                                         <Button variant="contained" disabled disableElevation color="primary" size="small" style={{marginRight:"1em"}}>Follow</Button>
                                         <Button variant="outlined" disabled size="small">Contact</Button>
                                     </React.Fragment>
                                 ) : (
                                     <React.Fragment>
-                                            {this.props.userData.isFollowing ? (
-                                                <Button variant="contained" disableElevation color="primary" size="small" style={{ marginRight: "1em" }} onClick={this.handleFollow}>Unfollow</Button>
-                                            ) : (
-                                                <Button variant="contained" disableElevation color="primary" size="small" style={{marginRight:"1em"}} onClick={this.handleFollow}>Follow</Button>
-                                            )
-                                            }
+                                        {this.props.userData.isFollowing ? (
+                                            <Button variant="contained" disableElevation color="primary" size="small" style={{ marginRight: "1em" }} onClick={this.handleFollow}>Unfollow</Button>
+                                        ) : (
+                                            <Button variant="contained" disableElevation color="primary" size="small" style={{marginRight:"1em"}} onClick={this.handleFollow}>Follow</Button>
+                                        )
+                                        }
                                             
                                         <Button variant="outlined" size="small" onClick={this.handleOpenContact}>Contact</Button>
                                             {this.state.followSuccess ? <CheckIcon fontSize="small" color="primary" style={{margin: '0 0.5em', verticalAlign: 'sub'}} />:""}

@@ -10,8 +10,6 @@ import Grid from '@material-ui/core/grid';
 import './css/landing.css';
 
 
-const location = "explore";
-
 export class Landing extends Component {
     render() {
         if (this.props.isAuthenticated) {

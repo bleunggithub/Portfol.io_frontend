@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { loginUserThunk } from '../actions/loginActions';
 
 //Components, pages
-import TopBar from '../Component/TopBar'
 import fbIcon from '../img/icons/facebook.png'
 import googleIcon from '../img/icons/google.png'
 import { loginFacebookThunk, loginGoogleThunk } from '../actions/loginActions';

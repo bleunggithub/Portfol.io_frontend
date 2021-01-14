@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 // UI
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/grid';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';

@@ -24,10 +24,9 @@ const logoutSuccessActionCreator = () =>{
 
 //actions
 //* local login
-export const loginUserThunk = (email, password) => dispatch =>{
+export const loginUserThunk = (userData) => dispatch =>{
     axios.post(`${process.env.REACT_APP_API_SERVER}/api/login`, {
-        email: email,
-        password: password
+        userData
     })
         .then((res) => {
             if (res.data == null) {

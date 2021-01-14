@@ -56,7 +56,7 @@ class ProfilePages extends Component {
         return (
                 <Grid container>
                 {/* fetch own profile with edit toggle if path == 'settings' or no params */}
-                {this.props.userData.sameUser === true ? (
+                {this.props.userData.sameUser ? (
                     <React.Fragment>
                         <TopBar value={locationOwnProfile} />
                         <Submenu item1="YOUR PROFILE" item2="LOGOUT" handleItem1={ this.toSettings } handleItem2={this.logout} />

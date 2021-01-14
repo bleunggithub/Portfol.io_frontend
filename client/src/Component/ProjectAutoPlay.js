@@ -70,7 +70,7 @@ class ProjectAutoPlay extends React.Component {
 
                 {this.state.projectImgs.map((img, i) => (
                   <div key={i} style={Object.assign({}, styles.slide)}>
-                    <img src={img} alt="project image" className="project-auto-play-project-img"/>
+                    <img src={img} alt="project" className="project-auto-play-project-img"/>
                   </div>
                 ))}
 

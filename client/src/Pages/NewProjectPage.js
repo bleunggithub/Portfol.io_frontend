@@ -63,10 +63,9 @@ export default class NewProjectPage extends Component {
         }).then(res => {
             // console.log(res)
             if (res.status === 200) {
-                //clear input
                 this.setState({
                     isLoading: false,
-                    updateSuccess: true
+                    createSuccess: true
                 })
                 setTimeout(() => {
                     this.setState({
@@ -99,8 +98,6 @@ export default class NewProjectPage extends Component {
         }
     }
     
-    //!new project : handle imgUrls at backend
-    //!edit project : combine frontend then send to backend 
 
     render() {
         if (this.state.redirect) {

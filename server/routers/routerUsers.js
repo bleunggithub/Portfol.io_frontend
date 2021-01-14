@@ -87,10 +87,9 @@ router.post('/getProfile/:id', async (req, res) => {
 
         if (profileUser[0]) {
             let profileUserData = await knex('users').where('id', userId);
-            let projects = await knex('users_projects').where('users_id', userId)
             let following = await knex('users_follows').where('users_id', userId).andWhere('followers_id', requester.id)
 
-            let { full_name, user_img_url, company, job_title, location, github_url, facebook_url, twitter_url,linkedin_url, website_url, summary} = profileUserData[0];
+            let { id, full_name, user_img_url, company, job_title, location, github_url, facebook_url, twitter_url,linkedin_url, website_url, summary} = profileUserData[0];
 
             let facebookUser, googleUser = false;
             
@@ -119,6 +118,7 @@ router.post('/getProfile/:id', async (req, res) => {
             }
 
             res.json({
+                id,
                 full_name,
                 facebookUser,
                 googleUser,

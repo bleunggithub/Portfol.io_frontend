@@ -63,13 +63,13 @@ export default class ProjectPages extends Component {
                         </Grid>):""
                     }
                     
-                {this.state.edit ? <ProjectEdit params={this.props.match.params.id} parentCallback={ this.changeRedirect}/>:<ProjectView  params={this.props.match.params.id} />}
+                {this.state.edit ? (
+                    <ProjectEdit params={this.props.match.params.id} parentCallback={this.changeRedirect} />
+                ) : (
+                    <ProjectView params={this.props.match.params.id} />
+                )}
 
             </Grid>
         )
     }
 }
-
-
-// sameUser: true
-// users_id: 1

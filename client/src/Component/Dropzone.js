@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 //UI, Components
 import { useDropzone } from 'react-dropzone';
@@ -99,7 +100,7 @@ function Previews(props) {
     items.splice(result.destination.index, 0, reorderedItem)
 
     setFiles(items)
-    console.log(files)
+    // console.log(files)
   }
   
   //upload img to imgur & send to parents
@@ -115,37 +116,35 @@ function Previews(props) {
         const formdata = new FormData()
         formdata.append("image", files[i])
 
-        await fetch("https://cors-anywhere.herokuapp.com/https://api.imgur.com/3/image/", {
-            method: 'post',
-            headers: {
-                Authorization: `Client-ID ${process.env.REACT_APP_IMGUR_CLIENT_ID}`
-            },
-            body: formdata
-        }).then(data => {
-          if (data) {
-            data.json()
-          } else {
-            setError("An Error has occurred while uploading images. Please try again.")
-            props.parentCallback(null, errorMessage)
+      await axios.post('https://cors-anywhere.herokuapp.com/https://api.imgur.com/3/image/', formdata, {
+        headers: {
+            Authorization: `Client-ID ${process.env.REACT_APP_IMGUR_CLIENT_ID}`
           }
         }).then((data) => {
-            console.log(data)
+            // console.log(data)
           
-          if (data.status === 200) {
-            imgUrls.push(data.data.link)
+          if (data.data.status === 200) {
+            imgUrls.push(data.data.data.link)
           } else {
-            setError("An Error has occurred while updating images. Please try again.")
-            props.parentCallback(null, errorMessage)
+            props.parentCallback(null, "An Error has occurred while uploading images. Please try again.")
           }
+        }).catch(err => {
+          console.log(err)
+          props.parentCallback(null, "An Error has occurred while uploading images. Please try again.")
+          setLoading(false)
+          setDisabled(false)
+          setSuccess(false)
         })
         
       }
-      console.log(imgUrls)
+      // console.log(imgUrls)
 
+    if (imgUrls.length === files.length) {
       props.parentCallback({ imgUrls: imgUrls }, null);
       setFiles([])
       setLoading(false);
       setSuccess(true)
+    }
   }
 
 

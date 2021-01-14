@@ -22,7 +22,7 @@ router.post('/getOwnProjects', async (req, res) => {
 
     try {
         let user = jwt.verify(accessToken, config.jwtSecret);
-        // console.trace(user)
+        console.trace(user)
 
         let projects = await knex('users_projects').where('users_id', user.id)
             .orderBy('project_id','from', 'users_projects')
@@ -31,6 +31,28 @@ router.post('/getOwnProjects', async (req, res) => {
 
         res.json({
             projects
+        })
+
+            
+        } catch (err) {
+        console.trace(err)
+        res.sendStatus(400)
+}   
+})
+    
+//get others' projects
+router.get('/getOthersProjects/:profileUserId', async (req, res) => {
+    try {
+        let profileUserId = parseInt(req.params.profileUserId)
+        console.trace(req.params.profileUserId)
+
+        let profileUsersProjects = await knex('users_projects').where('users_id', profileUserId)
+            .orderBy('project_id','from', 'users_projects')
+
+        console.trace(profileUsersProjects)
+
+        res.json({
+            projects: profileUsersProjects
         })
 
             
@@ -51,38 +73,45 @@ router.post('/getProjectData/:projectId', async (req, res)=>{
 
         let projectData = await knex('users_projects').where('project_id', projectId)
         let projectUserName = await knex('users').where('id', projectData[0].users_id)
-
+        let likedUsers = await knex('users_likes').where('project_id', projectId).andWhere('users_id', requester.id)
         // console.trace(projectData)  
 
         if (projectData.length > 0) {
-        let sameUser;
-        let tagsArray;
-        let {users_id, project_title, project_summary, project_url, project_code_url} = projectData[0]
-        let users_full_name = projectUserName[0].full_name
-        let project_imgs = [projectData[0].project_img_url1, projectData[0].project_img_url2, projectData[0].project_img_url3, projectData[0].project_img_url4, projectData[0].project_img_url5, projectData[0].project_img_url6]
+            let sameUser;
+            let liked;
+            let tagsArray;
+            let {users_id, project_title, project_summary, project_url, project_code_url} = projectData[0]
+            let users_full_name = projectUserName[0].full_name
+            let project_imgs = [projectData[0].project_img_url1, projectData[0].project_img_url2, projectData[0].project_img_url3, projectData[0].project_img_url4, projectData[0].project_img_url5, projectData[0].project_img_url6]
         
-        if (projectData[0].users_id === requester.id) {
-            sameUser = true    
-        } else {
-            sameUser = false
-        }
+            if (projectData[0].users_id === requester.id) {
+                sameUser = true    
+            } else {
+                sameUser = false
+            }
             
+            if (likedUsers.length > 0) {
+                liked = true
+            } else {
+                liked = false
+            }
                 
-        if (projectData[0].project_tags != null) {
-            tagsArray = projectData[0].project_tags.split(",")
-        }
+            if (projectData[0].project_tags != null) {
+                tagsArray = projectData[0].project_tags.split(",")
+            }
             
-        res.json({
-            users_id,
-            users_full_name,
-            project_title,
-            project_imgs,
-            project_summary,
-            project_url,
-            project_code_url,
-            tagsArray,
-            sameUser,
-        })
+            res.json({
+                users_id,
+                users_full_name,
+                project_title,
+                project_imgs,
+                project_summary,
+                project_url,
+                project_code_url,
+                tagsArray,
+                sameUser,
+                liked
+            })
             
         } else {
             res.json({
@@ -229,6 +258,7 @@ router.post('/addNewProject', async (req, res) => {
 
     try {
         let user = jwt.verify(req.body.accessToken, config.jwtSecret);
+        console.trace(user)
 
         let checkNumberOfProjects = await knex('users_projects').where('users_id', user.id)
         
@@ -267,6 +297,10 @@ router.post('/addNewProject', async (req, res) => {
             for (let i = 0; i < req.body.projectDetails.imgUrls.length; i++) {
                 newProjectDetails["project_img_url" + `${i + 1}`] = req.body.projectDetails.imgUrls[i]
             }
+        } else {
+            let pictures = ["https://i.imgur.com/GoRbmAF.jpg","https://i.imgur.com/3zltedL.jpg","https://i.imgur.com/tGm6VNp.jpg","https://i.imgur.com/5ZuBMmC.jpg"]
+
+            newProjectDetails.project_img_url1 = pictures[Math.floor(Math.random()*4)]
         }
         // console.trace(newProjectDetails)
 
@@ -302,6 +336,42 @@ router.delete('/deleteProject/:projectId', async (req, res) => {
         let deleteProject = await knex('users_projects')
             .where('project_id', projectId).del()
             .then(res.sendStatus(200))
+        
+    } catch (err) {
+        console.trace(err)
+        res.sendStatus(400)
+    }
+})
+    
+//like project
+router.post('/likeProject/:projectId', async (req, res) => {
+    try {
+        let projectId = parseInt(req.params.projectId);
+
+        let user = jwt.verify(req.body.accessToken, config.jwtSecret);
+    
+        console.trace(projectId, user.id)
+
+        let likeProject = await knex('users_likes')
+            .where('users_id', user.id).andWhere('project_id', projectId)
+        
+        let liked;
+
+        if (likeProject.length > 0) {
+            //unlike
+            await knex('users_likes').where('users_id', user.id)
+                .andWhere('project_id', projectId).del()
+            liked = false
+        } else {
+            //like
+            await knex('users_likes').insert({
+                users_id: user.id,
+                project_id: projectId,
+            })
+            liked = true
+        }
+        console.trace(liked)
+        res.json({liked})
         
     } catch (err) {
         console.trace(err)

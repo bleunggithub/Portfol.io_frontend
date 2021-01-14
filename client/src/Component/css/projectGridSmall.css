@@ -1,0 +1,23 @@
+.project-grid-small-project-img {
+	width: 90%;
+	height: 220px;
+	object-fit: cover;
+	margin-bottom: 10px;
+	/* padding: 5px; */
+	border-radius: 5px;
+}
+
+.project-grid-small-full-name {
+	margin: 0.2em 0em;
+	font-family: "montserrat";
+}
+.project-grid-small-title {
+	margin: 0.2em 0em;
+}
+
+@media (max-width: 600px) {
+	.project-grid-small-project-img {
+		width: 95%;
+		height: 250px;
+	}
+}

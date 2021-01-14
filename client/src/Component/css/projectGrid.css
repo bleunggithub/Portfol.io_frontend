@@ -13,7 +13,7 @@
 .project-grid-description-container {
 	text-align: justify;
 	text-justify: inter-word;
-	padding: 1em 2em;
+	padding: 0em 2em;
 	font-size: 0.8em;
 }
 
@@ -38,7 +38,11 @@
 }
 
 .project-grid-title {
-	margin: 0.5em 1em;
+	margin: 0em 1em;
+}
+
+.project-grid-add-project-btn-container {
+	margin: 3em 0;
 }
 
 @media (max-width: 1024px) {
@@ -100,5 +104,9 @@
 	}
 	.project-grid-title {
 		margin: 0.5em 0;
+	}
+	.project-grid-add-project-btn-container {
+		margin-top: 5vh;
+		margin-bottom: 0;
 	}
 }

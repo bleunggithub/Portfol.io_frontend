@@ -53,7 +53,7 @@ export default class ProjectEdit extends Component {
         }
         this.setState({
             errorOpen:false,
-            errorMessage:""
+            errorMessage:null
         })
     };
 
