@@ -6,6 +6,7 @@ import TopBar from '../Component/TopBarLoggedIn'
 import ListMenu from '../Component/ListMenu'
 import ProjectGridSmall from '../Component/ProjectGridSmall'
 
+
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -57,16 +58,7 @@ class Dashboard extends Component {
         })
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.viewing !== this.state.viewing) {
-            this.fetchProjects(this.state.viewing, localStorage.getItem('token'))
-        }
-        if (prevState.errorMessage !== this.state.errorMessage) {
-            this.setState({
-                errorOpen: true
-            })
-        }
-    }
+
 
     render() {
         return (
@@ -74,27 +66,22 @@ class Dashboard extends Component {
                 <TopBar value={location} />
                 <Grid container justify="center" className="dashboard-margin-top-container" />
                 <Grid item xs={11} sm={10} style={{ margin: "5vh 0 3vh 0" }}>
-                    <ListMenu style={{ width: '20vw' }} parentCallback={ this.changeViewingContent }/>
+                    <ListMenu style={{ width: '20vw' }} parentCallback={this.changeViewingContent} />
+
                 </Grid>
                 {this.state.viewing === "Following" ? (
                     // following
                     <Grid item xs={12} sm={11}>
-                        <ProjectGridSmall location="dahsboard"  viewing={this.state.viewing} parentCallback={this.changeViewingContentBody} />
+                        <ProjectGridSmall location="dashboard"  viewing={this.state.viewing} parentCallback={this.changeViewingContentBody} />
                     </Grid>
                 ): ""}
                 {this.state.viewing === "Liked" ? (
                     // following
                     <Grid item xs={12} sm={10}>
-                        <ProjectGridSmall location="dahsboard"  viewing={this.state.viewing} parentCallback={this.changeViewingContentBody} />
+                        <ProjectGridSmall location="dashboard"  viewing={this.state.viewing} parentCallback={this.changeViewingContentBody} />
                     </Grid>
                 ) : ""}
-                {this.state.viewing === "All" ? (
-                    // following
-                    <Grid item xs={12} sm={10}>
-                        <ProjectGridSmall location="dahsboard" viewing={this.state.viewing} parentCallback={this.changeViewingContentBody} />
-                    </Grid>
-                ): ""}
-                
+
                 {/* handle errors */}
                 <Snackbar
                     anchorOrigin={{

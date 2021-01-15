@@ -134,7 +134,7 @@ import './css/projectGrid.css';
                     <p>This user has not created any project.</p>
                 </Grid>
                     )}
-                {this.state.projectDetails.length < 3 && this.props.edit === true ? 
+                {this.state.projectDetails.length < 6 && this.props.edit === true ? 
                     (<Grid container justify="center" className="project-grid-add-project-btn-container">
                         <Grid item xs={12}>
                             <Link to={`/project/addNewProject`} style={{ textDecoration: 'none' }}>
@@ -142,7 +142,7 @@ import './css/projectGrid.css';
                             </Link>
                         </Grid>
                         <Grid item xs={12}>
-                            <p style={{fontSize:'0.8em'}}>Each user may create a maximum of <u>3 projects</u>.</p>
+                            <p style={{fontSize:'0.8em'}}>Each user may create a maximum of <u>6 projects</u>.</p>
                         </Grid>
                     </Grid>) : ""
                 }

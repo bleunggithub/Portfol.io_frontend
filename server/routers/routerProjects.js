@@ -1,9 +1,6 @@
-const axios = require('axios');
 const jwt = require('jsonwebtoken');
 const config = require('../jwt/jwtConfig');
-const bcrypt = require('./bcrypt');
-const sendAWSEmail = require('../services/controllers/sendEmail')
-const { json } = require('body-parser');
+
 
 //database
 const { development } = require('../knexfile');
@@ -59,8 +56,8 @@ router.get('/getOthersProjects/:profileUserId', async (req, res) => {
         } catch (err) {
         console.trace(err)
         res.sendStatus(400)
-}   
-})
+        }   
+    })
     
 //get projects with id
 router.post('/getProjectData/:projectId', async (req, res)=>{
@@ -304,7 +301,7 @@ router.post('/addNewProject', async (req, res) => {
         }
         // console.trace(newProjectDetails)
 
-        if (checkNumberOfProjects.length >= 3) {
+        if (checkNumberOfProjects.length >= 6) {
             // update oldest project
             let updateOldestProject = await knex.update(newProjectDetails)
                 .from('users_projects')

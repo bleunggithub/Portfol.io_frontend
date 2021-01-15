@@ -5,19 +5,37 @@
 	margin-bottom: 10px;
 	/* padding: 5px; */
 	border-radius: 5px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.05) inset;
 }
 
 .project-grid-small-full-name {
-	margin: 0.2em 0em;
+	margin: 0.2em 0.5em;
 	font-family: "montserrat";
 }
 .project-grid-small-title {
-	margin: 0.2em 0em;
+	margin: 0.2em 0.5em;
 }
 
+.project-grid-small-description-container {
+	padding: 0 1.5em;
+	margin-bottom: 2em;
+}
+
+@media (max-width: 800px) {
+	.project-grid-small-description-container {
+		padding: 0;
+	}
+	.project-grid-small-project-img {
+		width: 95%;
+		height: 250px;
+	}
+}
 @media (max-width: 600px) {
 	.project-grid-small-project-img {
 		width: 95%;
 		height: 250px;
+	}
+	.project-grid-small-description-container {
+		padding: 0 1.5em;
 	}
 }

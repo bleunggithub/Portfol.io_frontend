@@ -36,6 +36,7 @@
 	height: 160px;
 	width: 160px;
 	object-fit: cover;
+	border-radius: 50%;
 }
 
 .profile-view-light-text {
@@ -176,7 +177,6 @@
 	.profile-view-user-img {
 		height: 100px;
 		width: 100px;
-		object-fit: cover;
 		margin-bottom: 0;
 	}
 
@@ -218,6 +218,7 @@
 	height: 160px;
 	width: 160px;
 	object-fit: cover;
+	border-radius: 50%;
 }
 
 .profile-edit-textField {
@@ -258,7 +259,6 @@
 	.profile-edit-user-img {
 		height: 120px;
 		width: 120px;
-		object-fit: cover;
 		margin-bottom: 1.2em;
 	}
 	.profile-edit-profile-pic-buttons-container {
@@ -270,7 +270,6 @@
 	.profile-edit-user-img {
 		height: 80px;
 		width: 80px;
-		object-fit: cover;
 		margin-bottom: 1.2em;
 	}
 	.profile-edit-profile-pic-upload-filename {
@@ -307,7 +306,6 @@
 	.profile-edit-user-img {
 		height: 100px;
 		width: 100px;
-		object-fit: cover;
 		margin-bottom: 0;
 		margin-left: 1.2em;
 	}

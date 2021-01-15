@@ -89,24 +89,22 @@ class ProfileEdit extends Component {
     }
 
     //imgur api call
-    uploadProfilePicImgur = (e) => {
+    uploadProfilePicImgur = async(e) => {
         const formdata = new FormData()
         formdata.append("image", e.target.files[0])
         // console.log(e.target.files[0])
         // console.log(formdata)
         this.setState({ isLoading: true })
         
-        fetch("https://cors-anywhere.herokuapp.com/https://api.imgur.com/3/image/", {
-            method: 'post',
-            headers: {
-                Authorization: `Client-ID ${process.env.REACT_APP_IMGUR_CLIENT_ID}`
-            },
-            body: formdata
-        }).then(data => data.json()).then(data => { 
-            // console.log(data.data.link)
+        await axios.post('https://cors-anywhere.herokuapp.com/https://api.imgur.com/3/image/', formdata, {
+        headers: {
+            Authorization: `Client-ID ${process.env.REACT_APP_IMGUR_CLIENT_ID}`
+          }
+        }).then(data => { 
+            // console.log(data.data.data.link)
             this.setState({
                 profilePicFileName: "Click upload to save changes.",
-                user_img_url: data.data.link
+                user_img_url: data.data.data.link
             })
             this.setState({ isLoading: false })
             

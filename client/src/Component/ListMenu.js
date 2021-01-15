@@ -1,10 +1,13 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom'
+
+//UI/CSS
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-export default function SimpleMenu(props) {
+function SimpleMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selected, setSelected] = React.useState("Following")
 
@@ -15,6 +18,7 @@ export default function SimpleMenu(props) {
   const handleSelect = (event) => {
     setSelected(event.target.textContent)
     props.parentCallback(event.target.textContent)
+
     setAnchorEl(null);
   }
 
@@ -36,8 +40,9 @@ export default function SimpleMenu(props) {
       >
         <MenuItem onClick={handleSelect}>Following</MenuItem>
         <MenuItem onClick={handleSelect}>Liked</MenuItem>
-        <MenuItem onClick={handleSelect}>All</MenuItem>
       </Menu>
     </div>
   );
 }
+
+export default withRouter(SimpleMenu);

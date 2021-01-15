@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const config = require('../jwt/jwtConfig');
 const bcrypt = require('./bcrypt');
 
-const { json } = require('body-parser');
 
 //database
 const { development } = require('../knexfile');

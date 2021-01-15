@@ -8,6 +8,7 @@
 	height: 400px;
 	object-fit: scale-down;
 	margin: 1em;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.05) inset;
 }
 
 .project-grid-description-container {

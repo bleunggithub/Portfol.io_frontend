@@ -49,27 +49,34 @@ class ProfileView extends Component {
     }
     
     componentDidMount() {
-        this.fetchOthersProjects(this.props.params);
+        this.fetchOthersProjects();
     }
 
-    fetchOthersProjects = (params) => {
-        axios.get(`${process.env.REACT_APP_API_SERVER}/projects/getOthersProjects/${params}`)
-            .then(res => {
-            console.log(res.data)
-            if (res.status !== 200) {
-                
-                this.setState({
-                    errorOpen: true
-                })
-                
-            } else if (res.status === 200 && !res.data.projects) {
-                this.setState({
-                    noProject: true
-                })
-            } else {
-                this.setState({projectDetails: res.data.projects})
-            }
-        })
+    fetchOthersProjects = () => {
+
+        if (!this.props.params) {
+            return;
+        } else {
+            const params = this.props.params;
+    
+            axios.get(`${process.env.REACT_APP_API_SERVER}/projects/getOthersProjects/${params}`)
+                .then(res => {
+                // console.log(res.data)
+                if (res.status !== 200) {
+                    
+                    this.setState({
+                        errorOpen: true
+                    })
+                    
+                } else if (res.status === 200 && !res.data.projects) {
+                    this.setState({
+                        noProject: true
+                    })
+                } else {
+                    this.setState({projectDetails: res.data.projects})
+                }
+            })
+        }
     }
     
 
@@ -151,7 +158,9 @@ class ProfileView extends Component {
                             <p className="profile-view-title-text-projects"><Hidden smUp><Avatar alt={this.props.userData.full_name} src={this.props.userData.user_img_url} style={{display:"inline-block", marginRight:"1em"}} /></Hidden>Projects</p>
                         </Grid>
                         <Grid item xs={12} sm={12} style={{ minHeight: "20vh" }}>
-                            {this.props.params ? (
+                            {!this.props.params ? (
+                               <ProjectGrid />    
+                            ): (
                                 <Grid container justify="center" alignItems="flex-start" className="project-grid-outer-container">
                                 {
                                     this.state.projectDetails.map((project, i) =>
@@ -178,8 +187,6 @@ class ProfileView extends Component {
                                     </Grid>))
                                 }
                                 </Grid>
-                            ): (
-                               <ProjectGrid />    
                             )
                         }
                             
@@ -189,15 +196,63 @@ class ProfileView extends Component {
 
                 <Grid item xs={12} sm={4} md={4}>
                     <Grid container justify="flex-start" alignItems="flex-start" className="profile-view-personal-details-container">
+                            
                         <Grid item xs={2} sm={2}>
-                            <Grid item xs={12} className="profile-view-grid-item profile-view-icons-grid">
-                                {this.props.userData.website_url ? (<Tooltip title="Website" placement="left"><a href={this.props.userData.website_url} rel="noreferrer" target="_blank"><img src={websiteIcon} alt="website" className="profile-view-link-icons" /></a></Tooltip>): ""}
-                                {this.props.userData.github_url ? (<Tooltip title="Github" placement="left"><a href={this.props.userData.github_url} rel="noreferrer" target="_blank"><img src={githubIcon} alt="github" className="profile-view-link-icons" /></a></Tooltip>): ""}
-                                {this.props.userData.linkedin_url ? (<Tooltip title="LinkedIn" placement="left"><a href={this.props.userData.linkedin_url} rel="noreferrer" target="_blank"><img src={linkedinIcon} alt="linkedin" className="profile-view-link-icons" /></a></Tooltip>): ""}
-                                {this.props.userData.twitter_url ? (<Tooltip title="Twitter" placement="left"><a href={this.props.userData.twitter_url} rel="noreferrer" target="_blank"><img src={twitterIcon} alt="twitter" className="profile-view-link-icons" /></a></Tooltip>): ""}
-                                {this.props.userData.facebook_url ? (<Tooltip title="Facebook" placement="left"><a href={this.props.userData.facebook_url} rel="noreferrer" target="_blank"><img src={facebookIcon} alt="facebook" className="profile-view-link-icons" /></a></Tooltip>): ""}
-                            </Grid>
+                                <Grid item xs={12} className="profile-view-grid-item profile-view-icons-grid">
+                                {this.props.userData.website_url ? (
+                                    <Tooltip title="Website" placement="left">
+                                        <a href={this.props.userData.website_url} rel="noreferrer" target="_blank">
+                                            <img src={websiteIcon} alt="website" className="profile-view-link-icons" />
+                                        </a>
+                                    </Tooltip>) : (
+                                        <Tooltip title="Website N/A" placement="left">
+                                            <img src={websiteIcon} alt="website" className="profile-view-link-icons" style={{ filter: 'invert(80%)' }} />
+                                        </Tooltip>
+                                    )
+                                }
+                                {this.props.userData.github_url ? (
+                                    <Tooltip title="Github" placement="left">
+                                        <a href={this.props.userData.github_url} rel="noreferrer" target="_blank">
+                                            <img src={githubIcon} alt="github" className="profile-view-link-icons" />
+                                        </a>
+                                    </Tooltip>) : (
+                                        <Tooltip title="Github N/A" placement="left">
+                                            <img src={githubIcon} alt="github" className="profile-view-link-icons" style={{ filter: 'invert(80%)' }} />
+                                        </Tooltip>
+                                    )}
+                                {this.props.userData.linkedin_url ? (
+                                    <Tooltip title="LinkedIn" placement="left">
+                                        <a href={this.props.userData.linkedin_url} rel="noreferrer" target="_blank">
+                                            <img src={linkedinIcon} alt="linkedin" className="profile-view-link-icons" />
+                                        </a>
+                                    </Tooltip>) : (
+                                        <Tooltip title="Linkedin N/A" placement="left">
+                                            <img src={linkedinIcon} alt="linkedin" className="profile-view-link-icons" style={{ filter: 'invert(80%)' }} />
+                                        </Tooltip>
+                                    )}
+                                {this.props.userData.twitter_url ? (
+                                    <Tooltip title="Twitter" placement="left">
+                                        <a href={this.props.userData.twitter_url} rel="noreferrer" target="_blank">
+                                            <img src={twitterIcon} alt="twitter" className="profile-view-link-icons" />
+                                        </a>
+                                    </Tooltip>) : (
+                                        <Tooltip title="Twitter N/A" placement="left">
+                                            <img src={twitterIcon} alt="twitter" className="profile-view-link-icons" style={{ filter: 'invert(80%)' }} />
+                                        </Tooltip>
+                                    )}
+                                {this.props.userData.facebook_url ? (
+                                    <Tooltip title="Facebook" placement="left">
+                                        <a href={this.props.userData.facebook_url} rel="noreferrer" target="_blank">
+                                            <img src={facebookIcon} alt="facebook" className="profile-view-link-icons" />
+                                        </a>
+                                    </Tooltip>) : (
+                                        <Tooltip title="Facebook N/A" placement="left">
+                                            <img src={facebookIcon} alt="facebook" className="profile-view-link-icons" style={{ filter: 'invert(80%)' }} />
+                                        </Tooltip>
+                                    )}
+                                </Grid>
                         </Grid>
+                        
                         <Grid item xs={10} sm={9} className="profile-view-profile-pic-outer-container">
                             <Grid item xs={4} sm={6} md={7} className="profile-view-grid-item profile-view-profile-pic-container">
                                 <img src={this.props.userData.user_img_url} alt={ this.props.userData.full_name } className="profile-view-user-img" />
