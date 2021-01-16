@@ -9,6 +9,10 @@ import {logoutNowThunk} from '../actions/loginActions'
 import TopBar from '../Component/TopBarLoggedIn'
 import Submenu from '../Component/Submenu'
 
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+
 
 //UI, CSS
 import Grid from '@material-ui/core/grid';
@@ -25,7 +29,9 @@ class ProfilePages extends Component {
         super(props);
         this.state = {
             edit: false,
-            userProfile: {}
+            userProfile: {},
+            errorOpen: false,
+            errorMessage: null,
         }
         let accessToken = localStorage.getItem('token');
         this.props.ownProfileFetch(accessToken)
@@ -43,16 +49,43 @@ class ProfilePages extends Component {
         this.props.logout()
     }
 
-    changeRedirect = (data) => {
+    changeRedirect = () => {
         this.setState({
             edit: false
         })
     }
 
+    //snackbar close
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({
+            errorOpen: false,
+            errorMessage: null
+        })
+    };
+
+    handleError = (data, error) => {
+        this.setState({
+            errorMessage: error,
+            errorOpen: true
+        })
+    }
+
+    componentDidUpdate() {
+        if (this.props.errorMessage != null) {
+            this.setState({
+                errorMessage: this.props.errorMessage,
+                errorOpen: true
+            })
+        }
+    }
+
     render() {
         return (
                 <Grid container>
-                    <React.Fragment>
+                    
                         <TopBar value={locationOwnProfile} />
                         <Submenu item1="YOUR PROFILE" item2="LOGOUT" handleItem1={ this.toSettings } handleItem2={this.logout} />
                             
@@ -63,10 +96,28 @@ class ProfilePages extends Component {
                         </Grid>
                         <Grid item className="profile-switch-label">Edit</Grid>
                     </Grid>
-                    {this.state.edit ? (<ProfileEdit parentCallback={this.changeRedirect}/>
+                    {this.state.edit ? (<ProfileEdit redirectCB={this.changeRedirect}  handleErrorCB={ this.handleError}/>
                     ) : (
-                    <ProfileView />)}
-                    </React.Fragment>
+                        <ProfileView handleErrorCB={ this.handleError}/>)}
+                
+            {/* handle error */}
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                    }}
+                    open={this.state.errorOpen}
+                    autoHideDuration={6000}
+                    onClose={this.handleClose}
+                    message={this.state.errorMessage}
+                    action={
+                        <React.Fragment>
+                            <IconButton size="small" aria-label="close" color="inherit" onClick={this.handleClose}>
+                            <CloseIcon fontSize="small" />
+                            </IconButton>
+                        </React.Fragment>
+                    }
+                />
             </Grid>
         )
     }
@@ -74,6 +125,7 @@ class ProfilePages extends Component {
 
 const mapStateToProps = state => ({
     userData: state.profile.userData,
+    errorMessage:state.profile.errorMessage,
 })
 
 const mapDispatchToProps = dispatch => {

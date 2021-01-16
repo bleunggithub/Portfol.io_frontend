@@ -1,7 +1,12 @@
+.project-grid-small-outer-container {
+	margin-bottom: 0vh;
+	text-align: center;
+}
+
 .project-grid-small-project-img {
 	width: 90%;
-	height: 220px;
-	object-fit: cover;
+	height: 200px;
+	object-fit: scale-down;
 	margin-bottom: 10px;
 	/* padding: 5px; */
 	border-radius: 5px;
@@ -26,14 +31,14 @@
 		padding: 0;
 	}
 	.project-grid-small-project-img {
-		width: 95%;
-		height: 250px;
+		width: 90%;
+		height: 200px;
 	}
 }
 @media (max-width: 600px) {
 	.project-grid-small-project-img {
-		width: 95%;
-		height: 250px;
+		width: 90%;
+		height: 220px;
 	}
 	.project-grid-small-description-container {
 		padding: 0 1.5em;

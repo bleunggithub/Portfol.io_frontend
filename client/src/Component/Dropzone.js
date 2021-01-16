@@ -103,7 +103,7 @@ function Previews(props) {
     // console.log(files)
   }
   
-  //upload img to imgur & send to parents
+  //upload img to cloudinary & send to parents
   const confirmImages = async() => {
     setLoading(true);
     setDisabled(true);
@@ -111,20 +111,24 @@ function Previews(props) {
 
     const imgUrls = [];
 
-    //upload to imgur
+    //upload to cloudinary
     for (let i = 0; i < files.length; i++){
         const formdata = new FormData()
-        formdata.append("image", files[i])
+        formdata.append("file", files[i])
+        formdata.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
 
-      await axios.post('https://cors-anywhere.herokuapp.com/https://api.imgur.com/3/image/', formdata, {
+      await axios.post(`https://cors-anywhere.herokuapp.com/https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_ACC_NAME}/image/upload`, formdata, {
         headers: {
-            Authorization: `Client-ID ${process.env.REACT_APP_IMGUR_CLIENT_ID}`
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Origin',
+            'Access-Control-Allow-Credentials':true
           }
         }).then((data) => {
             // console.log(data)
           
-          if (data.data.status === 200) {
-            imgUrls.push(data.data.data.link)
+          if (data.status === 200) {
+            imgUrls.push(data.data.public_id)
           } else {
             props.parentCallback(null, "An Error has occurred while uploading images. Please try again.")
           }

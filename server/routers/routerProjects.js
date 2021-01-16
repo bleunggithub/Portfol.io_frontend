@@ -295,7 +295,10 @@ router.post('/addNewProject', async (req, res) => {
                 newProjectDetails["project_img_url" + `${i + 1}`] = req.body.projectDetails.imgUrls[i]
             }
         } else {
-            let pictures = ["https://i.imgur.com/GoRbmAF.jpg","https://i.imgur.com/3zltedL.jpg","https://i.imgur.com/tGm6VNp.jpg","https://i.imgur.com/5ZuBMmC.jpg"]
+            let pictures = ["portfolio_capstone_project/placeholder_projects/markus-spiske-Skf7HxARcoc-unsplash_si7uyc",
+                "portfolio_capstone_project/placeholder_projects/christopher-gower-m_HRfLhgABo-unsplash_rr24o1",
+                "portfolio_capstone_project/placeholder_projects/taras-shypka-iFSvn82XfGo-unsplash_oxxz47",
+                "portfolio_capstone_project/placeholder_projects/glenn-carstens-peters-npxXWgQ33ZQ-unsplash_mpehia"]
 
             newProjectDetails.project_img_url1 = pictures[Math.floor(Math.random()*4)]
         }

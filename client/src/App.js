@@ -20,7 +20,6 @@ import AboutProject from './Pages/AboutProject'
 import './App.css';
 import "@fontsource/roboto"
 import "@fontsource/montserrat/400.css"
-import { AnimatedSwitch } from 'react-router-transition';
 
 function App() {
   //define logged in only route
@@ -43,39 +42,10 @@ function App() {
     }))(PurePrivateRoute); 
   
   
-  function mapStyles(styles) {
-    return {
-      transform: `translateY(${styles.offset}%)`,
-    };
-  }
-
-  const riseTransition = {
-    atEnter: {
-      opacity: 0,
-      offset: 100,
-    },
-    atLeave: {
-      opacity: 0,
-      offset:100,
-    },
-    atActive: {
-      opacity: 1,
-      offset:0,
-    },
-  };
-  
  const isAuthenticated = useSelector(state => state.login.isAuthenticated)
 
   return (
     <Router>
-      <AnimatedSwitch
-          atEnter={riseTransition.atEnter}
-          atLeave={riseTransition.atLeave}
-          atActive={riseTransition.atActive}
-          mapStyles={mapStyles}
-        >
-        <Route path="/about" exact component={AboutProject} />
-      </AnimatedSwitch>
 
       <Switch>
         {isAuthenticated ? "": <TopBar />}
@@ -87,6 +57,7 @@ function App() {
         <PrivateRoute path="/settings" exact component={Settings} /> 
         <PrivateRoute path="/discover" exact component={Discover} />
         <PrivateRoute path="/dashboard" exact component={Dashboard} />
+        <Route path="/about" exact component={AboutProject} />
         <Route path="/signUp" exact component={SignUp} />
         <Route path="/logIn" exact component={LogIn} />
         <Route path="/" exact component={Landing} />

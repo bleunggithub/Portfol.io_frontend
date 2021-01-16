@@ -7,6 +7,7 @@ import Search from '../Component/Search'
 
 //UI, CSS
 import Grid from '@material-ui/core/grid';
+
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -39,13 +40,14 @@ export default class Discover extends Component {
 
     handleError = (data, error) => {
         this.setState({
-            error: error
+            errorMessage: error,
+            errorOpen: true
         })
     }
 
-    openSearchResults = () => {
+    openSearchResults = (data) => {
         this.setState({
-            searchOpen:true
+            searchOpen:data
         })
     }
 
@@ -54,14 +56,14 @@ export default class Discover extends Component {
     <Grid container justify="center">
                 <TopBar value={location} />
                 <Grid container justify="center" className="discover-margin-top-container" />
-                <Grid item xs={11} sm={10} style={{ margin: "5vh 0 3vh 0" }}>
+                <Grid item xs={12} sm={11} style={{ margin: "5vh 0 3vh 0" }}>
                     {/* to add search bar */}
-                    <Search parentCallback={ this.handleError } parentCallbackSearch={this.openSearchResults}/>
+                    <Search handleError={ this.handleError } search={this.openSearchResults}/>
                 </Grid>
                 
                 {this.state.searchOpen ? "" : (
                     <Grid item xs={12} sm={11}>
-                        <ProjectGridSmall location="discover" parentCallback={this.handleError} />
+                        <ProjectGridSmall location="discover" handleError={this.handleError} />
                     </Grid>
                 )}
    

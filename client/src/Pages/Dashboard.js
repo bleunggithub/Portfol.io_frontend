@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+
 
 //Components, pages
 import TopBar from '../Component/TopBarLoggedIn'
@@ -28,12 +28,11 @@ class Dashboard extends Component {
         }
     }
 
-    // toFollowed = () => {
-    //     this.props.history.push("/followed")
-    // }
-    // toLiked = () => {
-    //     this.props.history.push("/liked")
-    // }
+    changeViewingContent = (data) => {
+        this.setState({
+            viewing: data
+        })
+    }
 
     //snackbar close
     handleClose = (event, reason) => {
@@ -46,17 +45,14 @@ class Dashboard extends Component {
         })
     };
 
-    changeViewingContent = (data) => {
+
+    handleError= (data, error) => {
         this.setState({
-            viewing: data
+            errorMessage: error,
+            errorOpen:true
         })
     }
 
-    changeViewingContentBody = (data, error) => {
-        this.setState({
-            error: error
-        })
-    }
 
 
 
@@ -72,13 +68,13 @@ class Dashboard extends Component {
                 {this.state.viewing === "Following" ? (
                     // following
                     <Grid item xs={12} sm={11}>
-                        <ProjectGridSmall location="dashboard"  viewing={this.state.viewing} parentCallback={this.changeViewingContentBody} />
+                        <ProjectGridSmall location="dashboard"  viewing={this.state.viewing} handleErrorCB={this.handleError} />
                     </Grid>
                 ): ""}
                 {this.state.viewing === "Liked" ? (
                     // following
                     <Grid item xs={12} sm={10}>
-                        <ProjectGridSmall location="dashboard"  viewing={this.state.viewing} parentCallback={this.changeViewingContentBody} />
+                        <ProjectGridSmall location="dashboard" viewing={this.state.viewing} handleErrorCB={this.handleError} />
                     </Grid>
                 ) : ""}
 
@@ -105,4 +101,4 @@ class Dashboard extends Component {
     }
 }
 
-export default withRouter(Dashboard);
+export default Dashboard;

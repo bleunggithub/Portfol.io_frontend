@@ -73,6 +73,7 @@
 
 .profile-view-link-icons {
 	width: 2.5em;
+	height: 2.5em;
 	margin: 0.5em;
 }
 
@@ -128,6 +129,7 @@
 
 	.profile-view-link-icons {
 		width: 2em;
+		height: 2em;
 		margin: 0.2em 0.5em;
 	}
 
@@ -157,6 +159,7 @@
 
 	.profile-view-link-icons {
 		width: 1.6em;
+		height: 1.6em;
 		margin: 0.2em 0.5em;
 	}
 
@@ -214,6 +217,7 @@
 }
 
 /* EDIT */
+
 .profile-edit-user-img {
 	height: 160px;
 	width: 160px;

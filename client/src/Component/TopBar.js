@@ -75,7 +75,11 @@ export default function TopBar() {
     }
   const addHistoryLogIn = () => {
         history.push("/logIn")
-    }
+  }
+  
+  const parentChangeTabCB = (data) => {
+    setValue(data)
+  }
 
   return (
     <div className={classes.root}>
@@ -99,7 +103,7 @@ export default function TopBar() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={1}>
-        <Landing />
+        <Landing parentChangeTabCB={parentChangeTabCB} />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <SignUp />

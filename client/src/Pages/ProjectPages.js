@@ -7,6 +7,10 @@ import TopBar from '../Component/TopBarLoggedIn'
 import ProjectView from '../Component/ProjectView'
 import ProjectEdit from '../Component/ProjectEdit'
 
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+
 //UI, CSS
 import Grid from '@material-ui/core/grid';
 import Switch from '@material-ui/core/Switch';
@@ -18,12 +22,25 @@ export default class ProjectPages extends Component {
         super(props);
         this.state = {
             projectDetails: {},
-            edit:false
+            edit: false,
+            errorOpen: false,
+            errorMessage: null,
         }
         const accessToken = localStorage.getItem('token')
         const projectId = this.props.match.params.id
         this.fetchProjects(projectId, accessToken)
     }
+
+    //snackbar close
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({
+            errorOpen: false,
+            errorMessage: null
+        })
+    };
 
     fetchProjects = (projectId, accessToken) => {
         axios.post(`${process.env.REACT_APP_API_SERVER}/projects/getProjectData/${projectId}`, {
@@ -67,7 +84,26 @@ export default class ProjectPages extends Component {
                     <ProjectEdit params={this.props.match.params.id} parentCallback={this.changeRedirect} />
                 ) : (
                     <ProjectView params={this.props.match.params.id} />
-                )}
+                    )}
+                
+                {/* handle error */}
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                    }}
+                    open={this.state.errorOpen}
+                    autoHideDuration={6000}
+                    onClose={this.handleClose}
+                    message={this.state.errorMessage}
+                    action={
+                        <React.Fragment>
+                            <IconButton size="small" aria-label="close" color="inherit" onClick={this.handleClose}>
+                            <CloseIcon fontSize="small" />
+                            </IconButton>
+                        </React.Fragment>
+                    }
+                />
 
             </Grid>
         )

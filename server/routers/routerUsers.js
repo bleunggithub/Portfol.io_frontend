@@ -3,6 +3,8 @@ const config = require('../jwt/jwtConfig');
 const bcrypt = require('./bcrypt');
 const sendAWSEmail = require('../services/controllers/sendEmail')
 
+
+
 //database
 const { development } = require('../knexfile');
 const knex = require("knex")(development);

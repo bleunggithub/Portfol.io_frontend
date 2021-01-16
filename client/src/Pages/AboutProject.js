@@ -4,11 +4,14 @@ import React, { Component } from 'react'
 import Grid from '@material-ui/core/grid';
 
 
+
 import './css/about.css'
 
 
 
 export default class AboutProject extends Component {
+
+
     render() {
         return (
             <Grid container justify="center" alignItems="flex-start" style={{ height: "100vh" }}>

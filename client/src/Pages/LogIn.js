@@ -4,10 +4,6 @@ import { Redirect } from 'react-router-dom';
 //redux
 import { connect } from 'react-redux';
 import { loginUserThunk } from '../actions/loginActions';
-
-//Components, pages
-import fbIcon from '../img/icons/facebook.png'
-import googleIcon from '../img/icons/google.png'
 import { loginFacebookThunk, loginGoogleThunk } from '../actions/loginActions';
 
 
@@ -15,9 +11,15 @@ import { loginFacebookThunk, loginGoogleThunk } from '../actions/loginActions';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import { GoogleLogin } from 'react-google-login';
 
+
 //UI/ CSS
 import { Button, Grid, TextField } from '@material-ui/core';
 import './css/logIn.css';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import { Image, Placeholder } from 'cloudinary-react';
 
 const textFieldStyle = {
     width: "100%",
@@ -30,6 +32,8 @@ class LogIn extends Component {
         this.state = {
             email: '',
             password: '',
+            errorOpen: false,
+            errorMessage: null
         }
     }
 
@@ -64,6 +68,26 @@ class LogIn extends Component {
         }
         return null;
     } 
+
+        //snackbar close
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({
+            errorOpen:false,
+            errorMessage:null
+        })
+    };
+
+    componentDidUpdate() {
+        if (this.props.errorMessage != null) {
+            this.setState({
+                errorMessage: this.props.errorMessage,
+                errorOpen: true
+            })
+        }
+    }
     
     render() {
         // if isAuthenticated, redirect to dashboard
@@ -91,22 +115,63 @@ class LogIn extends Component {
                         autoLoad={false}
                         fields="name,email,picture"
                         callback={this.responseFacebook}
-                        render={renderProps => (<img src={fbIcon} onClick={renderProps.onClick} style={{cursor:'pointer', margin: '0 1em', width: '2em'}} alt="Facebook"/>)} 
+                        render={renderProps => (
+                            <Image
+                                cloudName={process.env.REACT_APP_CLOUDINARY_ACC_NAME}
+                                public_id="portfolio_capstone_project/icons/facebook_l7ml0w"
+                                width="32"
+                                height="32"
+                                loading="lazy"
+                                className="logIn-icons-social"
+                                onClick={renderProps.onClick}
+                            >
+                                <Placeholder type="vectorize" />
+                            </Image>
+                        )} 
                             />
                     <GoogleLogin
                         clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                        render={renderProps => (
-                        <img src={googleIcon} onClick={renderProps.onClick} style={{cursor:'pointer', margin: '0 1em', width: '2em'}} alt="Google"/>
-                        )}
                         onSuccess={this.responseGoogle}
                         onFailure={this.responseGoogle}
                         cookiePolicy={'single_host_origin'}
+                        render={renderProps => (
+                            <Image
+                                cloudName={process.env.REACT_APP_CLOUDINARY_ACC_NAME}
+                                public_id="portfolio_capstone_project/icons/google_niqh9w"
+                                width="32"
+                                height="32"
+                                loading="lazy"
+                                className="logIn-icons-social"
+                                onClick={renderProps.onClick}
+                            >
+                                <Placeholder type="vectorize" />
+                            </Image>
+                        )}
                     />
                         
                     </Grid>
                     </Grid>
                 </Grid>
-            </form>
+                </form>
+
+                {/* handle errors */}
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                    }}
+                    open={this.state.errorOpen}
+                    autoHideDuration={6000}
+                    onClose={this.handleClose}
+                    message={this.state.errorMessage}
+                    action={
+                        <React.Fragment>
+                            <IconButton size="small" aria-label="close" color="inherit" onClick={this.handleClose}>
+                            <CloseIcon fontSize="small" />
+                            </IconButton>
+                        </React.Fragment>
+                    }
+                />
             </Grid>
 
         </React.Fragment>
@@ -121,6 +186,7 @@ class LogIn extends Component {
 //redux
 const mapStateToProps = state => ({
     isAuthenticated: state.login.isAuthenticated,
+    errorMessage: state.login.errorMessage,
     userType: state.login.userType,
 })
 

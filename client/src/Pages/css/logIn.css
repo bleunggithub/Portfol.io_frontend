@@ -16,6 +16,12 @@
 	background: linear-gradient(to top, #546e7a85 40%, transparent 40%);
 }
 
+.logIn-icons-social {
+	cursor: pointer;
+	margin: 0 1em;
+	width: 2em;
+}
+
 @media (max-width: 600px) {
 	.logIn-grid-container {
 		margin: 10vh 0;

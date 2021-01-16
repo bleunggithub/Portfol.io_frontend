@@ -11,6 +11,9 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
+//images
+import { Image, Placeholder } from 'cloudinary-react';
+
 //Components / Pages
 import DeleteDialog from './DeleteAlert.js'
 
@@ -110,7 +113,18 @@ import './css/projectGrid.css';
                     this.state.projectDetails.map((project, i) => 
                         (<Grid item key={i} xs={11} sm={11} className="project-grid-project-container">
                             <Grid item xs={12} className="project-grid-img-container">
-                        <Link to={`/project/${project.project_id}`}><img src={project.project_img_url1} alt={project.project_title} className="project-grid-project-img" /></Link>
+                            <Link to={`/project/${project.project_id}`}>                            
+                                <Image
+                                    cloudName={process.env.REACT_APP_CLOUDINARY_ACC_NAME}
+                                    public_id={project.project_img_url1}
+                                    height="400"
+                                    crop="fill"
+                                    loading="lazy"
+                                    className="project-grid-project-img"
+                                >
+                                    <Placeholder type="vectorize" />
+                                </Image>
+                            </Link>
                             </Grid>
                             <Grid item xs={12} className="project-grid-description-container">
                                 <p className="project-grid-description project-grid-title"><b>{ project.project_title }</b></p>

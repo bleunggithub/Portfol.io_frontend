@@ -95,6 +95,9 @@ export default class NewProjectPage extends Component {
             this.setState({
                 errorOpen: true
             })
+            setTimeout(() => {
+                this.setState({ errorMessage: null })
+            }, 6000)
         }
     }
     
@@ -123,6 +126,7 @@ export default class NewProjectPage extends Component {
                         </Grid>
                     </Grid>
                 </form>
+                {/* handle error */}
                 <Snackbar
                     anchorOrigin={{
                         vertical: 'bottom',

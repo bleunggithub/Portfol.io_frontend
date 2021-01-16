@@ -1,0 +1,46 @@
+.search-outer-container {
+	margin-bottom: 0vh;
+	text-align: center;
+}
+.search-project-img {
+	width: 90%;
+	height: 200px;
+	object-fit: scale-down;
+	margin-bottom: 10px;
+	/* padding: 5px; */
+	border-radius: 5px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.05) inset;
+}
+
+.search-description-container {
+	padding: 0 1.5em;
+	margin-bottom: 2em;
+}
+
+.search-full-name {
+	margin: 0.2em 0.5em;
+	font-family: "montserrat";
+}
+
+.search-title {
+	margin: 0.2em 0.5em;
+}
+
+@media (max-width: 800px) {
+	.search-description-container {
+		padding: 0;
+	}
+	.search-project-img {
+		width: 90%;
+		height: 200px;
+	}
+}
+@media (max-width: 600px) {
+	.search-project-img {
+		width: 90%;
+		height: 220px;
+	}
+	.search-description-container {
+		padding: 0 1.5em;
+	}
+}

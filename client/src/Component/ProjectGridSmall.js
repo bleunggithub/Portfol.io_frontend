@@ -4,10 +4,12 @@ import axios from 'axios'
 
 //UI/CSS
 import Grid from '@material-ui/core/grid';
-import Avatar from '@material-ui/core/Avatar';
 import Pagination from '@material-ui/lab/Pagination';
 
 import './css/projectGridSmall.css';
+
+//images
+import { Image, Placeholder } from 'cloudinary-react';
 
 
 export default class ProjectGridSmall extends Component {
@@ -42,14 +44,14 @@ export default class ProjectGridSmall extends Component {
                     this.setState({
                         errorMessage: "An Error has occurred while loading project data. Please try again.",
                     })
-                    this.props.parentCallback(null, this.state.errorMessage)
+                    this.props.handleError(null, this.state.errorMessage)
             }
             }).catch((err) => {
                 console.log(err)
                 this.setState({
                     errorMessage:"An Error has occurred while loading project data. Please try again."
                 })
-                this.props.parentCallback(null, this.state.errorMessage)
+                this.props.handleError(null, this.state.errorMessage)
             })
 
         } else if (this.props.location === "dashboard") {
@@ -67,14 +69,14 @@ export default class ProjectGridSmall extends Component {
                     this.setState({
                         errorMessage: "An Error has occurred while loading project data. Please try again.",
                     })
-                    this.props.parentCallback(null, this.state.errorMessage)
+                    this.props.handleError(null, this.state.errorMessage)
             }
             }).catch((err) => {
                 console.log(err)
                 this.setState({
                     errorMessage:"An Error has occurred while loading project data. Please try again."
                 })
-                this.props.parentCallback(null, this.state.errorMessage)
+                this.props.handleError(null, this.state.errorMessage)
             })
         }
 
@@ -85,7 +87,7 @@ export default class ProjectGridSmall extends Component {
             this.fetchProjects()
         }
         if (prevState.errorMessage !== this.state.errorMessage) {
-            this.props.parentCallback(null, this.state.errorMessage)
+            this.props.handleError(null, this.state.errorMessage)
         }
     }
 
@@ -104,20 +106,41 @@ export default class ProjectGridSmall extends Component {
 
 
         return (
-            <Grid container justify="flex-start" alignItems="flex-start" className="project-grid-outer-container" style={{minHeight: '100vh', marginBottom:'3em'}} >
+            <Grid container justify="flex-start" alignItems="flex-start" className="project-grid-small-outer-container" style={{marginBottom:'3em'}} >
 
                 {this.state.projectDetails.length > 0 ? (
                     currentProjects.map((project, i) => 
                     (<Grid item key={i} xs={12} sm={6} md={4} lg={3} className="project-grid-small-project-container" style={{marginBottom:'1em'}}>
                             <Grid item xs={12} className="project-grid-img-container">
                             <Link to={`/project/${project.project_id}`}>
-                                <img src={project.project_img_url1} alt={project.project_title} className="project-grid-small-project-img" />
+                                <Image
+                                    cloudName={process.env.REACT_APP_CLOUDINARY_ACC_NAME}
+                                    public_id={project.project_img_url1}
+                                    height="220"
+                                    crop="fill"
+                                    loading="lazy"
+                                    className="project-grid-small-project-img"
+                                >
+                                    <Placeholder type="vectorize" />
+                                </Image>
                             </Link>
                             </Grid>
                         <Grid container className="project-grid-small-description-container" >
                             <Grid item xs={2}>
                             <Link to={`/profile/${project.users_id}`}>
-                                <Avatar alt={project.full_name} src={project.user_img_url} /> 
+                                <Image
+                                    cloudName={process.env.REACT_APP_CLOUDINARY_ACC_NAME}
+                                    public_id={project.user_img_url}
+                                    width="40"
+                                    height="40"
+                                    gravity="face"
+                                    crop="fill"
+                                    radius="max"
+                                    loading="lazy"
+                                    style={{ display: "inline-block", marginRight: "1em",marginTop:"0.2em" }}
+                                >
+                                    <Placeholder type="vectorize" />
+                                </Image>
                             </Link>
                             </Grid>
                             <Grid item xs={10} style={{textAlign:'left'}}>

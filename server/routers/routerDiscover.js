@@ -30,6 +30,28 @@ router.get('/getAll', async (req, res) => {
     }
 })
     
+//get projects for landing page
+router.get('/get12', async (req, res) => {
+    try {
+
+        let projects = await knex('users_projects')
+            .select('project_id', 'users_id', 'project_title', 'project_img_url1')
+            .join('users', 'users_projects.users_id', '=', 'id').select('full_name', 'user_img_url')
+            .limit(12).orderBy('project_id', 'desc')
+
+        console.trace(projects)
+
+        res.json({
+            projectDetails: projects,
+        })
+
+    } catch (err) {
+        console.trace(err)
+        res.sendStatus(400)
+    }
+})
+    
+    
 router.post('/search', async (req, res) => {
     try {
         let searchKeywords = req.body.searchKeywords;
@@ -79,6 +101,8 @@ router.post('/search', async (req, res) => {
     } 
 })
 
+    
+    
 
     return router; 
 }
