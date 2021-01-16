@@ -16,10 +16,10 @@ export default class Search extends Component {
         this.state = {
             searchKeywords: "",
             searchResults: [],
+            noMatch:false,
             
             currentPage: 1,
             projectsPerPage: 20,
-            errorMessage: null,
         }
     }
 
@@ -37,8 +37,34 @@ export default class Search extends Component {
         axios.post(`${process.env.REACT_APP_API_SERVER}/discover/search`, {
             searchKeywords: this.state.searchKeywords
         }).then(res => {
-            console.log(res.data) // array of object to map
+            console.log(res.data) // res.data.searchResults
 
+            if (res.status === 200 && res.data.length > 0) {
+                this.props.parentCallbackSearch()
+                this.setState({
+                    searchResults: res.data.searchKeywords,
+                    searchKeywords: ""
+                })
+            } else if (res.status === 200 && res.data.length === 0) {
+                this.props.parentCallbackSearch()
+                this.setState({
+                    searchKeywords: "",
+                    noMatch:true
+                })
+            } else {
+                console.log(res)
+                this.props.parentCallback("An error has occurred while searching the database. Please try again.")
+                this.setState({
+                    searchKeywords:""
+                })
+            }
+
+        }).catch((err) => {
+            console.log(err)
+            this.props.parentCallback("An error has occurred while searching the database. Please try again.")
+            this.setState({
+                searchKeywords:""
+            })
         })
     }
 
@@ -57,6 +83,14 @@ export default class Search extends Component {
                         <Button color="primary" variant="outlined" type="submit" ><SearchIcon /> Search </Button>
                 </form>
                 </Grid>
+
+
+                {/* searched, no matching projects */}
+                {this.state.searchResults.length === 0 && this.state.noMatch ? (
+                    <Grid container justify="center">
+                        <p>Your Search has no match.</p>
+                        </Grid>
+                ) : ""}
 
                 {this.state.searchResults.length > 0 ? (
                     <Grid container justify="center">
