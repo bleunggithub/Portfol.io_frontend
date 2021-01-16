@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
+
 //UI/CSS
 import Grid from '@material-ui/core/grid';
 import Button from '@material-ui/core/Button';
@@ -10,13 +11,16 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
+//images
+import { Image, Placeholder } from 'cloudinary-react';
+
 //Components / Pages
 import DeleteDialog from './DeleteAlert.js'
 
 import './css/projectGrid.css';
 
 
-export default class ProjectGrid extends Component {
+ class ProjectGrid extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -32,24 +36,26 @@ export default class ProjectGrid extends Component {
     
 
     fetchProjects = (accessToken) => {
-        axios.post(`${process.env.REACT_APP_API_SERVER}/projects/getOwnProjects/`, {
-            accessToken
-        }).then(res => {
-            // console.log(res.data)
-            if (res.status !== 200) {
-                this.setState({
-                    errorOpen: true
-                })
-                
-            } else if (res.status === 200 && !res.data.projects) {
-                this.setState({
-                    noProject: true
-                })
-            } else {
-                this.setState({projectDetails: res.data.projects})
-            }
-        })
-    }
+            axios.post(`${process.env.REACT_APP_API_SERVER}/projects/getOwnProjects/`, {
+                accessToken
+            }).then(res => {
+                // console.log(res.data)
+                if (res.status !== 200) {
+                    this.setState({
+                        errorOpen: true
+                    })
+                    
+                } else if (res.status === 200 && !res.data.projects) {
+                    this.setState({
+                        noProject: true
+                    })
+                } else {
+                    this.setState({projectDetails: res.data.projects})
+                }
+            })
+        }
+    
+    
 
     //snackbar close
     handleClose = (event, reason) => {
@@ -107,7 +113,18 @@ export default class ProjectGrid extends Component {
                     this.state.projectDetails.map((project, i) => 
                         (<Grid item key={i} xs={11} sm={11} className="project-grid-project-container">
                             <Grid item xs={12} className="project-grid-img-container">
-                        <Link to={`/project/${project.project_id}`}><img src={project.project_img_url1} alt={project.project_title} className="project-grid-project-img" /></Link>
+                            <Link to={`/project/${project.project_id}`}>                            
+                                <Image
+                                    cloudName={process.env.REACT_APP_CLOUDINARY_ACC_NAME}
+                                    public_id={project.project_img_url1}
+                                    height="400"
+                                    crop="fill"
+                                    loading="lazy"
+                                    className="project-grid-project-img"
+                                >
+                                    <Placeholder type="vectorize" />
+                                </Image>
+                            </Link>
                             </Grid>
                             <Grid item xs={12} className="project-grid-description-container">
                                 <p className="project-grid-description project-grid-title"><b>{ project.project_title }</b></p>
@@ -131,10 +148,17 @@ export default class ProjectGrid extends Component {
                     <p>This user has not created any project.</p>
                 </Grid>
                     )}
-                {this.state.projectDetails.length < 3 && this.props.edit === true ? 
-                    (<Link to={`/project/addNewProject`} style={{ textDecoration: 'none' }}>
-                        <Button variant="contained" color="primary" size="small" style={{ margin: "0 0.5em" }}> Add a project</Button>
-                    </Link>) : ""
+                {this.state.projectDetails.length < 6 && this.props.edit === true ? 
+                    (<Grid container justify="center" className="project-grid-add-project-btn-container">
+                        <Grid item xs={12}>
+                            <Link to={`/project/addNewProject`} style={{ textDecoration: 'none' }}>
+                                <Button variant="contained" disableElevation style={{ margin: "0 0.5em" }}> Add a project</Button>
+                            </Link>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <p style={{fontSize:'0.8em'}}>Each user may create a maximum of <u>6 projects</u>.</p>
+                        </Grid>
+                    </Grid>) : ""
                 }
 
                 {/* delete project */}
@@ -163,10 +187,6 @@ export default class ProjectGrid extends Component {
         )        
     }
     
-}
+ }
 
-
-//project img 1 - https://i.imgur.com/GoRbmAF.jpg
-//project img 2 - https://i.imgur.com/3zltedL.jpg
-//project img 3 - https://i.imgur.com/tGm6VNp.jpg
-//project img 4 - https://i.imgur.com/5ZuBMmC.jpg
+export default ProjectGrid

@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 //UI, Components
 import { useDropzone } from 'react-dropzone';
@@ -99,10 +100,10 @@ function Previews(props) {
     items.splice(result.destination.index, 0, reorderedItem)
 
     setFiles(items)
-    console.log(files)
+    // console.log(files)
   }
   
-  //upload img to imgur & send to parents
+  //upload img to cloudinary & send to parents
   const confirmImages = async() => {
     setLoading(true);
     setDisabled(true);
@@ -110,42 +111,44 @@ function Previews(props) {
 
     const imgUrls = [];
 
-    //upload to imgur
+    //upload to cloudinary
     for (let i = 0; i < files.length; i++){
         const formdata = new FormData()
-        formdata.append("image", files[i])
+        formdata.append("file", files[i])
+        formdata.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
 
-        await fetch("https://cors-anywhere.herokuapp.com/https://api.imgur.com/3/image/", {
-            method: 'post',
-            headers: {
-                Authorization: `Client-ID ${process.env.REACT_APP_IMGUR_CLIENT_ID}`
-            },
-            body: formdata
-        }).then(data => {
-          if (data) {
-            data.json()
-          } else {
-            setError("An Error has occurred while uploading images. Please try again.")
-            props.parentCallback(null, errorMessage)
+      await axios.post(`https://cors-anywhere.herokuapp.com/https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_ACC_NAME}/image/upload`, formdata, {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Origin',
+            'Access-Control-Allow-Credentials':true
           }
         }).then((data) => {
-            console.log(data)
+            // console.log(data)
           
           if (data.status === 200) {
-            imgUrls.push(data.data.link)
+            imgUrls.push(data.data.public_id)
           } else {
-            setError("An Error has occurred while updating images. Please try again.")
-            props.parentCallback(null, errorMessage)
+            props.parentCallback(null, "An Error has occurred while uploading images. Please try again.")
           }
+        }).catch(err => {
+          console.log(err)
+          props.parentCallback(null, "An Error has occurred while uploading images. Please try again.")
+          setLoading(false)
+          setDisabled(false)
+          setSuccess(false)
         })
         
       }
-      console.log(imgUrls)
+      // console.log(imgUrls)
 
+    if (imgUrls.length === files.length) {
       props.parentCallback({ imgUrls: imgUrls }, null);
       setFiles([])
       setLoading(false);
       setSuccess(true)
+    }
   }
 
 

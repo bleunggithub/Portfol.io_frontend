@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 // UI
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/grid';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -76,7 +75,11 @@ export default function TopBar() {
     }
   const addHistoryLogIn = () => {
         history.push("/logIn")
-    }
+  }
+  
+  const parentChangeTabCB = (data) => {
+    setValue(data)
+  }
 
   return (
     <div className={classes.root}>
@@ -100,7 +103,7 @@ export default function TopBar() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={1}>
-        <Landing />
+        <Landing parentChangeTabCB={parentChangeTabCB} />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <SignUp />

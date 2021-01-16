@@ -5,6 +5,8 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { updateProfileThunk } from '../actions/profileActions'
 
+//images
+import { Image, Placeholder } from 'cloudinary-react';
 
 //UI, CSS
 import Grid from '@material-ui/core/grid';
@@ -18,6 +20,7 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CheckIcon from '@material-ui/icons/Check';
+
 
 
 import './css/profile.css';
@@ -84,32 +87,43 @@ class ProfileEdit extends Component {
     uploadProfilePic = (e) => {
         if (e.target.files.length > 0) {
             this.setState({ profilePicFileName: e.target.files[0].name })
-            this.uploadProfilePicImgur(e);
+            this.uploadProfilePicCloud(e);
         }
     }
 
-    //imgur api call
-    uploadProfilePicImgur = (e) => {
+    //cloudinary api call
+    uploadProfilePicCloud = (e) => {
         const formdata = new FormData()
-        formdata.append("image", e.target.files[0])
-        // console.log(e.target.files[0])
-        // console.log(formdata)
+        formdata.append("file", e.target.files[0])
+        formdata.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
+
         this.setState({ isLoading: true })
         
-        fetch("https://cors-anywhere.herokuapp.com/https://api.imgur.com/3/image/", {
-            method: 'post',
-            headers: {
-                Authorization: `Client-ID ${process.env.REACT_APP_IMGUR_CLIENT_ID}`
-            },
-            body: formdata
-        }).then(data => data.json()).then(data => { 
-            // console.log(data.data.link)
-            this.setState({
-                profilePicFileName: "Click upload to save changes.",
-                user_img_url: data.data.link
-            })
+        axios.post(`https://cors-anywhere.herokuapp.com/https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_ACC_NAME}/image/upload`, formdata, {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Origin',
+            'Access-Control-Allow-Credentials':true
+          }
+        }).then(data => { 
+            // console.log(data)
+
+            if (data.status !== 200) {
+                this.props.handleErrorCB(null, "An error has occurred, please try again.")
+
+            } else {
+                this.setState({
+                    profilePicFileName: "Click upload to save changes.",
+                    user_img_url: data.data.public_id
+                })
+            }
+
             this.setState({ isLoading: false })
-            
+        }).catch(err => {
+            console.log(err)
+            this.props.handleErrorCB(null, "An error has occurred, please try again.")
+            this.setState({ isLoading: false })
         })
     }
 
@@ -130,8 +144,6 @@ class ProfileEdit extends Component {
 
     }
 
-    
-    
     changePersonalDetails = (e) => {
         e.preventDefault();
         
@@ -168,8 +180,8 @@ class ProfileEdit extends Component {
             updateSuccessDetails:true
         })
         setTimeout(() => {
-            this.props.parentCallback(false)
-        }, 1500)
+            this.props.redirectCB()
+        }, 1000)
     }
     
 
@@ -187,8 +199,8 @@ class ProfileEdit extends Component {
             updateSuccessSummary:true
         })
         setTimeout(() => {
-            this.props.parentCallback(false)
-        }, 1500)
+            this.props.redirectCB()
+        }, 1000)
     }
     
 
@@ -202,7 +214,19 @@ class ProfileEdit extends Component {
                         <Grid item xs={12} md={12}>
                             <p className="profile-view-title-text-projects">
                                 <Hidden smUp>
-                                    <Avatar alt={this.props.userData.full_name} src={this.props.userData.user_img_url} style={{ display: "inline-block", marginRight: "1em" }} />
+                                    <Image
+                                        cloudName={process.env.REACT_APP_CLOUDINARY_ACC_NAME}
+                                        public_id={this.props.userData.user_img_url}
+                                        width="40"
+                                        height="40"
+                                        gravity="face"
+                                        crop="fill"
+                                        radius="max"
+                                        loading="lazy"
+                                        style={{ display: "inline-block", marginRight: "1em",verticalAlign:"sub" }}
+                                    >
+                                        <Placeholder type="vectorize" />
+                                    </Image>
                                 </Hidden>
                             Projects
                             </p>
@@ -218,7 +242,21 @@ class ProfileEdit extends Component {
                         <Grid item sm={11}>
                                 <Grid container>
                                     <Grid item xs={4} sm={4} md={5} className="profile-view-grid-item profile-view-profile-pic-container">
-                                        <img src={this.props.userData.user_img_url} alt={ this.props.userData.full_name } className="profile-edit-user-img" />
+                                        <Image
+                                            cloudName={process.env.REACT_APP_CLOUDINARY_ACC_NAME}
+                                            public_id={this.props.userData.user_img_url}
+                                            width="160"
+                                            height="160"
+                                            gravity="face"
+                                            crop="fill"
+                                            radius="max"
+                                        loading="lazy"
+                                        className="profile-edit-user-img"
+                                        >
+                                          <Placeholder type="vectorize" />
+                                        </Image>
+
+                                    
                                     </Grid>  
                                     
                                     <Grid item xs={8} sm={8} md={7}>

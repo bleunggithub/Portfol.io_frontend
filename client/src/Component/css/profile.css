@@ -36,6 +36,7 @@
 	height: 160px;
 	width: 160px;
 	object-fit: cover;
+	border-radius: 50%;
 }
 
 .profile-view-light-text {
@@ -72,6 +73,7 @@
 
 .profile-view-link-icons {
 	width: 2.5em;
+	height: 2.5em;
 	margin: 0.5em;
 }
 
@@ -127,6 +129,7 @@
 
 	.profile-view-link-icons {
 		width: 2em;
+		height: 2em;
 		margin: 0.2em 0.5em;
 	}
 
@@ -156,6 +159,7 @@
 
 	.profile-view-link-icons {
 		width: 1.6em;
+		height: 1.6em;
 		margin: 0.2em 0.5em;
 	}
 
@@ -176,7 +180,6 @@
 	.profile-view-user-img {
 		height: 100px;
 		width: 100px;
-		object-fit: cover;
 		margin-bottom: 0;
 	}
 
@@ -214,10 +217,12 @@
 }
 
 /* EDIT */
+
 .profile-edit-user-img {
 	height: 160px;
 	width: 160px;
 	object-fit: cover;
+	border-radius: 50%;
 }
 
 .profile-edit-textField {
@@ -258,7 +263,6 @@
 	.profile-edit-user-img {
 		height: 120px;
 		width: 120px;
-		object-fit: cover;
 		margin-bottom: 1.2em;
 	}
 	.profile-edit-profile-pic-buttons-container {
@@ -270,7 +274,6 @@
 	.profile-edit-user-img {
 		height: 80px;
 		width: 80px;
-		object-fit: cover;
 		margin-bottom: 1.2em;
 	}
 	.profile-edit-profile-pic-upload-filename {
@@ -307,7 +310,6 @@
 	.profile-edit-user-img {
 		height: 100px;
 		width: 100px;
-		object-fit: cover;
 		margin-bottom: 0;
 		margin-left: 1.2em;
 	}

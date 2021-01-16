@@ -6,6 +6,9 @@ import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 import Pagination from './Pagination';
 
+//images
+import { Image, Placeholder } from 'cloudinary-react';
+
 //UI/css
 import './css/project.css'
 import Grid from '@material-ui/core/grid';
@@ -70,7 +73,16 @@ class ProjectAutoPlay extends React.Component {
 
                 {this.state.projectImgs.map((img, i) => (
                   <div key={i} style={Object.assign({}, styles.slide)}>
-                    <img src={img} alt="project image" className="project-auto-play-project-img"/>
+                      <Image
+                          cloudName={process.env.REACT_APP_CLOUDINARY_ACC_NAME}
+                          public_id={img}
+                          height="600"
+                          crop="fill"
+                          loading="lazy"
+                          className="project-auto-play-project-img"
+                      >
+                          <Placeholder type="vectorize" />
+                      </Image>
                   </div>
                 ))}
 

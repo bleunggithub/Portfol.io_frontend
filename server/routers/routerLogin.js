@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const config = require('../jwt/jwtConfig');
 const bcrypt = require('./bcrypt');
 
-const { json } = require('body-parser');
 
 //database
 const { development } = require('../knexfile');
@@ -15,31 +14,32 @@ module.exports = (express) => {
 
 //login (local)
 router.post('/login', async (req, res) => {
-    console.trace(req)
-    let { email, password } = req.body;
-
-    let errors = [];
-
-    //form validation
-    if (!email || !password) {
-        errors.push({
-            message: "Please enter all fields."
-        })
-    }
-
-    if (errors.length > 0) {
-        res.json({
-            message: errors 
-        })
-    }
-
-    // console.trace(errors)
-
-    //check if user details are the same as data in db
     try {            
+        console.trace(req.body.userData)
+        let { email, password } = req.body.userData;
+    
+        let errors = [];
+    
+        //form validation
+        if (!email || !password) {
+            errors.push({
+                message: "Please enter all fields."
+            })
+        }
+    
+        if (errors.length > 0) {
+            res.json({
+                message: errors 
+            })
+
+        }
+    
+        // console.trace(errors)
+    
+        //check if user details are the same as data in db
         let checkUser = await knex('users').where('email', email) //.andWhere('password', password);
 
-        if (checkUser.length == 0) {
+        if (checkUser.length === 0) {
             errors.push({
                 message: "The email address you entered is not registered."
             })
@@ -106,7 +106,7 @@ router.post('/login/facebook', (req, res) => {
     if (req.body) {
         let { name, email, picture, id, accessToken } = req.body;
 
-        let pictures = ["https://i.imgur.com/wdkAL7s.png","https://i.imgur.com/t7FVhRO.png","https://i.imgur.com/YZQ4iOr.png","https://i.imgur.com/o9qKWxf.png"]
+        let pictures = ["portfolio_capstone_project/avatars/028-girl_vtg8mz","portfolio_capstone_project/avatars/003-man_mf2zrd","portfolio_capstone_project/avatars/020-delivery_man_ooolkk","portfolio_capstone_project/avatars/002-girl_skywse"]
 
         if (picture == '' || undefined || null) {
             picture = pictures[Math.floor(Math.random()*4)]
@@ -182,7 +182,8 @@ router.post('/login/google', (req, res) => {
     if (req.body) {
         let { name, email, picture, id, accessToken, tokenId } = req.body;
 
-        let pictures = ["https://i.imgur.com/wdkAL7s.png","https://i.imgur.com/t7FVhRO.png","https://i.imgur.com/YZQ4iOr.png","https://i.imgur.com/o9qKWxf.png"]
+            let pictures = ["portfolio_capstone_project/avatars/028-girl_vtg8mz","portfolio_capstone_project/avatars/003-man_mf2zrd","portfolio_capstone_project/avatars/020-delivery_man_ooolkk","portfolio_capstone_project/avatars/002-girl_skywse"]
+
 
         if (picture == '' || undefined || null) {
             picture = pictures[Math.floor(Math.random()*4)]
@@ -289,7 +290,8 @@ router.post('/register', async (req, res) => {
                 let hashedPassword = await bcrypt.hashPassword(password)
                 // console.trace(hashedPassword);
 
-                let pictures = ["https://i.imgur.com/wdkAL7s.png","https://i.imgur.com/t7FVhRO.png","https://i.imgur.com/YZQ4iOr.png","https://i.imgur.com/o9qKWxf.png"]
+                let pictures = ["portfolio_capstone_project/avatars/028-girl_vtg8mz","portfolio_capstone_project/avatars/003-man_mf2zrd","portfolio_capstone_project/avatars/020-delivery_man_ooolkk","portfolio_capstone_project/avatars/002-girl_skywse"]
+
 
                 //details to be inserted in users table
                 const newUser = {
@@ -301,11 +303,11 @@ router.post('/register', async (req, res) => {
                 }
 
                 let userId = await knex('users').insert(newUser).returning('id');
+                console.trace(userId)
 
                 //authenticate new user
                 let payload = {
-                    id: newUser.id,
-                    userType: 'user'
+                    id: userId[0]
                 }
 
                 let token = jwt.sign(payload, config.jwtSecret)

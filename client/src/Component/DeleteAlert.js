@@ -9,7 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 export default function DeleteAlert(props) {
     const [isOpen, setOpen] = useState(props.open);
 
-    const handleClose = (isOpen) => {
+    const handleClose = () => {
         setOpen(false)
         props.close(isOpen)
     }
