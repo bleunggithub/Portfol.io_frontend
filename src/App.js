@@ -46,8 +46,8 @@ function App() {
     <Router>
 
       <Switch>
-        {isAuthenticated ? "": <TopBar />}
-        {isAuthenticated ? <Redirect to="/dashboard" />:""}
+        {isAuthenticated ? <TopBar redirect="/dashboard" />: <TopBar redirect={null}/>}
+        
         <PrivateRoute path="/project/addNewProject" exact component={NewProjectPage} /> 
         <PrivateRoute path="/project/:id" component={ProjectPages} /> 
         <PrivateRoute path="/profile/:id" component={ProfilePages} />

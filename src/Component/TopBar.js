@@ -1,4 +1,6 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+
 
 // UI
 import { makeStyles } from '@material-ui/core/styles';
@@ -60,9 +62,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function TopBar() {
+export default function TopBar(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(1); 
+  const [value, setValue] = React.useState(1);
+  const [redirect, setRedirect] = React.useState(null)
 
   const handleChange = (e, v) => {
     setValue(v);
@@ -72,7 +75,9 @@ export default function TopBar() {
   const parentChangeTabCB = (data) => {
     setValue(data)
   }
-
+  if (props.redirect === "/dashboard") {
+    return <Redirect to="/dashboard" />
+  }
   return (
     <div className={classes.root}>
       <AppBar position="fixed" color="secondary" elevation="0" className={classes.appBar}>
