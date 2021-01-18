@@ -11,7 +11,7 @@ import { Image, Placeholder } from 'cloudinary-react';
 
 //UI/css
 import './css/project.css'
-import Grid from '@material-ui/core/grid';
+import Grid from '@material-ui/core/Grid';
 
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
