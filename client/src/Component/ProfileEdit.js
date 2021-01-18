@@ -11,7 +11,6 @@ import { Image, Placeholder } from 'cloudinary-react';
 //UI, CSS
 import Grid from '@material-ui/core/grid';
 import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
 import Hidden from '@material-ui/core/Hidden';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';

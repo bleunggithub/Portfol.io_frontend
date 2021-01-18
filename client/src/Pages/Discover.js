@@ -53,11 +53,10 @@ export default class Discover extends Component {
 
     render() {
         return (
-    <Grid container justify="center">
+            <Grid container justify="center">
                 <TopBar value={location} />
                 <Grid container justify="center" className="discover-margin-top-container" />
                 <Grid item xs={12} sm={11} style={{ margin: "5vh 0 3vh 0" }}>
-                    {/* to add search bar */}
                     <Search handleError={ this.handleError } search={this.openSearchResults}/>
                 </Grid>
                 

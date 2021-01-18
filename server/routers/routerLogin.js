@@ -2,6 +2,7 @@ const axios = require('axios');
 const jwt = require('jsonwebtoken');
 const config = require('../jwt/jwtConfig');
 const bcrypt = require('./bcrypt');
+const contactMe = require('../services/controllers/contactMe')
 
 
 //database
@@ -327,5 +328,18 @@ router.post('/register', async (req, res) => {
 
 })
 
+    
+//contact me
+router.post('/contactMe', async (req, res) => {
+    try {
+        await contactMe.emailViaAWS_SES(req, res);
+        res.json({message:"Request is sent successfully."})
+
+    } catch (err) {
+        console.trace(err)
+        res.json({message:"An error has occurred. Please try again later."})
+    }
+})
+    
     return router; 
 }

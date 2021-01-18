@@ -95,7 +95,7 @@ export default class Search extends Component {
 
         return (
             <Grid container justify="center" style={{textAlign: 'center'}}>
-                <Grid xs={12} sm={6} style={{ marginBottom: '2em' }}>
+                <Grid item xs={12} sm={6} style={{ marginBottom: '2em' }}>
                     <form onSubmit={this.handleSearch}>
                         <Grid container justify="center">
                             <TextField label="Search Keywords" name="searchKeywords" value={this.state.searchKeywords} style={{width: '80%', margin: '2em 0',}} onChange={this.handleChange} required />

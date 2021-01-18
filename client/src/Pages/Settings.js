@@ -84,12 +84,14 @@ class ProfilePages extends Component {
 
     render() {
         return (
-                <Grid container>
-                    
-                        <TopBar value={locationOwnProfile} />
-                        <Submenu item1="YOUR PROFILE" item2="LOGOUT" handleItem1={ this.toSettings } handleItem2={this.logout} />
+                <Grid container justify="center">
+                <TopBar value={locationOwnProfile} />
+                <Grid container justify="center" className="dashboard-margin-top-container" />
+                <Grid item xs={11} sm={10} style={{ marginTop: "5vh" }}>
+                    <Submenu style={{ width: '20vw' }} toSettings={ this.toSettings } logOut={this.logout} />
+                </Grid>
                             
-                    <Grid component="label" container alignItems="center" justify="center"  style={{ margin: '1em 0' }}>
+                    <Grid component="label" container alignItems="center" justify="center"  style={{ marginBottom: '1em' }}>
                         <Grid item className="profile-switch-label">View</Grid>
                         <Grid item>
                             <Switch size="small" color="primary" checked={this.state.edit} onChange={this.handleToggleChange} name="edit" />

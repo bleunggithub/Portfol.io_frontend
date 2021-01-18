@@ -46,7 +46,7 @@ export default function TopBarLoggedIn(props) {
           onChange={handleChange}
           scrollButtons="on"
           indicatorColor="primary"
-          aria-label="Sign Up, Log In"
+          aria-label="navigation"
           centered
               >
           <div style={{display:"flex", alignItems:"flex-end", marginRight:"2em"}}>
