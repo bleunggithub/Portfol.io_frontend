@@ -110,7 +110,7 @@ export class Landing extends Component {
 
                     <Grid container justify="flex-start" alignItems="flex-start" className="landing-outer-container" style={{marginBottom:'1em'}} >
 
-                        {this.state.projectDetails.map((project, i) =>
+                        {this.state.projectDetails.map((project, i) => 
                         (<Grid item key={i} xs={12} sm={6} md={4} lg={3} className="landing-project-container" style={{ marginBottom: '1em' }}>
                             <Grid item xs={12} className="project-grid-img-container">
 
