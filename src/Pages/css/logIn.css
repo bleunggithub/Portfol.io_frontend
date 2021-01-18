@@ -1,0 +1,32 @@
+.logIn-grid-container {
+	margin-top: 15vh;
+}
+
+.logIn-grid-item {
+	margin: 0;
+}
+
+.logIn-form {
+	width: 100vw;
+	display: flex;
+	justify-content: center;
+}
+
+.logIn-highlight {
+	background: linear-gradient(to top, #546e7a85 40%, transparent 40%);
+}
+
+.logIn-icons-social {
+	cursor: pointer;
+	margin: 0 1em;
+	width: 2em;
+}
+
+@media (max-width: 600px) {
+	.logIn-grid-container {
+		margin: 10vh 0;
+	}
+	.logIn-form {
+		width: 90vw;
+	}
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, viewport-fit=cover"
+		/>
+
+		<title>Portfol.io</title>
+		<style type="text/css">
+			* {
+				box-sizing: border-box;
+			}
+
+			body {
+				background-color: #fff;
+				overflow-x: hidden;
+				overflow-y: hidden;
+			}
+			.outer-container {
+				width: 100vw;
+				min-height: 100vh;
+				text-align: center;
+			}
+			.inner-container {
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="outer-container">
+			<div class="inner-container">
+				<img src="./icons/apple-icon-180.png" alt="icon" />
+				<p style="font-family: 'Montserrat', -apple-system">
+					Oops, you're offline.
+				</p>
+			</div>
+		</div>
+	</body>
+</html>
