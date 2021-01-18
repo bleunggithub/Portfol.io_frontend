@@ -41,13 +41,13 @@ function App() {
   
   
  const isAuthenticated = useSelector(state => state.login.isAuthenticated)
-    
+
   return (
     <Router>
 
       <Switch>
-        {isAuthenticated ? <TopBar redirect="/dashboard" />: <TopBar redirect={null}/>}
-        
+        {isAuthenticated ? "": <TopBar />}
+      
         <PrivateRoute path="/project/addNewProject" exact component={NewProjectPage} /> 
         <PrivateRoute path="/project/:id" component={ProjectPages} /> 
         <PrivateRoute path="/profile/:id" component={ProfilePages} />

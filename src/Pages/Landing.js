@@ -28,6 +28,7 @@ export class Landing extends Component {
             errorOpen: false,
             projectDetails: [],
             isAboutOpen: false,
+            redirect: false
         }
         this.fetchProjects()
     }
@@ -99,8 +100,23 @@ export class Landing extends Component {
         })
     }
 
-    render() {
+    componentDidMount() {
         if (this.props.isAuthenticated) {
+            this.setState({
+                redirect: true
+            })
+        }
+    }
+    componentDidUpdate() {
+        if (this.props.isAuthenticated) {
+            this.setState({
+                redirect: true
+            })
+        }
+    }
+
+    render() {
+        if (this.state.redirect) {
             return (<Redirect to="/dashboard" />)
         } else {
             return (
