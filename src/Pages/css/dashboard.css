@@ -1,0 +1,15 @@
+.dashboard-margin-top-container {
+	margin-top: 9vh;
+	width: 100%;
+}
+
+@media (max-width: 1024px) {
+	.dashboard-margin-top-container {
+		margin-top: 6vh;
+	}
+}
+@media (max-width: 600px) {
+	.dashboard-margin-top-container {
+		margin-top: 5vh;
+	}
+}
