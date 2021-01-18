@@ -413,33 +413,35 @@ class ProfileView extends Component {
                                     )}
                                 {this.state.modalOpen ? (
                                     <div className="profile-view-contact-pop-up">
-                                        <form onSubmit={this.submitContact}>
-                                        <TextField label="Subject" name="email_subject" value={this.state.email_subject} onChange={this.handleChange} className="profile-view-textField" style={{ margin: "10px 0" }} required/>
-                                        <TextField
-                                            label="Your Message"
-                                            multiline
-                                            rows={10}
-                                            name="email_message"
-                                            onChange={this.handleChange}
-                                            value={this.state.email_message}
-                                            variant="outlined"
-                                            className="profile-view-textField"
-                                            style={{margin: '1em 0'}}
-                                            required
-                                            />
-                                            <p style={{ fontFamily: 'Montserrat', fontSize: '0.8em', color: '#535353', textAlign: 'justify', textJustify: 'inter-word', margin: '0 2em' }}>
-                                                Please note that your <u>name</u> and <u>email address</u> will be sent to the recipient together with your message.
-                                                </p>
-                                            <div style={{ display:'flex', flexDirection: 'row',justifyContent:'center', marginBottom:'1em',width:'100%' }}>
-                                                <Button variant="outlined" onClick={ this.handleCloseContact } color="primary" size="small" style={{ margin: "1em 2em" }}>cancel</Button>
-                                                {this.state.emailSuccess ? (
-                                                    <Button variant="contained" disableElevation disabled color="primary" size="small" startIcon={<CheckIcon />} style={{ margin: "1em 2em", padding: "0 1em" }} >Sent</Button>
-                                                ) : (
-                                                    <Button variant="contained" disableElevation color="primary" size="small" type="submit" startIcon={<SendIcon />} style={{ margin: "1em 2em", padding: "0 1em" }}>send</Button>
-                                                )}
-                                                
-                                            </div>
-                                        </form>
+                                        <div style={{backgroundColor: '#ffffff00'}}>
+                                            <form onSubmit={this.submitContact}>
+                                            <TextField label="Subject" name="email_subject" value={this.state.email_subject} onChange={this.handleChange} className="profile-view-textField" style={{ margin: "10px 0" }} required/>
+                                            <TextField
+                                                label="Your Message"
+                                                multiline
+                                                rows={10}
+                                                name="email_message"
+                                                onChange={this.handleChange}
+                                                value={this.state.email_message}
+                                                variant="outlined"
+                                                className="profile-view-textField"
+                                                style={{margin: '1em 0'}}
+                                                required
+                                                />
+                                                <p style={{ fontFamily: 'Montserrat', fontSize: '0.8em', color: '#535353', textAlign: 'justify', textJustify: 'inter-word', margin: '0 2em' }}>
+                                                    Please note that your <u>name</u> and <u>email address</u> will be sent to the recipient together with your message.
+                                                    </p>
+                                                <div style={{ display:'flex', flexDirection: 'row',justifyContent:'center', marginBottom:'1em',width:'100%' }}>
+                                                    <Button variant="outlined" onClick={ this.handleCloseContact } color="primary" size="small" style={{ margin: "1em 2em" }}>cancel</Button>
+                                                    {this.state.emailSuccess ? (
+                                                        <Button variant="contained" disableElevation disabled color="primary" size="small" startIcon={<CheckIcon />} style={{ margin: "1em 2em", padding: "0 1em" }} >Sent</Button>
+                                                    ) : (
+                                                        <Button variant="contained" disableElevation color="primary" size="small" type="submit" startIcon={<SendIcon />} style={{ margin: "1em 2em", padding: "0 1em" }}>send</Button>
+                                                    )}
+                                                    
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                  ): ""}
                             </Grid>
