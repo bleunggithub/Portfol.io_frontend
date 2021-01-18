@@ -7,7 +7,7 @@ import axios from 'axios'
 import ProjectAutoPlay from '../Component/ProjectAutoPlay'
 
 //images
-import { Image} from 'cloudinary-react';
+import { Image } from 'cloudinary-react';
 
 //UI, CSS
 import Grid from '@material-ui/core/grid';

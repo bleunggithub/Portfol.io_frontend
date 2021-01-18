@@ -19,7 +19,7 @@ export default class ProjectGridSmall extends Component {
             projectDetails: [],
             isLoading: false,
             currentPage: 1,
-            projectPerPage: 24,
+            projectPerPage: 12,
             errorMessage: null,
         }
         this.fetchProjects()

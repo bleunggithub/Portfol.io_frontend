@@ -70,7 +70,7 @@ class ProfilePages extends Component {
 
 
                     <TopBar value={locationOthers} />
-                    <Grid container style={{width: '100%', marginTop:'11vh'}} />
+                    <Grid container style={{width: '100%', marginTop:'10vh'}} />
                 <ProfileView notOwnProfile={true} params={this.props.match.params.id} handleErrorCB={this.handleError}/>
                 {/* handle error */}
                <Snackbar

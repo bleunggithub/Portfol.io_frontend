@@ -6,8 +6,6 @@ import { connect, useSelector } from 'react-redux';
 //Components, pages
 import TopBar from './Component/TopBar'
 import Landing from './Pages/Landing'
-import LogIn from './Pages/LogIn'
-import SignUp from './Pages/SignUp'
 import Dashboard from './Pages/Dashboard'
 import Discover from './Pages/Discover'
 import Settings from './Pages/Settings'
@@ -58,8 +56,6 @@ function App() {
         <PrivateRoute path="/discover" exact component={Discover} />
         <PrivateRoute path="/dashboard" exact component={Dashboard} />
         <Route path="/about" exact component={AboutProject} />
-        <Route path="/signUp" exact component={SignUp} />
-        <Route path="/logIn" exact component={LogIn} />
         <Route path="/" exact component={Landing} />
       </Switch>
 

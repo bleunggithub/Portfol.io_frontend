@@ -6,16 +6,18 @@ import { Image, Placeholder } from 'cloudinary-react';
 
 //redux
 import { connect } from 'react-redux';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 
 //UI, CSS
 import Grid from '@material-ui/core/grid';
 import './css/landing.css';
+import AboutProject from './AboutProject';
 
 
 export class Landing extends Component {
@@ -24,7 +26,8 @@ export class Landing extends Component {
         this.state = {
             errorMessage: null,
             errorOpen: false,
-            projectDetails:[],
+            projectDetails: [],
+            isAboutOpen: false,
         }
         this.fetchProjects()
     }
@@ -62,6 +65,13 @@ export class Landing extends Component {
         })
     }
 
+    handleErrorCB = (error) => {
+        this.setState({
+            errorMessage: error,
+            errorOpen: true
+        })
+    }
+
     //snackbar close
     handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -75,6 +85,18 @@ export class Landing extends Component {
 
     changeTab = () => {
         this.props.parentChangeTabCB(2)
+    }
+
+    aboutOpen = () => {
+        this.setState({
+            isAboutOpen:true
+        })
+    }
+
+    handleCloseAbout = () => {
+        this.setState({
+            isAboutOpen: false
+        })
     }
 
     render() {
@@ -136,9 +158,17 @@ export class Landing extends Component {
                         </h2>
                     </Grid>
                     <Grid className="landing-bottom-link">
-                        <Link to="/about" className="landing-link" style={{ textDecoration: "none" }}>About this Project</Link> &nbsp;
+                        <span className="landing-link" style={{ textDecoration: "none" }} onClick={this.aboutOpen}>About this Project</span> &nbsp;
                         <span className="landing-light-text">&#169; {new Date().getFullYear()} Betty Leung</span>
                     </Grid>
+
+                    {this.state.isAboutOpen ? (
+                        <ClickAwayListener onClickAway={this.handleCloseAbout}>
+                        <Grid container justify="center" alignItems="center" className="landing-popup-aboutProject">
+                                <AboutProject handleClose={this.handleCloseAbout} handleErrorCB={this.handleErrorCB} />
+                        </Grid>
+                        </ClickAwayListener>
+                    ):""}
                 
                 {/* handle errors */}
                 <Snackbar

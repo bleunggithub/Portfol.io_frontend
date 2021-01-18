@@ -1,5 +1,4 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 
 // UI
 import { makeStyles } from '@material-ui/core/styles';
@@ -63,19 +62,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TopBar() {
   const classes = useStyles();
-  const history = useHistory();
   const [value, setValue] = React.useState(1); 
 
   const handleChange = (e, v) => {
     setValue(v);
   };
 
-  const addHistorySignUp = () => {
-        history.push("/signUp")
-    }
-  const addHistoryLogIn = () => {
-        history.push("/logIn")
-  }
   
   const parentChangeTabCB = (data) => {
     setValue(data)
@@ -97,8 +89,8 @@ export default function TopBar() {
             </div>
   
           <Tab className={classes.tabs} label="Explore" {...a11yProps(1)} />
-            <Tab className={ classes.tabs } label="Sign Up" {...a11yProps(2)}  onClick={ addHistorySignUp }/>
-            <Tab className={ classes.tabs } label="Log In" {...a11yProps(3)}  onClick={ addHistoryLogIn }/>
+            <Tab className={ classes.tabs } label="Sign Up" {...a11yProps(2)}/>
+            <Tab className={ classes.tabs } label="Log In" {...a11yProps(3)} />
   
         </Tabs>
       </AppBar>
