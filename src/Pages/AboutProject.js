@@ -5,7 +5,7 @@ import ExpandContactBox from '../Component/ExpandContactBox'
 
 
 //UI/CSS
-import Grid from '@material-ui/core/grid';
+import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import CloseIcon from '@material-ui/icons/Close';
 

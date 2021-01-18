@@ -15,7 +15,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 
 //UI, CSS
-import Grid from '@material-ui/core/grid';
+import Grid from '@material-ui/core/Grid';
 import './css/landing.css';
 import AboutProject from './AboutProject';
 

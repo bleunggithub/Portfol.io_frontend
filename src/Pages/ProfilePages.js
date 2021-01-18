@@ -12,7 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
 //UI, CSS
-import Grid from '@material-ui/core/grid';
+import Grid from '@material-ui/core/Grid';
 
 //Components
 import ProfileView from '../Component/ProfileView';

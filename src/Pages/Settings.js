@@ -15,7 +15,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 
 //UI, CSS
-import Grid from '@material-ui/core/grid';
+import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch';
 
 //Components

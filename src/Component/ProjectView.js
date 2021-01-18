@@ -10,7 +10,7 @@ import ProjectAutoPlay from '../Component/ProjectAutoPlay'
 import { Image } from 'cloudinary-react';
 
 //UI, CSS
-import Grid from '@material-ui/core/grid';
+import Grid from '@material-ui/core/Grid';
 import './css/project.css';
 import Tooltip from '@material-ui/core/Tooltip';
 import Chip from '@material-ui/core/Chip';

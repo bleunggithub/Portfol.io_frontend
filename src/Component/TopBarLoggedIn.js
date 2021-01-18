@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 // UI
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/grid';
+import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
