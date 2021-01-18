@@ -65,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
 export default function TopBar(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(1);
-  const [redirect, setRedirect] = React.useState(null)
 
   const handleChange = (e, v) => {
     setValue(v);
