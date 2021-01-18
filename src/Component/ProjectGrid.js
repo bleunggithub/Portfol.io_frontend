@@ -4,7 +4,7 @@ import axios from 'axios'
 
 
 //UI/CSS
-import Grid from '@material-ui/core/grid';
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 import Snackbar from '@material-ui/core/Snackbar';

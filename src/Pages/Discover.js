@@ -6,7 +6,7 @@ import ProjectGridSmall from '../Component/ProjectGridSmall'
 import Search from '../Component/Search'
 
 //UI, CSS
-import Grid from '@material-ui/core/grid';
+import Grid from '@material-ui/core/Grid';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';

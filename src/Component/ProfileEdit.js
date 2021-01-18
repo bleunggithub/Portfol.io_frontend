@@ -9,7 +9,7 @@ import { updateProfileThunk } from '../actions/profileActions'
 import { Image, Placeholder } from 'cloudinary-react';
 
 //UI, CSS
-import Grid from '@material-ui/core/grid';
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Hidden from '@material-ui/core/Hidden';
 import TextField from '@material-ui/core/TextField';

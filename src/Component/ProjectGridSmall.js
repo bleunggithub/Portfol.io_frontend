@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 //UI/CSS
-import Grid from '@material-ui/core/grid';
+import Grid from '@material-ui/core/Grid';
 import Pagination from '@material-ui/lab/Pagination';
 
 import './css/projectGridSmall.css';

@@ -11,7 +11,7 @@ import { followProfileThunk } from '../actions/profileActions'
 import { Image, Placeholder } from 'cloudinary-react';
 
 //UI, CSS
-import Grid from '@material-ui/core/grid';
+import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';

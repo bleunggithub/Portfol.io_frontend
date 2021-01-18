@@ -6,7 +6,7 @@ import { skillList } from '../Component/SkillSelector'
 //UI, CSS
 import './css/project.css';
 
-import Grid from '@material-ui/core/grid';
+import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';

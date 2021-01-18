@@ -6,7 +6,7 @@ import { useDropzone } from 'react-dropzone';
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-import Grid from '@material-ui/core/grid';
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CheckIcon from '@material-ui/icons/Check';

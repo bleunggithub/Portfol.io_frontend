@@ -8,7 +8,7 @@ import ProjectEditDetails from '../Component/ProjectEditDetails'
 
 //UI, CSS
 import './css/project.css';
-import Grid from '@material-ui/core/grid';
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
