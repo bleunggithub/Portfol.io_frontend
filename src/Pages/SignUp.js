@@ -127,6 +127,7 @@ export class SignUp extends Component {
                         autoLoad={false}
                         fields="name,email,picture"
                         callback={this.responseFacebook}
+                        isMobile={false}
                         render={renderProps => (
                             <Image
                                 cloudName={process.env.REACT_APP_CLOUDINARY_ACC_NAME}
