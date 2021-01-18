@@ -1,21 +1,69 @@
-# Use the latest 2.1 version of CircleCI pipeline processing engine, see https://circleci.com/docs/2.0/configuration-reference/
+# Javascript Node CircleCI 2.1 configuration file
 
-version: 2.1
+# Check https://circleci.com/docs/2.1/language-javascript/ for more details
 
-# Use a package of configuration called an orb, see https://circleci.com/docs/2.0/orb-intro/
+version: 2.0
 
 orbs:
-  # Declare a dependency on the welcome-orb
+  aws-cli: circleci/aws-cli@x.y
 
-  welcome: circleci/welcome-orb@0.3.1
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:10
+    working_directory: ~/repo
 
-# Orchestrate or schedule a set of jobs, see https://circleci.com/docs/2.0/workflows/
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run: yarn build
+      - persist_to_workspace:
+          root: .
+          # Must be relative path from root
+          paths:
+            - build/*
+
+  deploy:
+    docker:
+      - image: circleci/python:3.6
+
+    work_directory: /tmp/my-project
+    steps:
+      - attach_workspace:
+          at: /tmp/my-project
+
+      - run:
+          name: Install AWS CLI
+          command: pip install awscli --user
+
+      - run:
+          name: Deploy to S3 if the build is successful
+          command: ~/.local/bin/aws s3 sync --acl public-read /tmp/my-project/build/ s3://capstone-portfolio --delete
+
+      - run:
+          name: Invalidate Cloudfront distribution
+          command: ~/.local/bin/aws cloudfront create-invalidation --distribution-id E1LKCNDFAV6JPR --paths "/*"
 
 workflows:
-  # Name the workflow "Welcome"
-
-  Welcome:
-    # Run the welcome/run job in its own container
-
+  version: 2
+  build-deploy:
     jobs:
-      - welcome/run
+      - build
+      - deploy:
+          requires:
+            - build
