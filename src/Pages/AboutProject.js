@@ -45,7 +45,7 @@ export default class AboutProject extends Component {
                                 Who am I?
                             </h3>
                             <p className="about-content-paragraph">
-                                Hello, I'm Betty. A full-stack web developer who has graduated the 
+                                Hello, I'm Betty. A full-stack web developer who has graduated from the 
                                 Full-Stack Software Engineering Immersive Bootcamp at &nbsp;
                                 <a href="https://xccelerate.co/en/" rel="noreferrer" target="_blank" className="about-link">Xccelerate</a> 
                                  &nbsp; in December 2020. This web app is my capstone project.<br />

@@ -18,6 +18,10 @@ import { Image, Placeholder } from 'cloudinary-react';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+
+import Disclaimer from './Disclaimer';
+
 
 const textFieldStyle = {
     width: "100%",
@@ -33,7 +37,7 @@ const checkboxStyle = {
 
 }
 
-export class SignUp extends Component {
+class SignUp extends Component {
         constructor(props) {
         super(props);
         this.state = {
@@ -41,7 +45,8 @@ export class SignUp extends Component {
             email: '',
             password: '',
             errorOpen: false,
-            errorMessage: null
+            errorMessage: null,
+            disclaimerOpen: false
         }
     }
 
@@ -97,6 +102,18 @@ export class SignUp extends Component {
             })
         }
     }
+
+    openDisclaimer = () => {
+        this.setState({
+            disclaimerOpen:true
+        })
+    }
+
+    handleCloseDisclaimer = () => {
+        this.setState({
+            disclaimerOpen: false
+        })
+    }
     
     render() {
         // if isAuthenticated, redirect to dashboard
@@ -115,7 +132,7 @@ export class SignUp extends Component {
                     <TextField label="Password" name="password" type="password" placeholder="6+ characters" value={this.state.password} onChange={this.handleChange} style={textFieldStyle} required />                    
                     <Grid item style={checkboxStyle}>
                         <Checkbox name="checkboxTC" color="primary" inputProps={{ 'aria-label': 'agreeTC' }} required />
-                        <label for="checkboxTC" style={{ fontSize: '0.7em' }}>I have read, understood and accept the terms and conditions.</label>
+                        <label for="checkboxTC" style={{ fontSize: '0.7em' }}>I have read and understood the <span onClick={this.openDisclaimer} style={{color:'#535353', textDecoration:'underline', cursor:'pointer'}}>disclaimer</span> of this website and I agree to be bound by the terms and conditions.</label>
                 </Grid>
                 <Grid container justify="space-between">
                     <Grid item xs={4}>
@@ -168,6 +185,13 @@ export class SignUp extends Component {
                 </Grid>
             </form>
 
+            {this.state.disclaimerOpen ? (
+                        <ClickAwayListener onClickAway={this.handleCloseDisclaimer}>
+                        <Grid container justify="center" alignItems="center" className="signup-popup-disclaimer">
+                                <Disclaimer handleClose={this.handleCloseDisclaimer} />
+                        </Grid>
+                        </ClickAwayListener>
+                    ):""}
                 {/* handle errors */}
                 <Snackbar
                     anchorOrigin={{
