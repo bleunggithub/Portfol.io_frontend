@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 
-//Component
-import ExpandContactBox from '../Component/ExpandContactBox'
 
 
 //UI/CSS
@@ -10,14 +8,11 @@ import Fab from '@material-ui/core/Fab';
 import CloseIcon from '@material-ui/icons/Close';
 
 
-//images
-import { Image, Placeholder } from 'cloudinary-react';
-
 import './css/disclaimer.css'
 
 
 
-export default class AboutProject extends Component {
+export default class Disclaimer extends Component {
 
 
     handleClose = () => {
@@ -91,7 +86,8 @@ export default class AboutProject extends Component {
                                     The content of this website is protected by applicable copyright law.
                                 </li>
                                 <li>
-                                    Please refrain yourself from modifying or copying the materials shown on the website, unless you have obtained explicit consent from the creator of such material :(
+                                    Many of us pour our heart and soul into the work we do. Please refrain yourself from modifying or copying the materials shown on the website, 
+                                    unless you have obtained explicit consent from the creator of such material :(
                                 </li>
                             </ul>
  
