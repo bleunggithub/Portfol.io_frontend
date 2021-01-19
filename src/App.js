@@ -12,7 +12,6 @@ import Settings from './Pages/Settings'
 import ProfilePages from './Pages/ProfilePages'
 import ProjectPages from './Pages/ProjectPages'
 import NewProjectPage from './Pages/NewProjectPage'
-import AboutProject from './Pages/AboutProject'
 
 //CSS
 import './App.css';
@@ -55,7 +54,6 @@ function App() {
         <PrivateRoute path="/settings" exact component={Settings} /> 
         <PrivateRoute path="/discover" exact component={Discover} />
         <PrivateRoute path="/dashboard" exact component={Dashboard} />
-        <Route path="/about" exact component={AboutProject} />
         <Route path="/" exact component={Landing} />
       </Switch>
 
