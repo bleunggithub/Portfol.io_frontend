@@ -58,7 +58,7 @@ export default class AboutProject extends Component {
                                 What is Portfol.io?
                             </h3>
                             <p className="about-content-paragraph">
-                                A show-and-tell platform for developers to showcase their portfolio visually and to also to get inspired.
+                                A show-and-tell platform for developers to showcase their portfolio visually and also to get inspired.
                             </p>
                             <h3 className="about-subtitle-highlight">
                                 What problems is it trying to solve?
@@ -83,7 +83,7 @@ export default class AboutProject extends Component {
                                 their work visually, drive traffic to their websites, and to get inspired by fellow developers more easily.
                             </p>
                             <h3 className="about-subtitle-highlight">
-                                Why are the key features of Portfol.io?
+                                What are the key features of Portfol.io?
                             </h3>
                             <p className="about-content-paragraph">
                                 <ul>
@@ -91,10 +91,10 @@ export default class AboutProject extends Component {
                                         Create an online profile easily
                                     </li>
                                     <li>
-                                        Upload and present to the world thier best projects with images
+                                        Upload and present to the world their best projects with images
                                     </li>
                                     <li>
-                                        Show the project on social media
+                                        Share the projects on social media
                                     </li>
                                     <li>
                                         Follow & connect with fellow developers, like and save projects for inspirations
